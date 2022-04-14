@@ -8,8 +8,8 @@ library(kableExtra)
 library(akima)
 library(plot3D)
 library(CINNA)
-library("corrgram")
-library("png")
+library(corrgram)
+library(png)
 
 
 source("/home/nastaran/Downloads/marco/new_data/Aux_functions.R", encoding="utf-8")
