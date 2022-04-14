@@ -15,7 +15,7 @@ library(png)
 source("/home/nastaran/Downloads/marco/new_data/Aux_functions.R", encoding="utf-8")
 
 data = read.csv("/home/nastaran/Downloads/marco/new_data/links_clean.csv", header=T, as.is=T)
-
+#Generating link file
 Frui1 <- list()
 Frui2 <- list()
 Frui3 <- list()
@@ -27,9 +27,6 @@ Neg4 <- list()
 
 
 leng<-dim(data)[1]
-wid<-dim(data)[2]
-#print (a)
-#print ( b)
 k2=1
 k1=1
 for (i in 1:leng) {
@@ -50,7 +47,7 @@ for (i in 1:leng) {
 		k2=k2+1
 		}#end if 2
 		
-	}
+	}#end for
 
 
 Frui<-list()
@@ -62,7 +59,7 @@ Tot<-rbind(Frui,Neg)
 colnames(Tot) <- c("from","to", "layer_num", "layer")
 ###############################################
 
-
+#Generating Name file
 name1=unique(data$CurrentBatSpecies)
 name1<- name1[order(name1) ]
 
@@ -78,8 +75,6 @@ name2<- name2[order(name2) ]
 Na1=rep("Plants",length(name2))
 Na2=rep(2,length(name2))
 Na3=rep(1,length(name2))
-#######
-
 
 
 Fa<-cbind(name1,Fa1,Fa2,Fa3)
@@ -93,15 +88,13 @@ write.csv(Names,"/home/nastaran/Downloads/marco/new_data/Names.csv", row.names =
 write.csv(Tot,"/home/nastaran/Downloads/marco/new_data/Net.csv", row.names = FALSE)
 
 cat('end_names_construction', "\n")
+
 ############################################################################################
 ############################################################################################
 #####G_Analysis
 
 nodes = read.csv("/home/nastaran/Downloads/marco/new_data/Names.csv", header=T, as.is=T)
 links = read.csv("/home/nastaran/Downloads/marco/new_data/Net.csv", header=T, as.is=T)
-
-
-#file_to_save = paste("/home/nastaran/Downloads/marco/new_data/Bat_Net.RData", sep="")
 
 
 ##sorting nodes to be in order
@@ -133,9 +126,9 @@ cont_perc = 1 # Calculation of running progress
 for (gamma_index in 1:length(gammas)) {
   	seq_G_list = list()
     	for (i in 1:iterations) {
-    	seq_G_list[[i]] = Create_seq_G_Merged(net_multinet, partitions_of_omega, gamma = gammas[gamma_index])
-    	cat(cont_perc*100/(iterations*length(gammas)), "%  ")###print the run progress
-    	cont_perc = cont_perc + 1
+    		seq_G_list[[i]] = Create_seq_G_Merged(net_multinet, partitions_of_omega, gamma = gammas[gamma_index])
+    		cat(cont_perc*100/(iterations*length(gammas)), "%  ")###print the run progress
+    		cont_perc = cont_perc + 1
   		}#end of iterations
   #----
   #Removing names
@@ -407,42 +400,4 @@ corrgram(df, cor.method = "spearman", order=FALSE, oma=c(12, 12, 7, 2),
 dev.off()
 
 cat('end_plots', "\n")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
