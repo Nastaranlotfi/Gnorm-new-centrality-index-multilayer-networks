@@ -1,6 +1,8 @@
 # Test1-code
 
-## A new multilayer modularity index
+## A new modularity index for multilayer networks
+
+Authors: Nastaran Lotfti, Henrique Requejo, Francisco Rodrigues, Marco Mello
 
 Follow-up of Henrique Requejo's BSc monograph:
 

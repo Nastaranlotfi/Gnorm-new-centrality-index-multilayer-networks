@@ -11,10 +11,19 @@ library(CINNA)
 library(corrgram)
 library(png)
 
+# Set the working directory automatically to the source file location 
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-source("/home/nastaran/Downloads/marco/new_data/Aux_functions.R", encoding="utf-8")
+rm(list= ls())
 
-data = read.csv("/home/nastaran/Downloads/marco/new_data/links_clean.csv", header=T, as.is=T)
+source("Aux_functions.R", encoding="utf-8")
+
+data = read.csv("links_clean.csv", header=T, as.is=T)
+
+# Check the data
+head(data)
+tail(data)
+
 #Generating link file
 Frui1 <- list()
 Frui2 <- list()
@@ -24,7 +33,6 @@ Neg1 <- list()
 Neg2 <- list()
 Neg3 <- list()
 Neg4 <- list()
-
 
 leng<-dim(data)[1]
 k2=1
@@ -57,13 +65,17 @@ Neg<-cbind(Neg1,Neg2,Neg3,Neg4)
 
 Tot<-rbind(Frui,Neg)
 colnames(Tot) <- c("from","to", "layer_num", "layer")
+
+# Check the link list
+dim(Tot)
+head(Tot)
+tail(Tot)
+
 ###############################################
 
 #Generating Name file
 name1=unique(data$CurrentBatSpecies)
 name1<- name1[order(name1) ]
-
-
 
 Fa1=rep("Bats",length(name1))
 Fa2=rep(1,length(name1))
@@ -83,9 +95,13 @@ Na<-cbind(name2,Na1,Na2,Na3)
 Names<-rbind(Fa,Na)
 colnames(Names) <- c("name","taxon","taxon.label","species.size")
 
+# Checke the node list
+dim(Names)
+head(Names)
+tail(Names)
 
-write.csv(Names,"/home/nastaran/Downloads/marco/new_data/Names.csv", row.names = FALSE)
-write.csv(Tot,"/home/nastaran/Downloads/marco/new_data/Net.csv", row.names = FALSE)
+write.csv(Names,"nodes.csv", row.names = FALSE)
+write.csv(Tot,"links.csv", row.names = FALSE)
 
 cat('end_names_construction', "\n")
 
@@ -93,9 +109,8 @@ cat('end_names_construction', "\n")
 ############################################################################################
 #####G_Analysis
 
-nodes = read.csv("/home/nastaran/Downloads/marco/new_data/Names.csv", header=T, as.is=T)
-links = read.csv("/home/nastaran/Downloads/marco/new_data/Net.csv", header=T, as.is=T)
-
+nodes = read.csv("nodes.csv", header=T, as.is=T)
+links = read.csv("links.csv", header=T, as.is=T)
 
 ##sorting nodes to be in order
 nodes = nodes[order(nodes$name),] 
