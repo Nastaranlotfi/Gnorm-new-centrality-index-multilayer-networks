@@ -493,4 +493,95 @@ Net_prop = function(net_multinet){
   	return(network_properties)
 	}#end function
 
+################################################################################
+#Generates a list of each module with its actors. Used in the Change_cid_number function
+
+sep_clusters_actors <- function(cluster){
+	cluster_list = list()
+  	for (i in 1:(max(cluster$cid)+1)) {
+    		cluster_temp = subset(cluster, cluster$cid == i-1)
+    		cluster_list[[i]] = cluster_temp
+  		}#end for
+  	return(cluster_list)
+	}
+
+###############################################################################
+#Plot of number of modules and modularity value for one iteration
+
+Plot_number_modularity <- function(partitions_of_omega1,gamma_min1,gamma_max1,gamma_spacing1,net_multinet){
+
+	vec_W1 = Create_vec_W(partitions_of_omega1)
+
+	gammas1 = seq(from = gamma_min1, to = gamma_max1, by = gamma_spacing1)
+
+	#Initializes the number of modules array
+	modules_quantity = matrix(0, nrow = length(vec_W1), ncol = length(gammas1))
+
+	#Inicializa a matriz de valores de modularidade
+	modularity = matrix(0, nrow = length(vec_W1), ncol = length(gammas1))
+
+	for (j in 1:length(gammas1)) {
+		cluster = list()
+  		cluster_list = list()
+  
+  		for (i in 1:length(vec_W1) ) {
+    			#Calculate communities
+    			cluster[[i]] = glouvain_ml(net_multinet, gamma=gammas1[j], omega=vec_W1[i])
+    			# Prepare the cluster to be standardized
+    			cluster_list[[i]] = sep_clusters_actors(cluster[[i]])
+    			#Counts how many modules exists
+   			modules_quantity[i,j] = length(cluster_list[[i]])
+    			#calculate the modularity
+    			modularity[i,j] = modularity_ml(net_multinet, cluster[[i]])
+  			}#end for i
+  
+		}#end for j	  
+
+	#Adjust matrix column names to match gamma and omega values
+	colnames(modularity) = gammas1
+	rownames(modularity) = vec_W1
+	colnames(modules_quantity) = gammas1
+	rownames(modules_quantity) = vec_W1
+
+	#######plot of Number of modules
+
+	##trying to make differences between colors of plotted fig
+	minm=min(modules_quantity)
+	maxm=max(modules_quantity)
+
+	divi=(maxm-minm)/80
+	km=seq(minm,maxm,by=divi)
+
+	#Generate the figure with the number of modules for different gamma and omega values
+	jpeg("Number_of_modules.jpg", width = 1000, height = 800)
+	pheatmap(modules_quantity, display_numbers = T, kmeans_k = NA, cluster_rows = FALSE,
+         	cluster_cols = FALSE, show_rownames = T, show_colnames = T, fontsize = 20,
+         	fontsize_number = 15, fontsize_row = 20, fontsize_col = 20, angle_col = 0,
+         	legend = F, number_format = "%i", main = "Number of Modules",
+         	border_color = "white", breaks = km,xlab = "specification variables", ylab =  "Car Models")
+
+	dev.off()
+	#print (modularity)
+
+
+
+	########plot of Modularity
+	minm=min(modularity)
+	maxm=max(modularity)
+
+	divi=(maxm-minm)/80
+	km=seq(minm,maxm,by=divi)
+
+	# Generate the figure with the modularity value for different gamma and omega values
+	jpeg("Modularity.jpg", width = 1000, height = 800)
+	pheatmap(modularity, display_numbers = T, kmeans_k = NA, cluster_rows = FALSE,
+         	cluster_cols = FALSE, show_rownames = T, show_colnames = T, fontsize = 20,
+         	fontsize_number = 15, fontsize_row = 20, fontsize_col = 20, angle_col = 0,
+         	legend = F, number_format = "%0.3f",main = "Modularity",
+         	border_color = "white", breaks = km)
+	dev.off()
+	return()
+	}
+	
+#############################################################################
 #-------------------------------------------------------------------
