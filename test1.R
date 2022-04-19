@@ -10,6 +10,8 @@ library(plot3D)
 library(CINNA)
 library(corrgram)
 library(png)
+library(pheatmap)
+
 
 # Set the working directory automatically to the source file location 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
@@ -199,6 +201,53 @@ save(gammas, vec_W, iterations, partitions_of_omega, links, nodes, Seq_G_Mean_ga
 
 
 cat('end_Gnorm', "\n")
+
+
+
+#########################################################################
+#########################################################################
+####Plot sample of number of modules and modularity value for one run
+
+partitions_of_omega1 = 4 
+gamma_min1 = 0.5
+gamma_max1 = 3.5
+gamma_spacing1 = 0.5
+
+plots=Plot_number_modularity(partitions_of_omega1,gamma_min1,gamma_max1,gamma_spacing1,net_multinet)
+
+
+#########################################################################
+#########################################################################
+####Plot G_norm Frequency
+
+G_plot<-G_norm_mean ##saving in new name for not making changes in main results
+names(G_plot)<-NULL ##removing the names
+df<-unlist(G_plot) ##changing the matrix into one vector
+hist(df,breaks=5,col="darkmagenta",xlim=c(1,2),main="Distribution of Gnorm",,xlab='G_norm')##hist plot of frequency
+
+
+#########################################################################
+#########################################################################
+####Plot Selected nodes with G-norm: two max, one near to mean, and one lower than mean of G-norm
+
+seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
+selection = Select_Example_Nodes(G_norm_mean_ordered)##function that finds the nodes we are interested
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = names(selection[i])
+  	jpg_name = paste(names(selection[i]), "_2d.jpg", sep = "")
+  	jpeg(jpg_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+  	jpg_name = paste(names(selection[i]), "_3d.jpg", sep = "")
+  	jpeg(jpg_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	jpg_name = paste(names(selection[i]), "_heat.jpg", sep = "")
+  	jpeg(jpg_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+
 
 #########################################################################
 #########################################################################
