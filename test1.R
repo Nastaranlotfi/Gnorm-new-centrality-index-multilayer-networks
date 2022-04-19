@@ -223,7 +223,9 @@ plots=Plot_number_modularity(partitions_of_omega1,gamma_min1,gamma_max1,gamma_sp
 G_plot<-G_norm_mean ##saving in new name for not making changes in main results
 names(G_plot)<-NULL ##removing the names
 df<-unlist(G_plot) ##changing the matrix into one vector
+
 hist(df,breaks=5,col="darkmagenta",xlim=c(1,2),main="Distribution of Gnorm",,xlab='G_norm')##hist plot of frequency
+
 
 
 #########################################################################
