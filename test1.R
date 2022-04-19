@@ -203,6 +203,15 @@ save(gammas, vec_W, iterations, partitions_of_omega, links, nodes, Seq_G_Mean_ga
 cat('end_Gnorm', "\n")
 
 
+#########################################################################
+#########################################################################
+####Plot Network with two layers
+
+links_no_dupl = links[-which(duplicated(links[,c("from", "to")])==T),] # Remove duplicate
+net_layout = graph_from_data_frame(d = links_no_dupl, vertices = nodes, directed = F) #used only to calculate the layout
+layout = layout_nicely(net_layout) # igraph
+Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3)
+
 
 #########################################################################
 #########################################################################
