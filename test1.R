@@ -26,7 +26,7 @@ data = read.csv("links_clean.csv", header=T, as.is=T)
 head(data)
 tail(data)
 
-#Generating link file
+#Generating link file (edge list)
 Frui1 <- list()
 Frui2 <- list()
 Frui3 <- list()
@@ -75,7 +75,7 @@ tail(Tot)
 
 ###############################################
 
-#Generating Name file
+#Generating Name file (node list)
 name1=unique(data$CurrentBatSpecies)
 name1<- name1[order(name1) ]
 
