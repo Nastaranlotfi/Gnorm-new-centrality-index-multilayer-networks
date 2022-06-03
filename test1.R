@@ -476,3 +476,27 @@ dev.off()
 
 cat('end_plots', "\n")
 
+
+#########################################################################
+#########################################################################
+####Plot Selected nodes with G-norm: Reading the names from a list, (names taken from 2019 NatEcoEvo paper)
+
+seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
+selection =read.csv("Names_impo.csv",  as.is=1)
+selection = selection[order(selection$name),]
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	jpg_name = paste(selection[i], "_2d.jpg", sep = "")
+  	jpeg(jpg_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+  	jpg_name = paste(selection[i], "_3d.jpg", sep = "")
+  	jpeg(jpg_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	jpg_name = paste(selection[i], "_heat.jpg", sep = "")
+  	jpeg(jpg_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+
