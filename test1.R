@@ -135,7 +135,7 @@ gamma_min = 0.25
 gamma_max = 4
 gamma_spacing = 0.25
 gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
-iterations = 2
+iterations = 100
 
 
 ##Saving lists definition
