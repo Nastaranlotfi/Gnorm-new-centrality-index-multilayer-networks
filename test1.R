@@ -17,7 +17,7 @@ library(RColorBrewer)
 ################### SET UP AND DATA IMPORT #####################################
 
 
-#setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 dir.create(path = "results")
 dir.create(path = "figures")
