@@ -242,6 +242,7 @@ plots = Plot_number_modularity(partitions_of_omega1,
 
 ################### G-NORM FREQUENCY ###########################################
 
+load("results/Bat_Net.RData")
 
 G_plot<-G_norm_mean 
 names(G_plot)<-NULL 
@@ -257,6 +258,7 @@ hist(df,breaks=5,col="darkmagenta", xlim=c(1,2),
 dev.off()
 ################### G-NORM OF SELECTED NODES ###################################
 
+load("results/Bat_Net.RData")
 
 seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
 selection = Select_Example_Nodes(G_norm_mean_ordered) #function that finds the nodes we are interested
@@ -282,6 +284,8 @@ for (i in 1:length(selection)) {
 
 ################### NETWORK PARAMETERS #########################################
 
+nodes = read.csv("results/nodes.csv", header=T, as.is=T)
+links = read.csv("results/links.csv", header=T, as.is=T)
 
 net_mono = graph_from_data_frame(d = links, vertices = nodes, directed = F)
 
@@ -302,6 +306,7 @@ cat('end_netparameter', "\n")
 
 ################### SEPARATING NODE CLASSES ####################################
 
+load("results/Bat_Net.RData")
 
 n_bats = subset(nodes, taxon == "Bats")
 n_plants = subset(nodes, taxon == "Plants")
