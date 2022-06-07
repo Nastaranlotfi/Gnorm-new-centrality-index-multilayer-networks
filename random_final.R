@@ -379,6 +379,9 @@ G_norm_mean_ordered =  sort(G_norm_mean, decreasing = TRUE)
 
 save(gammas, vec_W, iterations, partitions_of_omega, links, nodes, Seq_G_Mean_gamma_list,G_norm_mean, G_norm_mean_ordered, file = "results_random/rand_same.RData")
 
+#########Plot hist
+
+load("results_random/rand_same.RData")
 
 png(filename="figures_random/hist_Gnorm_random.png", 
     res = 300, width = 4000, height = 3000)
