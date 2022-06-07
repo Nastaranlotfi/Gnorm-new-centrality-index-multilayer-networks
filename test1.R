@@ -17,7 +17,7 @@ library(RColorBrewer)
 ################### SET UP AND DATA IMPORT #####################################
 
 
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+#setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 dir.create(path = "results")
 dir.create(path = "figures")
@@ -109,8 +109,8 @@ dim(Names)
 head(Names)
 tail(Names)
 
-write.csv(Names,"nodes.csv", row.names = FALSE)
-write.csv(Links,"links.csv", row.names = FALSE)
+write.csv(Names,"results/nodes.csv", row.names = FALSE)
+write.csv(Links,"results/links.csv", row.names = FALSE)
 
 cat('end_names_construction', "\n")
 
@@ -118,8 +118,8 @@ cat('end_names_construction', "\n")
 ################### G ANALYSIS #################################################
 
 
-nodes = read.csv("nodes.csv", header=T, as.is=T)
-links = read.csv("links.csv", header=T, as.is=T)
+nodes = read.csv("results/nodes.csv", header=T, as.is=T)
+links = read.csv("results/links.csv", header=T, as.is=T)
 
 nodes = nodes[order(nodes$name),] 
 
@@ -135,7 +135,7 @@ gamma_min = 0.25
 gamma_max = 4
 gamma_spacing = 0.25
 gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
-iterations = 100
+iterations = 2
 
 
 ##Saving lists definition
@@ -218,8 +218,12 @@ links_no_dupl = links[-which(duplicated(links[,c("from", "to")])==T),]
 net_layout = graph_from_data_frame(d = links_no_dupl,
                                    vertices = nodes, directed = F) 
 layout = layout_nicely(net_layout) 
-Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3)
 
+
+png(filename="figures/network_visualization.png", 
+    res = 300, width = 4000, height = 3000)
+Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3)
+dev.off()
 
 ################### MODULARITY FOR ONE RUN ######################################
 
@@ -243,10 +247,14 @@ G_plot<-G_norm_mean
 names(G_plot)<-NULL 
 df<-unlist(G_plot) 
 
+png(filename="figures/hist_Gnorm.png", 
+    res = 300, width = 4000, height = 3000)
+labs = colnames(df)
+
 hist(df,breaks=5,col="darkmagenta", xlim=c(1,2),
      main="Distribution of Gnorm", xlab='G_norm')
 
-
+dev.off()
 ################### G-NORM OF SELECTED NODES ###################################
 
 
@@ -255,17 +263,17 @@ selection = Select_Example_Nodes(G_norm_mean_ordered) #function that finds the n
 for (i in 1:length(selection)) {
   	
   	chosen_node = names(selection[i])
-  	jpg_name = paste(names(selection[i]), "_2d.jpg", sep = "")
-  	jpeg(jpg_name, width = 700, height = 700)
+  	png_name = paste("figures/",names(selection[i]), "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
   	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean,
   	                                      chosen_node, vec_W, gammas)
   	plot(plots)
-  	jpg_name = paste(names(selection[i]), "_3d.jpg", sep = "")
-  	jpeg(jpg_name, width = 700, height = 700)
+  	png_name = paste("figures/",names(selection[i]), "_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
   	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, 
   	                          chosen_node, vec_W, gammas)
-  	jpg_name = paste(names(selection[i]), "_heat.jpg", sep = "")
-  	jpeg(jpg_name, width = 700, height = 700)
+  	png_name = paste("figures/",names(selection[i]), "_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
   	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, 
   	                           chosen_node, vec_W, gammas)
   	dev.off()
@@ -386,9 +394,9 @@ names(deg_plants) = names_plants
 
 
 save(clo_bats, btw_bats, eig_bats,
-     deg_bats, Gnorm_bats, file = "results/testbats_bats_allCentr.RData")
+     deg_bats, Gnorm_bats, file = "results/bats_bats_allCentr.RData")
 save(clo_plants, btw_plants, eig_plants,
-     deg_plants, Gnorm_plants, file = "results/testbats_plants_allCentr.RData")
+     deg_plants, Gnorm_plants, file = "results/bats_plants_allCentr.RData")
 
 
 cat('end_netseparation', "\n")
@@ -398,7 +406,7 @@ cat('end_netseparation', "\n")
 
 
 # Bats
-
+load("results/bats_bats_allCentr.RData")
 sp_names = names(Gnorm_bats)
 
 df = data.frame(clo_bats, btw_bats, eig_bats, deg_bats, Gnorm_bats)
@@ -432,6 +440,8 @@ dev.off()
 
 # Plants
 
+
+load("results/bats_plants_allCentr.RData")
 sp_names = names(Gnorm_plants)
 
 df = data.frame(clo_plants, btw_plants, eig_plants, deg_plants, Gnorm_plants)
@@ -465,7 +475,7 @@ dev.off()
 
 ################### TOTAL ######################################################
 
-
+load("results/bats_allCentr.RData")
 sp_names = names(G_norm_mean)
 
 df = data.frame(clo, btw, eig, deg, G_norm_mean)
@@ -512,15 +522,15 @@ selection = selection[order(selection$name),]
 for (i in 1:length(selection)) {
   	
   	chosen_node = selection[i]
-  	jpg_name = paste(selection[i], "figures/_2d.jpg", sep = "")
-  	jpeg(jpg_name, width = 700, height = 700)
+  	png_name = paste("figures/important_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
   	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
   	plot(plots)
-  	jpg_name = paste(selection[i], "figures/_3d.jpg", sep = "")
-  	jpeg(jpg_name, width = 700, height = 700)
+  	png_name = paste("figures/important_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
   	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	jpg_name = paste(selection[i], "figures/_heat.jpg", sep = "")
-  	jpeg(jpg_name, width = 700, height = 700)
+  	png_name = paste("figures/important_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
   	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
   	dev.off()
 	}#end for
@@ -530,6 +540,8 @@ for (i in 1:length(selection)) {
 
 
 # Bats (for plants, just needed to replace clo_bats to clo_plants)
+
+load("results/bats_bats_allCentr.RData")
 clo1 = clo_bats
 btw1 = btw_bats
 eig1 = eig_bats
@@ -545,6 +557,10 @@ for (i in 1:length(centr_list_bats)) {
   centr_temp = centr_temp[1:ranking_cutoff]
   most_central_list[[i]] = centr_temp
 }
+
+
+
+
 
 # Compare how many nodes found in Gnorm are present in other methods
 Gnorm_most_central = most_central_list[[5]]
@@ -581,5 +597,5 @@ for (i in 1:(length(most_central_list))) {
 }
 similarity_dist = similarity_dist/ranking_cutoff
 
-
+#####Saving both items of similarity in one RData
 save(similarity_bin,similarity_dist, file = "results/similarity_Bat_Net.RData")
