@@ -6,7 +6,7 @@ library(dplyr)
 ################### SET UP AND DATA IMPORT #####################################
 
 
-#setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 dir.create(path = "results_random")
 dir.create(path = "figures_random")
