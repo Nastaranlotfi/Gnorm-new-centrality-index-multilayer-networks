@@ -20,7 +20,6 @@ source("Aux_functions_random.R", encoding="utf-8")
 
 
 Network_random=function(number_of_nodes, number_of_connections,temp_number_links,number_of_layers,permutation){
-	#print (number_of_nodes)
 	
 	links_df = data.frame(from = numeric(0), to = numeric(0), layer = numeric(0))
 	links_dft = data.frame(from = numeric(0), to = numeric(0), layer = numeric(0))
@@ -50,15 +49,12 @@ Network_random=function(number_of_nodes, number_of_connections,temp_number_links
   	node_epeci1=unlist(node_epeci1[1])
 	node_epeci2=unlist(node_epeci2[1])
   	
-  	#print (node_epeci1)
-  	#print (node_epeci2)
   	####Now, we select one layer, and make the random connection to 
   	####make all nodes availble
   	
   	
   	#############First model, number of links in each layer be the same as real network.
   	operat=1
-  	#print ('hi')
 
   	k1=1
   	k2=1
@@ -88,17 +84,14 @@ Network_random=function(number_of_nodes, number_of_connections,temp_number_links
   		
   		}#end while
   	
-
   	
   	number1=temp_number_links[1]+1
 	links_df1=Add_edges_layer(links_df1,number1,node_name1,node_name2,1)
 	
 	number2=temp_number_links[2]+1
 	links_df2=Add_edges_layer(links_df2,number2,node_name1,node_name2,2)
-	#length_layer1=dim(links_df1)[1]+1
 
 	links_dft=rbind(links_df1,links_df2)
-	#print (links_dft)
 	
 	df<-links_dft[order(links_dft$from),]
   	
@@ -107,10 +100,7 @@ Network_random=function(number_of_nodes, number_of_connections,temp_number_links
 	file_name_links = paste("results_random/rand_same_", permutation, "_links.csv", sep ="")
   	write.csv(df, file_name_links, row.names = FALSE, quote = FALSE)  	
   	
-  	
-  	
-  	
-  	
+  	  	
   	##############Second model, links distributed randomely
   	
   	####Making all nodes availble
@@ -120,14 +110,10 @@ Network_random=function(number_of_nodes, number_of_connections,temp_number_links
 		links_df[i,2]=node_epeci2[i]
 		links_df[i,3]=sample(2,1,replace=FALSE)
   		}#end for
-  	#print (links_df)
-  	
-  	
   	
   	#####make all connection randomely
   	
   	links_df=Random_connection(links_df,number_of_connections,node_name1,node_name2)
-  	#print (links_df)
   	
   	df1<-links_df[order(links_df$from),]
 		
@@ -188,13 +174,6 @@ Add_edges_layer=function(links_df1,number,node_name1,node_name2,layer){
 	}#end Add_edges_layer
 
 
-
-
-
-
-
-
-
 ################################################################
 ######make random connection in two layers
 
@@ -202,12 +181,11 @@ Add_edges_layer=function(links_df1,number,node_name1,node_name2,layer){
 Random_connection=function(links_dft,number_of_connections,node_name1,node_name2){
 
   	total_n=dim(links_dft)[1]+1
-  	#print (n2l2)
-  	
+  	  	
   	while (total_n<number_of_connections+1){
   		lnum=sample (2,1,replace=FALSE)
   		k=dim(links_dft)[1]+1
-  		#print (k)
+  		
   		if (lnum==1){
   		
   			links_dft[k,1]=sample (node_name1,1,replace=FALSE)
@@ -274,9 +252,6 @@ number_of_links_l1=temp_number_links[[1]]
 number_of_links_l2=temp_number_links[[2]]
 
 
-
-
-
 ###################################################################
 #####Name construction
 
@@ -307,14 +282,10 @@ write.csv(Names1,"results_random/Names_random.csv", row.names = FALSE)
 #####Random Network construction
 
 for (i in 1:permutation){
-	#print (i)
-	
+
 	network<-Network_random(temp_number_nodes,number_of_connections,temp_number_links,number_of_layers,i)
 	
 	}
-
-
-
 
 
 ######################################################################
@@ -334,11 +305,11 @@ net_multinet = Convert_to_Multinet(nodes, links)
 partitions_of_omega = 10 # Number of partitions
 seq_G = Create_seq_G_Merged(net_multinet, partitions_of_omega)
 vec_W = Create_vec_W(partitions_of_omega)
-gamma_min =1
+gamma_min = 0.25
 gamma_max = 4
-gamma_spacing = 1
+gamma_spacing = 0.25
 gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
-iterations = 2
+iterations = 20
 
 
 ##Saving lists definition
@@ -394,7 +365,6 @@ for (gamma_index in 1:length(gammas)) {
 	}#end of gamma
 
 
-
 ##Finding mean over Gamma
 G_norm_sum = G_norm_list[[1]]
 for (i in 2:length(G_norm_list)) {
@@ -416,30 +386,4 @@ png(filename="figures_random/hist_Gnorm_random.png",
 hist(G_norm_mean,col="darkmagenta")
 dev.off()
 cat('end_Gnorm', "\n")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
