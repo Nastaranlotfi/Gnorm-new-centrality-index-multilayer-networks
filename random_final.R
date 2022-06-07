@@ -1,10 +1,26 @@
 library(multinet)
 library(igraph)
 library(dplyr)
-source("/home/nastaran/Downloads/marco/new_data/random/Aux_functions.R", encoding="utf-8")
+
+
+################### SET UP AND DATA IMPORT #####################################
+
+
+#setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+
+dir.create(path = "results_random")
+dir.create(path = "figures_random")
+
+rm(list= ls())
+
+source("Aux_functions_random.R", encoding="utf-8")
+
+
+################### EDGE LIST ##################################################
+
 
 Network_random=function(number_of_nodes, number_of_connections,temp_number_links,number_of_layers,permutation){
-	print (number_of_nodes)
+	#print (number_of_nodes)
 	
 	links_df = data.frame(from = numeric(0), to = numeric(0), layer = numeric(0))
 	links_dft = data.frame(from = numeric(0), to = numeric(0), layer = numeric(0))
@@ -82,13 +98,13 @@ Network_random=function(number_of_nodes, number_of_connections,temp_number_links
 	#length_layer1=dim(links_df1)[1]+1
 
 	links_dft=rbind(links_df1,links_df2)
-	print (links_dft)
+	#print (links_dft)
 	
 	df<-links_dft[order(links_dft$from),]
   	
-  	path_out = '/home/nastaran/Downloads/marco/new_data/random/'
+  	
 
-	file_name_links = paste(path_out,"rand_same_", permutation, "_links.csv", sep ="")
+	file_name_links = paste("results_random/rand_same_", permutation, "_links.csv", sep ="")
   	write.csv(df, file_name_links, row.names = FALSE, quote = FALSE)  	
   	
   	
@@ -111,13 +127,13 @@ Network_random=function(number_of_nodes, number_of_connections,temp_number_links
   	#####make all connection randomely
   	
   	links_df=Random_connection(links_df,number_of_connections,node_name1,node_name2)
-  	print (links_df)
+  	#print (links_df)
   	
   	df1<-links_df[order(links_df$from),]
 		
-	path_out = '/home/nastaran/Downloads/marco/new_data/random/'
+	
 
-	file_name_links1 = paste(path_out,"rand_total_", permutation, "_links.csv", sep ="")
+	file_name_links1 = paste("results_random/rand_total_", permutation, "_links.csv", sep ="")
   	write.csv(df1, file_name_links1, row.names = FALSE, quote = FALSE)
 	}#end network_random
 
@@ -227,8 +243,8 @@ Random_connection=function(links_dft,number_of_connections,node_name1,node_name2
 ######################################################
 ####loading the main data for having information to construct the random networks
 
-nodes = read.csv("Names.csv", header=T, as.is=T)
-links = read.csv("Net.csv", header=T, as.is=T)
+nodes1 = read.csv("results/nodes.csv", header=T, as.is=T)
+links1 = read.csv("results/links.csv", header=T, as.is=T)
 
 #Set the number of permutations to be used in all permutation analyses.
 
@@ -236,14 +252,14 @@ permutation <- 1
 
 
 
-number_of_layers<-max(links$layer_num)
-number_of_connections<-as.integer(dim(links)[1])
-number_of_nodes<-as.integer (dim(nodes)[1])
+number_of_layers<-max(links1$layer_num)
+number_of_connections<-as.integer(dim(links1)[1])
+number_of_nodes<-as.integer (dim(nodes1)[1])
 
 
 #####Defining the number of nodes in each group of bat and plants
 
-temp_number_nodes=table(nodes[3])
+temp_number_nodes=table(nodes1[3])
 
 number_of_nodes_t1=temp_number_nodes[[1]]
 number_of_nodes_t2=temp_number_nodes[[2]]
@@ -252,7 +268,7 @@ number_of_nodes_t2=temp_number_nodes[[2]]
 ###################################################################
 #####Finding number of nodes in each layer
 
-temp_number_links=table(links[3])#####first, we find the number of links in each layer
+temp_number_links=table(links1[3])#####first, we find the number of links in each layer
 
 number_of_links_l1=temp_number_links[[1]]
 number_of_links_l2=temp_number_links[[2]]
@@ -284,7 +300,7 @@ Names1<-rbind(Fa,Na)
 colnames(Names1) <- c("name","taxon.label")
 
 
-write.csv(Names1,"/home/nastaran/Downloads/marco/new_data/random/Names_random.csv", row.names = FALSE)
+write.csv(Names1,"results_random/Names_random.csv", row.names = FALSE)
 
 
 ###############################################################
@@ -304,8 +320,8 @@ for (i in 1:permutation){
 ######################################################################
 ## G_norm section
 
-nodes = read.csv("/home/nastaran/Downloads/marco/new_data/random/Names_random.csv", header=T, as.is=T)
-links = read.csv("/home/nastaran/Downloads/marco/new_data/random/rand_total_1_links.csv", header=T, as.is=T)
+nodes = read.csv("results_random/Names_random.csv", header=T, as.is=T)
+links = read.csv("results_random/rand_total_1_links.csv", header=T, as.is=T)
 
 ##sorting nodes to be in order
 nodes = nodes[order(nodes$name),] 
@@ -318,11 +334,11 @@ net_multinet = Convert_to_Multinet(nodes, links)
 partitions_of_omega = 10 # Number of partitions
 seq_G = Create_seq_G_Merged(net_multinet, partitions_of_omega)
 vec_W = Create_vec_W(partitions_of_omega)
-gamma_min = 0.25
+gamma_min =1
 gamma_max = 4
-gamma_spacing = 0.25
+gamma_spacing = 1
 gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
-iterations = 20
+iterations = 2
 
 
 ##Saving lists definition
@@ -391,10 +407,28 @@ G_norm_mean_ordered =  sort(G_norm_mean, decreasing = TRUE)
 
 
 
-save(gammas, vec_W, iterations, partitions_of_omega, links, nodes, Seq_G_Mean_gamma_list,G_norm_mean, G_norm_mean_ordered, file = "/home/nastaran/Downloads/marco/new_data/random/500rand_same.RData")
+save(gammas, vec_W, iterations, partitions_of_omega, links, nodes, Seq_G_Mean_gamma_list,G_norm_mean, G_norm_mean_ordered, file = "results_random/rand_same.RData")
 
-hist(G_norm_mean)
+
+png(filename="figures_random/hist_Gnorm_random.png", 
+    res = 300, width = 4000, height = 3000)
+
+hist(G_norm_mean,col="darkmagenta")
+dev.off()
 cat('end_Gnorm', "\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
