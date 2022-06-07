@@ -1,20 +1,26 @@
-library(multinet)
-library(igraph)
-library(plyr)
-library(dplyr)
-library(ggplot2)
-library(RColorBrewer)
-library(kableExtra)
 library(akima)
-library(plot3D)
 library(CINNA)
 library(corrgram)
-library(png)
+library(dplyr)
+library(ggplot2)
+library(igraph)
+library(kableExtra)
+library(multinet)
 library(pheatmap)
+library(plot3D)
+library(plyr)
+library(png)
+library(RColorBrewer)
 
 
-# Set the working directory automatically to the source file location 
+
+################### SET UP AND DATA IMPORT #####################################
+
+
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+
+dir.create(path = "results")
+dir.create(path = "figures")
 
 rm(list= ls())
 
@@ -22,37 +28,39 @@ source("Aux_functions.R", encoding="utf-8")
 
 data = read.csv("links_clean.csv", header=T, as.is=T)
 
-# Check the data
 head(data)
 tail(data)
 
-#Generating link file (edge list)
-Frui1 <- list()
-Frui2 <- list()
-Frui3 <- list()
-Frui4 <- list()
-Neg1 <- list()
-Neg2 <- list()
-Neg3 <- list()
-Neg4 <- list()
+
+################### EDGE LIST ##################################################
+
+
+Fruit1 <- list()
+Fruit2 <- list()
+Fruit3 <- list()
+Fruit4 <- list()
+Nectar1 <- list()
+Nectar2 <- list()
+Nectar3 <- list()
+Nectar4 <- list()
 
 leng<-dim(data)[1]
 k2=1
 k1=1
 for (i in 1:leng) {
 	if(data[[i,3]]=="Frugivory"){
-		Frui1[k1]<-c(data[[i,1]])
-		Frui2[k1]<-c(data[[i,2]])
-		Frui3[k1]<-c(1)
-		Frui4[k1]<-c(data[[i,3]])
+		Fruit1[k1]<-c(data[[i,1]])
+		Fruit2[k1]<-c(data[[i,2]])
+		Fruit3[k1]<-c(1)
+		Fruit4[k1]<-c(data[[i,3]])
 		#cat('hi',"\n")
 		k1=k1+1
 		}#end if 1
 	if(data[[i,3]]=="Nectarivory"){
-		Neg1[k2]<-c(data[[i,1]])
-		Neg2[k2]<-c(data[[i,2]])
-		Neg3[k2]<-c(2)
-		Neg4[k2]<-c(data[[i,3]])
+		Nectar1[k2]<-c(data[[i,1]])
+		Nectar2[k2]<-c(data[[i,2]])
+		Nectar3[k2]<-c(2)
+		Nectar4[k2]<-c(data[[i,3]])
 		#cat('he',"\n")
 		k2=k2+1
 		}#end if 2
@@ -60,22 +68,22 @@ for (i in 1:leng) {
 	}#end for
 
 
-Frui<-list()
-Neg<-list()
-Frui<-cbind(Frui1,Frui2,Frui3,Frui4)
-Neg<-cbind(Neg1,Neg2,Neg3,Neg4)
+Fruit<-list()
+Nectar<-list()
+Fruit<-cbind(Fruit1,Fruit2,Fruit3,Fruit4)
+Nectar<-cbind(Nectar1,Nectar2,Nectar3,Nectar4)
 
-Tot<-rbind(Frui,Neg)
-colnames(Tot) <- c("from","to", "layer_num", "layer")
+Links<-rbind(Fruit,Nectar)
+colnames(Links) <- c("from","to", "layer_num", "layer")
 
-# Check the link list
-dim(Tot)
-head(Tot)
-tail(Tot)
+dim(Links)
+head(Links)
+tail(Links)
 
-###############################################
 
-#Generating Name file (node list)
+################### NODE LIST ##################################################
+
+
 name1=unique(data$CurrentBatSpecies)
 name1<- name1[order(name1) ]
 
@@ -97,30 +105,29 @@ Na<-cbind(name2,Na1,Na2,Na3)
 Names<-rbind(Fa,Na)
 colnames(Names) <- c("name","taxon","taxon.label","species.size")
 
-# Checke the node list
 dim(Names)
 head(Names)
 tail(Names)
 
 write.csv(Names,"nodes.csv", row.names = FALSE)
-write.csv(Tot,"links.csv", row.names = FALSE)
+write.csv(Links,"links.csv", row.names = FALSE)
 
 cat('end_names_construction', "\n")
 
-############################################################################################
-############################################################################################
-#####G_Analysis
+
+################### G ANALYSIS #################################################
+
 
 nodes = read.csv("nodes.csv", header=T, as.is=T)
 links = read.csv("links.csv", header=T, as.is=T)
 
-##sorting nodes to be in order
 nodes = nodes[order(nodes$name),] 
 
-##Network construction
 net_multinet = Convert_to_Multinet(nodes, links)
+net_multinet
 
-##Parameters regarding the partitioning and Omega and Gamma and number of iteration (for getting the mean)
+
+# Partitioning, Omega, Gamma, and number of iterations (for getting the mean)
 partitions_of_omega = 10 # Number of partitions
 seq_G = Create_seq_G_Merged(net_multinet, partitions_of_omega)
 vec_W = Create_vec_W(partitions_of_omega)
@@ -132,18 +139,19 @@ iterations = 100
 
 
 ##Saving lists definition
-Seq_G_Mean_gamma_list = list() #different datasets of Seq_G_MeanG_norm_ordered_list = list() #guarda os diferentes nohs selecionados para plot
+Seq_G_Mean_gamma_list = list() 
 G_norm_list = list()
 
 
 ## G_analysis
-
 cont_perc = 1 # Calculation of running progress
 
 for (gamma_index in 1:length(gammas)) {
   	seq_G_list = list()
     	for (i in 1:iterations) {
-    		seq_G_list[[i]] = Create_seq_G_Merged(net_multinet, partitions_of_omega, gamma = gammas[gamma_index])
+    		seq_G_list[[i]] = Create_seq_G_Merged(net_multinet, 
+    		                                      partitions_of_omega,
+    		                                      gamma = gammas[gamma_index])
     		cat(cont_perc*100/(iterations*length(gammas)), "%  ")###print the run progress
     		cont_perc = cont_perc + 1
   		}#end of iterations
@@ -176,13 +184,12 @@ for (gamma_index in 1:length(gammas)) {
 	nodes_G_norm = Sort_Nodes_by_Total_G(seq_G_mean, ordered = FALSE)
 	nodes_G_norm_Ordered = Sort_Nodes_by_Total_G(seq_G_mean, ordered = TRUE)
 
-  
+ 
   	#Saving G_values respect to gamma
 	Seq_G_Mean_gamma_list[[gamma_index]] = cbind(seq_G_mean, gammas[gamma_index])
 	G_norm_list[[gamma_index]] = nodes_G_norm
   
 	}#end of gamma
-
 
 
 ##Finding mean over Gamma
@@ -196,75 +203,78 @@ G_norm_mean = G_norm_sum / (length(G_norm_list))
 G_norm_mean_ordered =  sort(G_norm_mean, decreasing = TRUE)
 
 
-
-save(gammas, vec_W, iterations, partitions_of_omega, links, nodes, Seq_G_Mean_gamma_list,G_norm_mean, G_norm_mean_ordered, file = "/home/nastaran/Downloads/marco/new_data/Bat_Net.RData")
+save(gammas, vec_W, iterations, partitions_of_omega, links, nodes,
+     Seq_G_Mean_gamma_list,G_norm_mean, G_norm_mean_ordered,
+     file = "results/Bat_Net.RData")
 
 
 cat('end_Gnorm', "\n")
 
 
-#########################################################################
-#########################################################################
-####Plot Network with two layers
+################### PLOTTING THE MULTILAYER NETWORK ############################
 
-links_no_dupl = links[-which(duplicated(links[,c("from", "to")])==T),] # Remove duplicate
-net_layout = graph_from_data_frame(d = links_no_dupl, vertices = nodes, directed = F) #used only to calculate the layout
-layout = layout_nicely(net_layout) # igraph
+
+links_no_dupl = links[-which(duplicated(links[,c("from", "to")])==T),] 
+net_layout = graph_from_data_frame(d = links_no_dupl,
+                                   vertices = nodes, directed = F) 
+layout = layout_nicely(net_layout) 
 Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3)
 
 
-#########################################################################
-#########################################################################
-####Plot sample of number of modules and modularity value for one run
+################### MODULARITY FOR ONE RUN ######################################
+
 
 partitions_of_omega1 = 4 
 gamma_min1 = 0.5
 gamma_max1 = 3.5
 gamma_spacing1 = 0.5
 
-plots=Plot_number_modularity(partitions_of_omega1,gamma_min1,gamma_max1,gamma_spacing1,net_multinet)
+plots = Plot_number_modularity(partitions_of_omega1,
+                             gamma_min1,
+                             gamma_max1,
+                             gamma_spacing1,
+                             net_multinet)
 
 
-#########################################################################
-#########################################################################
-####Plot G_norm Frequency
-
-G_plot<-G_norm_mean ##saving in new name for not making changes in main results
-names(G_plot)<-NULL ##removing the names
-df<-unlist(G_plot) ##changing the matrix into one vector
-
-hist(df,breaks=5,col="darkmagenta",xlim=c(1,2),main="Distribution of Gnorm",,xlab='G_norm')##hist plot of frequency
+################### G-NORM FREQUENCY ###########################################
 
 
+G_plot<-G_norm_mean 
+names(G_plot)<-NULL 
+df<-unlist(G_plot) 
 
-#########################################################################
-#########################################################################
-####Plot Selected nodes with G-norm: two max, one near to mean, and one lower than mean of G-norm
+hist(df,breaks=5,col="darkmagenta", xlim=c(1,2),
+     main="Distribution of Gnorm", xlab='G_norm')
+
+
+################### G-NORM OF SELECTED NODES ###################################
+
 
 seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
-selection = Select_Example_Nodes(G_norm_mean_ordered)##function that finds the nodes we are interested
+selection = Select_Example_Nodes(G_norm_mean_ordered) #function that finds the nodes we are interested
 for (i in 1:length(selection)) {
   	
   	chosen_node = names(selection[i])
   	jpg_name = paste(names(selection[i]), "_2d.jpg", sep = "")
   	jpeg(jpg_name, width = 700, height = 700)
-  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean,
+  	                                      chosen_node, vec_W, gammas)
   	plot(plots)
   	jpg_name = paste(names(selection[i]), "_3d.jpg", sep = "")
   	jpeg(jpg_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, 
+  	                          chosen_node, vec_W, gammas)
   	jpg_name = paste(names(selection[i]), "_heat.jpg", sep = "")
   	jpeg(jpg_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, 
+  	                           chosen_node, vec_W, gammas)
   	dev.off()
 	}#end for
 
 
-#########################################################################
-#########################################################################
-####Analysis of network parameters
+################### NETWORK PARAMETERS #########################################
 
-##network construction with igraph
+
 net_mono = graph_from_data_frame(d = links, vertices = nodes, directed = F)
 
 clo = closeness(net_mono, normalized = FALSE)
@@ -276,12 +286,13 @@ deg_formated = deg$res
 names(deg_formated) = names(clo)
 
 
-save(clo, btw, eig_formated, deg_formated,G_norm_mean, file = "/home/nastaran/Downloads/marco/new_data/bats_allCentr.RData")
+save(clo, btw, eig_formated, deg_formated,
+     G_norm_mean, file = "results/bats_allCentr.RData")
+
 cat('end_netparameter', "\n")
 
-#########################################################################
-#########################################################################
-####Network seperation of bats and plants
+
+################### SEPARATING NODE CLASSES ####################################
 
 
 n_bats = subset(nodes, taxon == "Bats")
@@ -374,19 +385,19 @@ names(deg_bats) = names_bats
 names(deg_plants) = names_plants
 
 
-save(clo_bats, btw_bats, eig_bats, deg_bats, Gnorm_bats, file = "/home/nastaran/Downloads/marco/new_data/testbats_bats_allCentr.RData")
-save(clo_plants, btw_plants, eig_plants, deg_plants, Gnorm_plants, file = "/home/nastaran/Downloads/marco/new_data/testbats_plants_allCentr.RData")
+save(clo_bats, btw_bats, eig_bats,
+     deg_bats, Gnorm_bats, file = "results/testbats_bats_allCentr.RData")
+save(clo_plants, btw_plants, eig_plants,
+     deg_plants, Gnorm_plants, file = "results/testbats_plants_allCentr.RData")
 
 
 cat('end_netseparation', "\n")
 
-###############################################################################
-###############################################################################
-####Plot correlgram
+
+################### CORRELOGRAM #################################################
 
 
-
-#Bats
+# Bats
 
 sp_names = names(Gnorm_bats)
 
@@ -394,28 +405,32 @@ df = data.frame(clo_bats, btw_bats, eig_bats, deg_bats, Gnorm_bats)
 names(df) = c("closeness", "betweeness", "eigen vector", "degreee", "Gnorm")
 head(df)
 
-#create a png with the correlogram Pearson
-png(filename="C_correlogram_bats_bats_pearson.png", res = 300, width = 4000, height = 3000)
+png(filename="figures/C_correlogram_bats_bats_pearson.png",
+    res = 300, width = 4000, height = 3000)
 labs = colnames(df)
 corrgram(df, cor.method = "pearson", order=FALSE, oma=c(12, 12, 7, 2), 
-         lower.panel=panel.cor, upper.panel=panel.pts, diag.panel=panel.density, text.panel=panel.txt,
+         lower.panel=panel.cor, upper.panel=panel.pts, 
+         diag.panel=panel.density, text.panel=panel.txt,
          outer.labels=list(bottom=list(labels=labs,cex=2,srt=90),
                            left=list(labels=labs,cex=2,srt=0)),
-         main="Correlogram (Pearson) between centralities and Gnorm for the bats of the Bats-Plantas network", cex.main = 1.5)
+         main="Correlogram (Pearson) between centralities and Gnorm for bats",
+         cex.main = 1.5)
 dev.off()
 
-#create a png with the correlogram Spearman
-png(filename="C_correlogram_bats_bats_spearman.png", res = 300, width = 4000, height = 3000)
+png(filename="figures/C_correlogram_bats_bats_spearman.png", 
+    res = 300, width = 4000, height = 3000)
 labs = colnames(df)
 corrgram(df, cor.method = "spearman", order=FALSE, oma=c(12, 12, 7, 2), 
-         lower.panel=panel.cor, upper.panel=panel.pts, diag.panel=panel.density, text.panel=panel.txt,
+         lower.panel=panel.cor, upper.panel=panel.pts, 
+         diag.panel=panel.density, text.panel=panel.txt,
          outer.labels=list(bottom=list(labels=labs,cex=2,srt=90),
                            left=list(labels=labs,cex=2,srt=0)),
-         main="Correlogram (Spearman) between centralities and Gnorm for the bats of the Bats-Plantas network", cex.main = 1.5)
+         main="Correlogram (Spearman) between centralities and Gnorm for bats",
+         cex.main = 1.5)
 dev.off()
 
-#########################################################
-##Plants
+
+# Plants
 
 sp_names = names(Gnorm_plants)
 
@@ -423,30 +438,33 @@ df = data.frame(clo_plants, btw_plants, eig_plants, deg_plants, Gnorm_plants)
 names(df) = c("closeness", "betweeness", "eigen vector", "degreee", "Gnorm")
 head(df)
 
-#create a png with the correlogram Pearson
-png(filename="C_correlogram_bats_plants_pearson.png", res = 300, width = 4000, height = 3000)
+png(filename="figures/C_correlogram_bats_plants_pearson.png", 
+    res = 300, width = 4000, height = 3000)
 labs = colnames(df)
 corrgram(df, cor.method = "pearson", order=FALSE, oma=c(12, 12, 7, 2), 
-         lower.panel=panel.cor, upper.panel=panel.pts, diag.panel=panel.density, text.panel=panel.txt,
+         lower.panel=panel.cor, upper.panel=panel.pts, 
+         diag.panel=panel.density, text.panel=panel.txt,
          outer.labels=list(bottom=list(labels=labs,cex=2,srt=90),
                            left=list(labels=labs,cex=2,srt=0)),
-         main="Correlogram (Pearson) between centralities and Gnorm for the plants of the Bats-Plantas network", cex.main = 1.5)
+         main="Correlogram (Pearson) between centralities and Gnorm for plants",
+         cex.main = 1.5)
 dev.off()
 
-#create a png with the correlogram Spearman
-png(filename="C_correlogram_bats_plants_spearman.png", res = 300, width = 4000, height = 3000)
+png(filename="figures/C_correlogram_bats_plants_spearman.png",
+    res = 300, width = 4000, height = 3000)
 labs = colnames(df)
 corrgram(df, cor.method = "spearman", order=FALSE, oma=c(12, 12, 7, 2), 
-         lower.panel=panel.cor, upper.panel=panel.pts, diag.panel=panel.density, text.panel=panel.txt,
+         lower.panel=panel.cor, upper.panel=panel.pts, 
+         diag.panel=panel.density, text.panel=panel.txt,
          outer.labels=list(bottom=list(labels=labs,cex=2,srt=90),
                            left=list(labels=labs,cex=2,srt=0)),
-         main="Correlogram (Spearman) between centralities and Gnorm for the plantes of the Bats-Plantas network", cex.main = 1.5)
+         main="Correlogram (Spearman) between centralities and Gnorm for plants",
+         cex.main = 1.5)
 dev.off()
 
 
+################### TOTAL ######################################################
 
-####################################################################
-#Total
 
 sp_names = names(G_norm_mean)
 
@@ -455,31 +473,38 @@ names(df) = c("closeness", "betweeness", "eigen vector", "degreee", "Gnorm")
 head(df)
 
 #create a png with the correlogram Pearson
-png(filename="C_correlogram_bats_all_pearson.png", res = 300, width = 4000, height = 3000)
+png(filename="figures/C_correlogram_bats_all_pearson.png",
+    res = 300, width = 4000, height = 3000)
 labs = colnames(df)
 corrgram(df, cor.method = "pearson", order=FALSE, oma=c(12, 12, 7, 2), 
-         lower.panel=panel.cor, upper.panel=panel.pts, diag.panel=panel.density, text.panel=panel.txt,
+         lower.panel=panel.cor, upper.panel=panel.pts, 
+         diag.panel=panel.density, text.panel=panel.txt,
          outer.labels=list(bottom=list(labels=labs,cex=2,srt=90),
                            left=list(labels=labs,cex=2,srt=0)),
-         main="Correlogram (Pearson) between centralities and Gnorm for the entire Bats-Plantas network", cex.main = 1.5)
+         main="Correlogram (Pearson) between centralities and Gnorm for bats and plants",
+         cex.main = 1.5)
 dev.off()
 
 #create a png with the correlogram Spearman
-png(filename="C_correlogram_bats_all_spearman.png", res = 300, width = 4000, height = 3000)
+png(filename="figures/C_correlogram_bats_all_spearman.png",
+    res = 300, width = 4000, height = 3000)
 labs = colnames(df)
 corrgram(df, cor.method = "spearman", order=FALSE, oma=c(12, 12, 7, 2), 
-         lower.panel=panel.cor, upper.panel=panel.pts, diag.panel=panel.density, text.panel=panel.txt,
+         lower.panel=panel.cor, upper.panel=panel.pts, 
+         diag.panel=panel.density, text.panel=panel.txt,
          outer.labels=list(bottom=list(labels=labs,cex=2,srt=90),
                            left=list(labels=labs,cex=2,srt=0)),
-         main="Correlogram (Spearman) between centralities and Gnorm for the entire Bats-Plantas network", cex.main = 1.5)
+         main="Correlogram (Spearman) between centralities and Gnorm for bats and plants",
+         cex.main = 1.5)
 dev.off()
 
 cat('end_plots', "\n")
 
 
-#########################################################################
-#########################################################################
-####Plot Selected nodes with G-norm: Reading the names from a list, (names taken from 2019 NatEcoEvo paper)
+################### G-NORM PLOTS ###############################################
+
+
+# Reading the names from a list, names taken from 2019 NatEcoEvo paper)
 
 seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
 selection =read.csv("Names_impo.csv",  as.is=1)
@@ -487,25 +512,24 @@ selection = selection[order(selection$name),]
 for (i in 1:length(selection)) {
   	
   	chosen_node = selection[i]
-  	jpg_name = paste(selection[i], "_2d.jpg", sep = "")
+  	jpg_name = paste(selection[i], "figures/_2d.jpg", sep = "")
   	jpeg(jpg_name, width = 700, height = 700)
   	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
   	plot(plots)
-  	jpg_name = paste(selection[i], "_3d.jpg", sep = "")
+  	jpg_name = paste(selection[i], "figures/_3d.jpg", sep = "")
   	jpeg(jpg_name, width = 700, height = 700)
   	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	jpg_name = paste(selection[i], "_heat.jpg", sep = "")
+  	jpg_name = paste(selection[i], "figures/_heat.jpg", sep = "")
   	jpeg(jpg_name, width = 700, height = 700)
   	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
   	dev.off()
 	}#end for
 
-#####################################################################
-#####################################################################
-####Centrality comparision
 
-##Bats (for plants, just needed to replace clo_bats to clo_plants)
+################### CENTRALITY #################################################
 
+
+# Bats (for plants, just needed to replace clo_bats to clo_plants)
 clo1 = clo_bats
 btw1 = btw_bats
 eig1 = eig_bats
@@ -522,7 +546,7 @@ for (i in 1:length(centr_list_bats)) {
   most_central_list[[i]] = centr_temp
 }
 
-#compare how many nodes found in Gnorm are present in other methods
+# Compare how many nodes found in Gnorm are present in other methods
 Gnorm_most_central = most_central_list[[5]]
 similarity_bin = rep(0, length(most_central_list))
 names(similarity_bin) = c("clo", "btw", "eig", "deg", "Gnorm")
@@ -558,4 +582,4 @@ for (i in 1:(length(most_central_list))) {
 similarity_dist = similarity_dist/ranking_cutoff
 
 
-save(similarity_bin,similarity_dist, file = "/home/nastaran/Downloads/marco/new_data/test/similarity_Bat_Net.RData")
+save(similarity_bin,similarity_dist, file = "results/similarity_Bat_Net.RData")
