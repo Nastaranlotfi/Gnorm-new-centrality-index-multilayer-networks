@@ -13,14 +13,22 @@ library(png)
 library(RColorBrewer)
 
 
-
 ################### SET UP AND DATA IMPORT #####################################
 
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-dir.create(path = "results")
-dir.create(path = "figures")
+if (!dir.exists(path = "figures")){
+  dir.create(path = "figures")
+} else {
+  print("Dir already exists!")
+}
+
+if (!dir.exists(path = "results")){
+  dir.create(path = "results")
+} else {
+  print("Dir already exists!")
+}
 
 rm(list= ls())
 
@@ -225,6 +233,7 @@ png(filename="figures/network_visualization.png",
 Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3)
 dev.off()
 
+
 ################### MODULARITY FOR ONE RUN ######################################
 
 
@@ -242,6 +251,7 @@ plots = Plot_number_modularity(partitions_of_omega1,
 
 ################### G-NORM FREQUENCY ###########################################
 
+
 load("results/Bat_Net.RData")
 
 G_plot<-G_norm_mean 
@@ -256,7 +266,10 @@ hist(df,breaks=5,col="darkmagenta", xlim=c(1,2),
      main="Distribution of Gnorm", xlab='G_norm')
 
 dev.off()
+
+
 ################### G-NORM OF SELECTED NODES ###################################
+
 
 load("results/Bat_Net.RData")
 
@@ -445,7 +458,6 @@ dev.off()
 
 # Plants
 
-
 load("results/bats_plants_allCentr.RData")
 sp_names = names(Gnorm_plants)
 
@@ -479,6 +491,7 @@ dev.off()
 
 
 ################### TOTAL ######################################################
+
 
 load("results/bats_allCentr.RData")
 sp_names = names(G_norm_mean)
@@ -562,10 +575,6 @@ for (i in 1:length(centr_list_bats)) {
   centr_temp = centr_temp[1:ranking_cutoff]
   most_central_list[[i]] = centr_temp
 }
-
-
-
-
 
 # Compare how many nodes found in Gnorm are present in other methods
 Gnorm_most_central = most_central_list[[5]]
