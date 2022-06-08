@@ -20,7 +20,7 @@ Convert_csv_to_multinet_multiplex = function(nodes, links){
   
   	##Defining the output file and its characteristics
   	# Name of output file
-  	outfile <- "outfile.txt"
+  	outfile <- "results/outfile.txt"
   
   	# first line of the file
   	cat("#TYPE","\n", file = outfile)
@@ -216,7 +216,7 @@ Plot_Decaimento <- function(node_index, vec_W, seq_G_Merged, seq_G_StdDev = NULL
 
 Convert_to_Multinet <- function(nodes, links){
   	Convert_csv_to_multinet_multiplex(nodes, links) #convert the nodes and links files to the "outfile.txt" file that is importable on multinet
-  	net_multinet = read_ml("outfile.txt", name = "unnamed", sep = ',', aligned = FALSE) #import "outifile.txt" to a multinet type network
+  	net_multinet = read_ml("results/outfile.txt", name = "unnamed", sep = ',', aligned = FALSE) #import "outifile.txt" to a multinet type network
   	return(net_multinet)
 	}#end function
 
@@ -553,7 +553,7 @@ Plot_number_modularity <- function(partitions_of_omega1,gamma_min1,gamma_max1,ga
 	km=seq(minm,maxm,by=divi)
 
 	#Generate the figure with the number of modules for different gamma and omega values
-	jpeg("Number_of_modules.jpg", width = 1000, height = 800)
+	png("figures/Number_of_modules.png", width = 1000, height = 800)
 	pheatmap(modules_quantity, display_numbers = T, kmeans_k = NA, cluster_rows = FALSE,
          	cluster_cols = FALSE, show_rownames = T, show_colnames = T, fontsize = 20,
          	fontsize_number = 15, fontsize_row = 20, fontsize_col = 20, angle_col = 0,
@@ -573,7 +573,7 @@ Plot_number_modularity <- function(partitions_of_omega1,gamma_min1,gamma_max1,ga
 	km=seq(minm,maxm,by=divi)
 
 	# Generate the figure with the modularity value for different gamma and omega values
-	jpeg("Modularity.jpg", width = 1000, height = 800)
+	png("figures/Modularity.png", width = 1000, height = 800)
 	pheatmap(modularity, display_numbers = T, kmeans_k = NA, cluster_rows = FALSE,
          	cluster_cols = FALSE, show_rownames = T, show_colnames = T, fontsize = 20,
          	fontsize_number = 15, fontsize_row = 20, fontsize_col = 20, angle_col = 0,
@@ -582,6 +582,7 @@ Plot_number_modularity <- function(partitions_of_omega1,gamma_min1,gamma_max1,ga
 	dev.off()
 	return()
 	}
+	
 	
 #############################################################################
 #-------------------------------------------------------------------
