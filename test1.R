@@ -155,14 +155,27 @@ G_norm_list = list()
 cont_perc = 1 # Calculation of running progress
 
 for (gamma_index in 1:length(gammas)) {
+	start_time <- round(as.numeric(Sys.time()))
   	seq_G_list = list()
     	for (i in 1:iterations) {
     		seq_G_list[[i]] = Create_seq_G_Merged(net_multinet, 
     		                                      partitions_of_omega,
     		                                      gamma = gammas[gamma_index])
+    		                                      
+    		#####Run-time approximation
+    		if (cont_perc==1 ){
+    			end_time <- round(as.numeric(Sys.time()))
+			time_taken <- round(end_time - start_time,2)
+			print (time_taken)
+		
+			cat("Estimated time needed for run (secs): ", time_taken*(iterations*length(gammas)),"\n" )}
+			#cat("\n")}
+			#print (time_taken)
+		
     		cat(cont_perc*100/(iterations*length(gammas)), "%  ")###print the run progress
     		cont_perc = cont_perc + 1
   		}#end of iterations
+  #----
   #----
   #Removing names
   	seq_G_list_no_names = list()
