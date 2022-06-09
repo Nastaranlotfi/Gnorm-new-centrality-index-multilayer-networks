@@ -132,11 +132,48 @@ dim(Nodes)
 head(Nodes)
 tail(Nodes)
 
-write.csv(Nodes,"data/nodes.csv", row.names = FALSE)
-write.csv(Links,"data/links.csv", row.names = FALSE)
+write.csv(Nodes,"data/nodes1.csv", row.names = FALSE)
+write.csv(Links,"data/links1.csv", row.names = FALSE)
 
 currentTime_node <- Sys.time()
 cat('end_node_construction', "\n")
+
+
+###################Defining max component, make new list of nodes and links
+
+
+nodes = read.csv("results/nodes1.csv", header=T, as.is=T)
+links = read.csv("results/links1.csv", header=T, as.is=T)
+
+
+net_mono1 = graph_from_data_frame(d = links, vertices = nodes, directed = F)
+
+c=clusters(net_mono1, mode="weak") ##finding the clusters
+b=which.max(c$csize) ##find the max
+v=V(net_mono1)[c$membership!=b] ##find the names of nodes in the max component
+
+b1=split(names(v),v) ##formating the v file into a list
+b2=list()
+for (i in 1:length(b1)){
+	b2=append(b2,b1[[i]])}
+
+b2=unlist(b2)
+
+df1<-nodes
+df2<-links
+
+for (i in 1:length(b2)){###removing the nodes that they don't exist in the max component
+	df1<-df1 %>% filter(!name==b1[i])}
+
+for (i in 1:length(b2)){###removing the links related to the removed nodes
+	df2<-df2 %>% filter(!from==b1[i])
+	df2<-df2 %>% filter(!to==b1[i])}
+	
+	
+write.csv(df1,"data/nodes.csv", row.names = FALSE)
+write.csv(df2,"data/links.csv", row.names = FALSE)
+
+cat('end_names_filtering-by-max-component', "\n")
 
 
 ################### BUILDING THE MULTILAYER NETWORK ############################
