@@ -96,6 +96,8 @@ dim(Links)
 head(Links)
 tail(Links)
 
+currentTime_link <- Sys.time()
+print(currentTime_link)
 cat('end_link_construction', "\n")
 
 
@@ -130,6 +132,8 @@ tail(Nodes)
 write.csv(Nodes,"data/nodes.csv", row.names = FALSE)
 write.csv(Links,"data/links.csv", row.names = FALSE)
 
+currentTime_node <- Sys.time()
+print(currentTime_node)
 cat('end_node_construction', "\n")
 
 
@@ -145,6 +149,8 @@ nodes = nodes[order(nodes$name),]
 net_multinet = Convert_to_Multinet(nodes, links)
 net_multinet
 
+currentTime_netcons <- Sys.time()
+print(currentTime_netcons)
 cat('end_network_construction', "\n")
 
 
@@ -162,6 +168,10 @@ png(filename="figures/network_visualization.png",
     res = 300, width = 4000, height = 3000)
 Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3)
 dev.off()
+
+currentTime_netvis <- Sys.time()
+print(currentTime_netvis)
+cat('end_network_visualization', "\n")
 
 
 ################### G ANALYSIS #################################################
@@ -182,6 +192,9 @@ iterations = 100
 Seq_G_Mean_gamma_list = list() 
 G_norm_list = list()
 
+currentTime_Gnorm1 <- Sys.time()
+print(currentTime_Gnorm1)
+cat('start_Gnorm', "\n")
 
 # G_analysis
 cont_perc = 1 # Calculation of running progress
@@ -259,7 +272,8 @@ save(gammas, vec_W, iterations, partitions_of_omega, links, nodes,
      Seq_G_Mean_gamma_list,G_norm_mean, G_norm_mean_ordered,
      file = "results/Bat_Net.RData")
 
-
+currentTime_Gnorm2 <- Sys.time()
+print(currentTime_Gnorm2)
 cat('end_Gnorm', "\n")
 
 
@@ -276,6 +290,10 @@ plots = Plot_number_modularity(partitions_of_omega1,
                              gamma_max1,
                              gamma_spacing1,
                              net_multinet)
+
+currentTime_modularity <- Sys.time()
+print(currentTime_modularity)
+cat('end_modularity', "\n")
 
 
 ################### G-NORM FREQUENCY ###########################################
@@ -295,6 +313,10 @@ hist(df,breaks=5,col="darkmagenta", xlim=c(1,2),
      main="Distribution of Gnorm", xlab='G_norm')
 
 dev.off()
+
+currentTime_gnormfreq <- Sys.time()
+print(currentTime_gnormfreq)
+cat('end_gnormfreq', "\n")
 
 
 ################### G-NORM OF SELECTED NODES ###################################
@@ -323,6 +345,10 @@ for (i in 1:length(selection)) {
   	dev.off()
 	}#end for
 
+currentTime_gnormnodes <- Sys.time()
+print(currentTime_gnormnodes)
+cat('end_gnormnodes', "\n")
+
 
 ################### NETWORK PARAMETERS #########################################
 
@@ -343,10 +369,13 @@ names(deg_formated) = names(clo)
 save(clo, btw, eig_formated, deg_formated,
      G_norm_mean, file = "results/bats_allCentr.RData")
 
+currentTime_netparameter <- Sys.time()
+print(currentTime_netparameter)
 cat('end_netparameter', "\n")
 
 
 ################### SEPARATING NODE CLASSES ####################################
+
 
 load("results/Bat_Net.RData")
 
@@ -355,7 +384,6 @@ n_plants = subset(nodes, taxon == "Plants")
 
 eig = eig_formated
 deg = deg_formated
-
 
 Gnorm_bats = c()
 Gnorm_plants = c()
@@ -382,7 +410,6 @@ deg_plants = c()
 names_bats = c()
 names_plants = c()
 
-
 k = 1
 for (i in 1:length(clo)) {
   	for (j in 1:length(n_bats[,1])) {
@@ -403,7 +430,6 @@ for (i in 1:length(clo)) {
   		}#end for j
 	}#end for i
 
-
 k = 1
 for (i in 1:length(clo)) {
 	for (j in 1:length(n_plants[,1])) {
@@ -423,7 +449,6 @@ for (i in 1:length(clo)) {
   		}#end for j
 	}#end for i
 
-
 names(Gnorm_bats) = names_bats
 names(Gnorm_plants) = names_plants
 
@@ -439,17 +464,17 @@ names(eig_plants) = names_plants
 names(deg_bats) = names_bats
 names(deg_plants) = names_plants
 
-
 save(clo_bats, btw_bats, eig_bats,
      deg_bats, Gnorm_bats, file = "results/bats_bats_allCentr.RData")
 save(clo_plants, btw_plants, eig_plants,
      deg_plants, Gnorm_plants, file = "results/bats_plants_allCentr.RData")
 
-
+currentTime_netseparation <- Sys.time()
+print(currentTime_netseparation)
 cat('end_netseparation', "\n")
 
 
-################### CORRELOGRAM #################################################
+################### CORRELOGRAMS ###############################################
 
 
 # Bats
@@ -518,6 +543,10 @@ corrgram(df, cor.method = "spearman", order=FALSE, oma=c(12, 12, 7, 2),
          cex.main = 1.5)
 dev.off()
 
+currentTime_corrgrams <- Sys.time()
+print(currentTime_corrgrams)
+cat('end_corrgrams', "\n")
+
 
 ################### TOTAL ######################################################
 
@@ -555,6 +584,8 @@ corrgram(df, cor.method = "spearman", order=FALSE, oma=c(12, 12, 7, 2),
          cex.main = 1.5)
 dev.off()
 
+currentTime_plots <- Sys.time()
+print(currentTime_plots)
 cat('end_plots', "\n")
 
 
@@ -581,6 +612,10 @@ for (i in 1:length(selection)) {
   	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
   	dev.off()
 	}#end for
+
+currentTime_gnormplots <- Sys.time()
+print(currentTime_gnormplots)
+cat('end_gnormplots', "\n")
 
 
 ################### CENTRALITY #################################################
@@ -624,7 +659,7 @@ for (i in 1:(length(most_central_list))) {
 }
 similarity_bin = similarity_bin/ranking_cutoff
 
-#compare the distance between the rankings found in Gnorm with those present in the other methods
+# Compare the distance between the rankings found in Gnorm with those present in the other methods
 Gnorm_most_central = most_central_list[[5]]
 similarity_dist = rep(0, length(most_central_list))
 names(similarity_dist) = c("clo", "btw", "eig", "deg", "Gnorm")
@@ -640,5 +675,9 @@ for (i in 1:(length(most_central_list))) {
 }
 similarity_dist = similarity_dist/ranking_cutoff
 
-#####Saving both items of similarity in one RData
+# Saving both items of similarity in one RData
 save(similarity_bin,similarity_dist, file = "results/similarity_Bat_Net.RData")
+
+currentTime_centrality <- Sys.time()
+print(currentTime_centrality)
+cat('end_centrality', "\n")
