@@ -18,6 +18,14 @@ library(RColorBrewer)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
+cat("\014")  
+
+if (!dir.exists(path = "data")){
+  dir.create(path = "data")
+} else {
+  print("Dir already exists!")
+}
+
 if (!dir.exists(path = "figures")){
   dir.create(path = "figures")
 } else {
@@ -34,7 +42,7 @@ rm(list= ls())
 
 source("Aux_functions.R", encoding="utf-8")
 
-data = read.csv("links_clean.csv", header=T, as.is=T)
+data = read.csv("data/links_clean.csv", header=T, as.is=T)
 
 head(data)
 tail(data)
@@ -88,6 +96,8 @@ dim(Links)
 head(Links)
 tail(Links)
 
+cat('end_link_construction', "\n")
+
 
 ################### NODE LIST ##################################################
 
@@ -110,29 +120,51 @@ Na3=rep(1,length(name2))
 Fa<-cbind(name1,Fa1,Fa2,Fa3)
 Na<-cbind(name2,Na1,Na2,Na3)
 
-Names<-rbind(Fa,Na)
-colnames(Names) <- c("name","taxon","taxon.label","species.size")
+Nodes<-rbind(Fa,Na)
+colnames(Nodes) <- c("name","taxon","taxon.label","species.size")
 
-dim(Names)
-head(Names)
-tail(Names)
+dim(Nodes)
+head(Nodes)
+tail(Nodes)
 
-write.csv(Names,"results/nodes.csv", row.names = FALSE)
-write.csv(Links,"results/links.csv", row.names = FALSE)
+write.csv(Nodes,"data/nodes.csv", row.names = FALSE)
+write.csv(Links,"data/links.csv", row.names = FALSE)
 
-cat('end_names_construction', "\n")
-
-
-################### G ANALYSIS #################################################
+cat('end_node_construction', "\n")
 
 
-nodes = read.csv("results/nodes.csv", header=T, as.is=T)
-links = read.csv("results/links.csv", header=T, as.is=T)
+################### BUILDING THE MULTILAYER NETWORK ############################
+
+
+#Package multinet
+nodes = read.csv("data/nodes.csv", header=T, as.is=T)
+links = read.csv("data/links.csv", header=T, as.is=T)
 
 nodes = nodes[order(nodes$name),] 
 
 net_multinet = Convert_to_Multinet(nodes, links)
 net_multinet
+
+cat('end_network_construction', "\n")
+
+
+################### PLOTTING THE MULTILAYER NETWORK ############################
+
+
+#Package igraph
+links_no_dupl = links[-which(duplicated(links[,c("from", "to")])==T),] 
+net_layout = graph_from_data_frame(d = links_no_dupl,
+                                   vertices = nodes, directed = F) 
+layout = layout_nicely(net_layout) 
+
+
+png(filename="figures/network_visualization.png", 
+    res = 300, width = 4000, height = 3000)
+Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3)
+dev.off()
+
+
+################### G ANALYSIS #################################################
 
 
 # Partitioning, Omega, Gamma, and number of iterations (for getting the mean)
@@ -146,12 +178,12 @@ gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
 iterations = 100
 
 
-##Saving lists definition
+# Saving lists definition
 Seq_G_Mean_gamma_list = list() 
 G_norm_list = list()
 
 
-## G_analysis
+# G_analysis
 cont_perc = 1 # Calculation of running progress
 
 for (gamma_index in 1:length(gammas)) {
@@ -205,7 +237,6 @@ for (gamma_index in 1:length(gammas)) {
 	nodes_G_norm = Sort_Nodes_by_Total_G(seq_G_mean, ordered = FALSE)
 	nodes_G_norm_Ordered = Sort_Nodes_by_Total_G(seq_G_mean, ordered = TRUE)
 
- 
   	#Saving G_values respect to gamma
 	Seq_G_Mean_gamma_list[[gamma_index]] = cbind(seq_G_mean, gammas[gamma_index])
 	G_norm_list[[gamma_index]] = nodes_G_norm
@@ -230,21 +261,6 @@ save(gammas, vec_W, iterations, partitions_of_omega, links, nodes,
 
 
 cat('end_Gnorm', "\n")
-
-
-################### PLOTTING THE MULTILAYER NETWORK ############################
-
-
-links_no_dupl = links[-which(duplicated(links[,c("from", "to")])==T),] 
-net_layout = graph_from_data_frame(d = links_no_dupl,
-                                   vertices = nodes, directed = F) 
-layout = layout_nicely(net_layout) 
-
-
-png(filename="figures/network_visualization.png", 
-    res = 300, width = 4000, height = 3000)
-Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3)
-dev.off()
 
 
 ################### MODULARITY FOR ONE RUN ######################################
@@ -548,7 +564,7 @@ cat('end_plots', "\n")
 # Reading the names from a list, names taken from 2019 NatEcoEvo paper)
 
 seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
-selection =read.csv("Names_impo.csv",  as.is=1)
+selection =read.csv("data/Names_impo.csv",  as.is=1)
 selection = selection[order(selection$name),]
 for (i in 1:length(selection)) {
   	
