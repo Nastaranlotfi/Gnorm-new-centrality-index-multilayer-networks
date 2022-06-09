@@ -16,6 +16,8 @@ library(RColorBrewer)
 ################### SET UP AND DATA IMPORT #####################################
 
 
+currentTime_start <- Sys.time()
+
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 cat("\014")  
@@ -46,6 +48,8 @@ data = read.csv("data/links_clean.csv", header=T, as.is=T)
 
 head(data)
 tail(data)
+
+currentTime_prep <- Sys.time()
 
 
 ################### EDGE LIST ##################################################
@@ -97,7 +101,6 @@ head(Links)
 tail(Links)
 
 currentTime_link <- Sys.time()
-print(currentTime_link)
 cat('end_link_construction', "\n")
 
 
@@ -133,7 +136,6 @@ write.csv(Nodes,"data/nodes.csv", row.names = FALSE)
 write.csv(Links,"data/links.csv", row.names = FALSE)
 
 currentTime_node <- Sys.time()
-print(currentTime_node)
 cat('end_node_construction', "\n")
 
 
@@ -150,7 +152,6 @@ net_multinet = Convert_to_Multinet(nodes, links)
 net_multinet
 
 currentTime_netcons <- Sys.time()
-print(currentTime_netcons)
 cat('end_network_construction', "\n")
 
 
@@ -170,7 +171,6 @@ Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3)
 dev.off()
 
 currentTime_netvis <- Sys.time()
-print(currentTime_netvis)
 cat('end_network_visualization', "\n")
 
 
@@ -187,14 +187,9 @@ gamma_spacing = 0.25
 gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
 iterations = 100
 
-
 # Saving lists definition
 Seq_G_Mean_gamma_list = list() 
 G_norm_list = list()
-
-currentTime_Gnorm1 <- Sys.time()
-print(currentTime_Gnorm1)
-cat('start_Gnorm', "\n")
 
 # G_analysis
 cont_perc = 1 # Calculation of running progress
@@ -272,8 +267,7 @@ save(gammas, vec_W, iterations, partitions_of_omega, links, nodes,
      Seq_G_Mean_gamma_list,G_norm_mean, G_norm_mean_ordered,
      file = "results/Bat_Net.RData")
 
-currentTime_Gnorm2 <- Sys.time()
-print(currentTime_Gnorm2)
+currentTime_Gnorm <- Sys.time()
 cat('end_Gnorm', "\n")
 
 
@@ -292,7 +286,6 @@ plots = Plot_number_modularity(partitions_of_omega1,
                              net_multinet)
 
 currentTime_modularity <- Sys.time()
-print(currentTime_modularity)
 cat('end_modularity', "\n")
 
 
@@ -315,7 +308,6 @@ hist(df,breaks=5,col="darkmagenta", xlim=c(1,2),
 dev.off()
 
 currentTime_gnormfreq <- Sys.time()
-print(currentTime_gnormfreq)
 cat('end_gnormfreq', "\n")
 
 
@@ -346,7 +338,6 @@ for (i in 1:length(selection)) {
 	}#end for
 
 currentTime_gnormnodes <- Sys.time()
-print(currentTime_gnormnodes)
 cat('end_gnormnodes', "\n")
 
 
@@ -370,7 +361,6 @@ save(clo, btw, eig_formated, deg_formated,
      G_norm_mean, file = "results/bats_allCentr.RData")
 
 currentTime_netparameter <- Sys.time()
-print(currentTime_netparameter)
 cat('end_netparameter', "\n")
 
 
@@ -470,7 +460,6 @@ save(clo_plants, btw_plants, eig_plants,
      deg_plants, Gnorm_plants, file = "results/bats_plants_allCentr.RData")
 
 currentTime_netseparation <- Sys.time()
-print(currentTime_netseparation)
 cat('end_netseparation', "\n")
 
 
@@ -544,7 +533,6 @@ corrgram(df, cor.method = "spearman", order=FALSE, oma=c(12, 12, 7, 2),
 dev.off()
 
 currentTime_corrgrams <- Sys.time()
-print(currentTime_corrgrams)
 cat('end_corrgrams', "\n")
 
 
@@ -585,7 +573,6 @@ corrgram(df, cor.method = "spearman", order=FALSE, oma=c(12, 12, 7, 2),
 dev.off()
 
 currentTime_plots <- Sys.time()
-print(currentTime_plots)
 cat('end_plots', "\n")
 
 
@@ -614,7 +601,6 @@ for (i in 1:length(selection)) {
 	}#end for
 
 currentTime_gnormplots <- Sys.time()
-print(currentTime_gnormplots)
 cat('end_gnormplots', "\n")
 
 
@@ -679,5 +665,56 @@ similarity_dist = similarity_dist/ranking_cutoff
 save(similarity_bin,similarity_dist, file = "results/similarity_Bat_Net.RData")
 
 currentTime_centrality <- Sys.time()
-print(currentTime_centrality)
 cat('end_centrality', "\n")
+
+
+################### TIMERS #####################################################
+
+
+cat('Begin running the code', "\n")
+print(currentTime_start)
+
+cat('Endtime for preparation', "\n")
+print(currentTime_prep)
+
+cat('Endtime for link construction', "\n")
+print(currentTime_link)
+
+cat('Endtime for node construction', "\n")
+print(currentTime_node)
+
+cat('Endtime for network construction', "\n")
+print(currentTime_netcons)
+
+cat('Endtime for network visualization', "\n")
+print(currentTime_netvis)
+
+cat('Endtime for Gnorm calculation', "\n")
+print(currentTime_Gnorm)
+
+cat('Endtime for modularity calculation', "\n")
+print(currentTime_modularity)
+
+cat('Endtime for Gnorm frequency calculation', "\n")
+print(currentTime_gnormfreq)
+
+cat('Endtime for Gnorm calculation for the nodes', "\n")
+print(currentTime_gnormnodes)
+
+cat('Endtime for network parameters calculation', "\n")
+print(currentTime_netparameter)
+
+cat('Endtime for separating network layers', "\n")
+print(currentTime_netseparation)
+
+cat('Endtime for plotting separate correlograms for bats and plants', "\n")
+print(currentTime_corrgrams)
+
+cat('Endtime for plotting joint correlograms', "\n")
+print(currentTime_plots)
+
+cat('Endtime for plotting Gnorm plots', "\n")
+print(currentTime_gnormplots)
+
+cat('Endtime for plotting centrality', "\n")
+print(currentTime_centrality)
