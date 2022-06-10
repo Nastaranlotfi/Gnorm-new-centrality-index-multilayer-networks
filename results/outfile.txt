@@ -35,7 +35,6 @@ Andira inermis
 Annona muricata 
 Annona squamosa 
 Anoura caudifer 
-Anoura fistulata 
 Anoura geoffroyi 
 Artibeus cinereus 
 Artibeus concolor 
@@ -106,7 +105,6 @@ Cecropia sciadophylla
 Ceiba aesculifolia 
 Ceiba pentandra 
 Celtis iguanaea 
-Centropogon nigricans 
 Centurio senex 
 Cereus hexagonus 
 Cereus horrispinus 
@@ -151,7 +149,6 @@ Drymonia rubra
 Dyssochroma viridiflora 
 Elizabetha paraensis 
 Emmotum nitens 
-Encholirium subsecundum 
 Eperua falcata 
 Epiphyllum hookeri 
 Eriobotrya japonica 
@@ -227,8 +224,6 @@ Licania arborea
 Lichonycteris obscura 
 Lionycteris spurrelli 
 Livistona chinensis 
-Lonchophylla bokermanni 
-Lonchophylla inexpectata 
 Lonchophylla robusta 
 Lophocereus schottii 
 Luehea paniculata 
@@ -259,7 +254,6 @@ Merinthopodium neuranthum
 Mesophylla macconnelli 
 Miconia albicans 
 Micronycteris hirsuta 
-Mimosa lewisii 
 Mimusops elengi 
 Monophyllus redmani 
 Mucuna holtonii 
@@ -354,7 +348,6 @@ Piper tuberculatum
 Piper tucumanum 
 Piper umbellatum 
 Pitcairnia brongniartiana 
-Platalina genovensium 
 Platyrrhinus brachycephalus 
 Platyrrhinus helleri 
 Platyrrhinus lineatus 
@@ -441,7 +434,6 @@ Solanum scuticum
 Solanum subinerme 
 Solanum subsylvestre 
 Solanum swartzianum 
-Solanum sycophanta 
 Solanum symmetricum 
 Solanum tenuispinum 
 Solanum torvum 
@@ -458,7 +450,6 @@ Stenocereus griseus
 Stenocereus queretaroensis 
 Stenocereus stellatus 
 Stenocereus thurberi 
-Sturnira aratathomasi 
 Sturnira erythromos 
 Sturnira giannae 
 Sturnira lilium 
@@ -500,7 +491,6 @@ Vriesea gladioliflora
 Vriesea longiscapa 
 Vriesea platynema 
 Vriesea sazimae 
-Weberbauerocereus weberbaueri 
 Weberocereus biolleyi 
 Weberocereus trichophorus 
 Weberocereus tunilla 
@@ -527,7 +517,6 @@ Andira inermis,Frugivory
 Annona muricata,Frugivory
 Annona squamosa,Frugivory
 Anoura caudifer,Frugivory
-Anoura fistulata,Frugivory
 Anoura geoffroyi,Frugivory
 Artibeus cinereus,Frugivory
 Artibeus concolor,Frugivory
@@ -598,7 +587,6 @@ Cecropia sciadophylla,Frugivory
 Ceiba aesculifolia,Frugivory
 Ceiba pentandra,Frugivory
 Celtis iguanaea,Frugivory
-Centropogon nigricans,Frugivory
 Centurio senex,Frugivory
 Cereus hexagonus,Frugivory
 Cereus horrispinus,Frugivory
@@ -643,7 +631,6 @@ Drymonia rubra,Frugivory
 Dyssochroma viridiflora,Frugivory
 Elizabetha paraensis,Frugivory
 Emmotum nitens,Frugivory
-Encholirium subsecundum,Frugivory
 Eperua falcata,Frugivory
 Epiphyllum hookeri,Frugivory
 Eriobotrya japonica,Frugivory
@@ -719,8 +706,6 @@ Licania arborea,Frugivory
 Lichonycteris obscura,Frugivory
 Lionycteris spurrelli,Frugivory
 Livistona chinensis,Frugivory
-Lonchophylla bokermanni,Frugivory
-Lonchophylla inexpectata,Frugivory
 Lonchophylla robusta,Frugivory
 Lophocereus schottii,Frugivory
 Luehea paniculata,Frugivory
@@ -751,7 +736,6 @@ Merinthopodium neuranthum,Frugivory
 Mesophylla macconnelli,Frugivory
 Miconia albicans,Frugivory
 Micronycteris hirsuta,Frugivory
-Mimosa lewisii,Frugivory
 Mimusops elengi,Frugivory
 Monophyllus redmani,Frugivory
 Mucuna holtonii,Frugivory
@@ -846,7 +830,6 @@ Piper tuberculatum,Frugivory
 Piper tucumanum,Frugivory
 Piper umbellatum,Frugivory
 Pitcairnia brongniartiana,Frugivory
-Platalina genovensium,Frugivory
 Platyrrhinus brachycephalus,Frugivory
 Platyrrhinus helleri,Frugivory
 Platyrrhinus lineatus,Frugivory
@@ -933,7 +916,6 @@ Solanum scuticum,Frugivory
 Solanum subinerme,Frugivory
 Solanum subsylvestre,Frugivory
 Solanum swartzianum,Frugivory
-Solanum sycophanta,Frugivory
 Solanum symmetricum,Frugivory
 Solanum tenuispinum,Frugivory
 Solanum torvum,Frugivory
@@ -950,7 +932,6 @@ Stenocereus griseus,Frugivory
 Stenocereus queretaroensis,Frugivory
 Stenocereus stellatus,Frugivory
 Stenocereus thurberi,Frugivory
-Sturnira aratathomasi,Frugivory
 Sturnira erythromos,Frugivory
 Sturnira giannae,Frugivory
 Sturnira lilium,Frugivory
@@ -992,7 +973,6 @@ Vriesea gladioliflora,Frugivory
 Vriesea longiscapa,Frugivory
 Vriesea platynema,Frugivory
 Vriesea sazimae,Frugivory
-Weberbauerocereus weberbaueri,Frugivory
 Weberocereus biolleyi,Frugivory
 Weberocereus trichophorus,Frugivory
 Weberocereus tunilla,Frugivory
@@ -1017,7 +997,6 @@ Andira inermis,Nectarivory
 Annona muricata,Nectarivory
 Annona squamosa,Nectarivory
 Anoura caudifer,Nectarivory
-Anoura fistulata,Nectarivory
 Anoura geoffroyi,Nectarivory
 Artibeus cinereus,Nectarivory
 Artibeus concolor,Nectarivory
@@ -1088,7 +1067,6 @@ Cecropia sciadophylla,Nectarivory
 Ceiba aesculifolia,Nectarivory
 Ceiba pentandra,Nectarivory
 Celtis iguanaea,Nectarivory
-Centropogon nigricans,Nectarivory
 Centurio senex,Nectarivory
 Cereus hexagonus,Nectarivory
 Cereus horrispinus,Nectarivory
@@ -1133,7 +1111,6 @@ Drymonia rubra,Nectarivory
 Dyssochroma viridiflora,Nectarivory
 Elizabetha paraensis,Nectarivory
 Emmotum nitens,Nectarivory
-Encholirium subsecundum,Nectarivory
 Eperua falcata,Nectarivory
 Epiphyllum hookeri,Nectarivory
 Eriobotrya japonica,Nectarivory
@@ -1209,8 +1186,6 @@ Licania arborea,Nectarivory
 Lichonycteris obscura,Nectarivory
 Lionycteris spurrelli,Nectarivory
 Livistona chinensis,Nectarivory
-Lonchophylla bokermanni,Nectarivory
-Lonchophylla inexpectata,Nectarivory
 Lonchophylla robusta,Nectarivory
 Lophocereus schottii,Nectarivory
 Luehea paniculata,Nectarivory
@@ -1241,7 +1216,6 @@ Merinthopodium neuranthum,Nectarivory
 Mesophylla macconnelli,Nectarivory
 Miconia albicans,Nectarivory
 Micronycteris hirsuta,Nectarivory
-Mimosa lewisii,Nectarivory
 Mimusops elengi,Nectarivory
 Monophyllus redmani,Nectarivory
 Mucuna holtonii,Nectarivory
@@ -1336,7 +1310,6 @@ Piper tuberculatum,Nectarivory
 Piper tucumanum,Nectarivory
 Piper umbellatum,Nectarivory
 Pitcairnia brongniartiana,Nectarivory
-Platalina genovensium,Nectarivory
 Platyrrhinus brachycephalus,Nectarivory
 Platyrrhinus helleri,Nectarivory
 Platyrrhinus lineatus,Nectarivory
@@ -1423,7 +1396,6 @@ Solanum scuticum,Nectarivory
 Solanum subinerme,Nectarivory
 Solanum subsylvestre,Nectarivory
 Solanum swartzianum,Nectarivory
-Solanum sycophanta,Nectarivory
 Solanum symmetricum,Nectarivory
 Solanum tenuispinum,Nectarivory
 Solanum torvum,Nectarivory
@@ -1440,7 +1412,6 @@ Stenocereus griseus,Nectarivory
 Stenocereus queretaroensis,Nectarivory
 Stenocereus stellatus,Nectarivory
 Stenocereus thurberi,Nectarivory
-Sturnira aratathomasi,Nectarivory
 Sturnira erythromos,Nectarivory
 Sturnira giannae,Nectarivory
 Sturnira lilium,Nectarivory
@@ -1482,7 +1453,6 @@ Vriesea gladioliflora,Nectarivory
 Vriesea longiscapa,Nectarivory
 Vriesea platynema,Nectarivory
 Vriesea sazimae,Nectarivory
-Weberbauerocereus weberbaueri,Nectarivory
 Weberocereus biolleyi,Nectarivory
 Weberocereus trichophorus,Nectarivory
 Weberocereus tunilla,Nectarivory
@@ -1726,7 +1696,6 @@ Artibeus jamaicensis,Piper hispidum,Frugivory
 Artibeus jamaicensis,Piper lapathifolium,Frugivory
 Artibeus jamaicensis,Piper sanctum,Frugivory
 Artibeus jamaicensis,Piper auritum,Frugivory
-Sturnira aratathomasi,Solanum sycophanta,Frugivory
 Artibeus lituratus,Ficus luschnathiana,Frugivory
 Artibeus lituratus,Ficus enormis,Frugivory
 Platyrrhinus lineatus,Ficus luschnathiana,Frugivory
@@ -3099,10 +3068,6 @@ Phyllostomus hastatus,Hymenaea courbaril,Nectarivory
 Phyllostomus hastatus,Lecythis zabucajo,Nectarivory
 Leptonycteris yerbabuenae,Agave vivipara,Nectarivory
 Leptonycteris yerbabuenae,Agave subsimplex,Nectarivory
-Anoura fistulata,Centropogon nigricans,Nectarivory
-Anoura fistulata,Centropogon nigricans,Nectarivory
-Anoura fistulata,Centropogon nigricans,Nectarivory
-Anoura fistulata,Centropogon nigricans,Nectarivory
 Anoura caudifer,Burmeistera borjensis,Nectarivory
 Anoura caudifer,Burmeistera ceratocarpa,Nectarivory
 Anoura caudifer,Burmeistera sodiroana,Nectarivory
@@ -3203,7 +3168,6 @@ Sturnira parvidens,Stenocereus griseus,Nectarivory
 Glossophaga longirostris,Stenocereus griseus,Nectarivory
 Glossophaga longirostris,Cereus hexagonus,Nectarivory
 Glossophaga longirostris,Praecereus euchlorus smithianus,Nectarivory
-Platalina genovensium,Weberbauerocereus weberbaueri,Nectarivory
 Anoura caudifer,Sinningia brasiliensis,Nectarivory
 Anoura caudifer,Paliavana prasinata,Nectarivory
 Glossophaga soricina,Paliavana prasinata,Nectarivory
@@ -3229,7 +3193,6 @@ Glossophaga soricina,Marcgravia myriostigma,Nectarivory
 Anoura caudifer,Passiflora mucronata,Nectarivory
 Glossophaga soricina,Passiflora mucronata,Nectarivory
 Glossophaga soricina,Luehea speciosa,Nectarivory
-Lonchophylla bokermanni,Encholirium subsecundum,Nectarivory
 Anoura caudifer,Siphocampylus sulfureus,Nectarivory
 Artibeus lituratus,Lafoensia glyptocarpa,Nectarivory
 Anoura caudifer,Vriesea bituminosa,Nectarivory
@@ -3327,7 +3290,6 @@ Anoura caudifer,Passiflora mucronata,Nectarivory
 Carollia perspicillata,Passiflora mucronata,Nectarivory
 Glossophaga soricina,Passiflora mucronata,Nectarivory
 Glossophaga soricina,Harpochilus neesianus,Nectarivory
-Lonchophylla inexpectata,Mimosa lewisii,Nectarivory
 Glossophaga soricina,Merinthopodium neuranthum,Nectarivory
 Artibeus jamaicensis,Merinthopodium neuranthum,Nectarivory
 

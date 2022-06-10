@@ -16,8 +16,6 @@ library(RColorBrewer)
 ################### SET UP AND DATA IMPORT #####################################
 
 
-currentTime_start <- Sys.time()
-
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 cat("\014")  
@@ -41,6 +39,8 @@ if (!dir.exists(path = "results")){
 }
 
 rm(list= ls())
+
+currentTime_start <- Sys.time()
 
 source("Aux_functions.R", encoding="utf-8")
 
@@ -139,54 +139,74 @@ currentTime_node <- Sys.time()
 cat('end_node_construction', "\n")
 
 
-###################Defining max component, make new list of nodes and links
+################### FINDING THE GIANT COMPONENT ################################
 
 
-nodes = read.csv("data/nodes1.csv", header=T, as.is=T)
-links = read.csv("data/links1.csv", header=T, as.is=T)
+# Identify max component, make new lists of nodes and links
+
+nodes1 = read.csv("data/nodes1.csv", header=T, as.is=T)
+links1 = read.csv("data/links1.csv", header=T, as.is=T)
 
 
-net_mono1 = graph_from_data_frame(d = links, vertices = nodes, directed = F)
+net_mono1 = graph_from_data_frame(d = links1, vertices = nodes1, directed = F)
 
-c=clusters(net_mono1, mode="weak") ##finding the clusters
-b=which.max(c$csize) ##find the max
-v=V(net_mono1)[c$membership!=b] ##find the names of nodes in the max component
+c=clusters(net_mono1, mode="weak") #finding the clusters
+b=which.max(c$csize) #find the max
+v=V(net_mono1)[c$membership!=b] #find the names of nodes in the max component
 
-b1=split(names(v),v) ##formating the v file into a list
+b1=split(names(v),v) #formating the v file into a list
 b2=list()
 for (i in 1:length(b1)){
 	b2=append(b2,b1[[i]])}
 
 b2=unlist(b2)
 
-df1<-nodes
-df2<-links
+df1<-nodes1
+df2<-links1
 
-for (i in 1:length(b2)){###removing the nodes that they don't exist in the max component
+for (i in 1:length(b2)){#remove the nodes that don't belong to the max component
 	df1<-df1 %>% filter(!name==b1[i])}
 
-for (i in 1:length(b2)){###removing the links related to the removed nodes
+for (i in 1:length(b2)){#removing the links related to the removed nodes
 	df2<-df2 %>% filter(!from==b1[i])
 	df2<-df2 %>% filter(!to==b1[i])}
 	
 	
-write.csv(df1,"data/nodes.csv", row.names = FALSE)
-write.csv(df2,"data/links.csv", row.names = FALSE)
+write.csv(df1,"data/nodes2.csv", row.names = FALSE)
+write.csv(df2,"data/links2.csv", row.names = FALSE)
 
+currentTime_compo <- Sys.time()
 cat('end_names_filtering-by-max-component', "\n")
 
 
 ################### BUILDING THE MULTILAYER NETWORK ############################
 
 
-#Package multinet
-nodes = read.csv("data/nodes.csv", header=T, as.is=T)
-links = read.csv("data/links.csv", header=T, as.is=T)
+# Package multinet
 
-nodes = nodes[order(nodes$name),] 
 
-net_multinet = Convert_to_Multinet(nodes, links)
-net_multinet
+# Complete network #1
+nodes1 = read.csv("data/nodes1.csv", header=T, as.is=T)
+links1 = read.csv("data/links1.csv", header=T, as.is=T)
+
+nodes1 = nodes1[order(nodes1$name),] 
+
+net_multinet1 = Convert_to_Multinet(nodes1, links1)
+
+
+# The giant component of the network #2
+nodes2 = read.csv("data/nodes2.csv", header=T, as.is=T)
+links2 = read.csv("data/links2.csv", header=T, as.is=T)
+
+nodes2 = nodes2[order(nodes2$name),] 
+
+net_multinet2 = Convert_to_Multinet(nodes2, links2)
+
+
+# Compare the complete network to its giant component
+net_multinet1
+net_multinet2
+
 
 currentTime_netcons <- Sys.time()
 cat('end_network_construction', "\n")
@@ -195,17 +215,32 @@ cat('end_network_construction', "\n")
 ################### PLOTTING THE MULTILAYER NETWORK ############################
 
 
-#Package igraph
-links_no_dupl = links[-which(duplicated(links[,c("from", "to")])==T),] 
-net_layout = graph_from_data_frame(d = links_no_dupl,
-                                   vertices = nodes, directed = F) 
-layout = layout_nicely(net_layout) 
+# Package igraph
 
 
-png(filename="figures/network_visualization.png", 
+# Complete network #1
+links_no_dupl1 = links1[-which(duplicated(links1[,c("from", "to")])==T),] 
+net_layout1 = graph_from_data_frame(d = links_no_dupl1,
+                                   vertices = nodes1, directed = F) 
+layout1 = layout_nicely(net_layout1) 
+
+png(filename="figures/network_visualization_complete.png", 
     res = 300, width = 4000, height = 3000)
-Custom_plot2D(links, nodes, layout, vertex_label_cex = NULL, vertex_size = 3)
+Custom_plot2D(links1, nodes1, layout1, vertex_label_cex = NULL, vertex_size = 3)
 dev.off()
+
+
+# The giant component of the network #2
+links_no_dupl2 = links2[-which(duplicated(links2[,c("from", "to")])==T),] 
+net_layout2 = graph_from_data_frame(d = links_no_dupl2,
+                                   vertices = nodes2, directed = F) 
+layout2 = layout_nicely(net_layout2) 
+
+png(filename="figures/network_visualization_component.png", 
+    res = 300, width = 4000, height = 3000)
+Custom_plot2D(links2, nodes2, layout2, vertex_label_cex = NULL, vertex_size = 3)
+dev.off()
+
 
 currentTime_netvis <- Sys.time()
 cat('end_network_visualization', "\n")
@@ -214,9 +249,11 @@ cat('end_network_visualization', "\n")
 ################### G ANALYSIS #################################################
 
 
-# Partitioning, Omega, Gamma, and number of iterations (for getting the mean)
+# From here on, we analyze only the giant component of the network
+
+# Partitioning, omega, gamma, and number of iterations (for getting the mean)
 partitions_of_omega = 10 # Number of partitions
-seq_G = Create_seq_G_Merged(net_multinet, partitions_of_omega)
+seq_G = Create_seq_G_Merged(net_multinet2, partitions_of_omega)
 vec_W = Create_vec_W(partitions_of_omega)
 gamma_min = 0.25
 gamma_max = 4
@@ -235,7 +272,7 @@ for (gamma_index in 1:length(gammas)) {
 	start_time <- round(as.numeric(Sys.time()))
   	seq_G_list = list()
     	for (i in 1:iterations) {
-    		seq_G_list[[i]] = Create_seq_G_Merged(net_multinet, 
+    		seq_G_list[[i]] = Create_seq_G_Merged(net_multinet2, 
     		                                      partitions_of_omega,
     		                                      gamma = gammas[gamma_index])
     		                                      
@@ -299,8 +336,7 @@ G_norm_mean = G_norm_sum / (length(G_norm_list))
 ##Sorting G_norm_mean
 G_norm_mean_ordered =  sort(G_norm_mean, decreasing = TRUE)
 
-
-save(gammas, vec_W, iterations, partitions_of_omega, links, nodes,
+save(gammas, vec_W, iterations, partitions_of_omega, links2, nodes2,
      Seq_G_Mean_gamma_list,G_norm_mean, G_norm_mean_ordered,
      file = "results/Bat_Net.RData")
 
@@ -320,7 +356,7 @@ plots = Plot_number_modularity(partitions_of_omega1,
                              gamma_min1,
                              gamma_max1,
                              gamma_spacing1,
-                             net_multinet)
+                             net_multinet2)
 
 currentTime_modularity <- Sys.time()
 cat('end_modularity', "\n")
@@ -380,10 +416,11 @@ cat('end_gnormnodes', "\n")
 
 ################### NETWORK PARAMETERS #########################################
 
-nodes = read.csv("data/nodes.csv", header=T, as.is=T)
-links = read.csv("data/links.csv", header=T, as.is=T)
 
-net_mono = graph_from_data_frame(d = links, vertices = nodes, directed = F)
+nodes2 = read.csv("data/nodes2.csv", header=T, as.is=T)
+links2 = read.csv("data/links2.csv", header=T, as.is=T)
+
+net_mono = graph_from_data_frame(d = links2, vertices = nodes2, directed = F)
 
 clo = closeness(net_mono, normalized = FALSE)
 btw = betweenness(net_mono, directed = FALSE, normalized = TRUE)
@@ -392,7 +429,6 @@ eig_formated = eig$vector
 deg = centr_degree(net_mono)
 deg_formated = deg$res
 names(deg_formated) = names(clo)
-
 
 save(clo, btw, eig_formated, deg_formated,
      G_norm_mean, file = "results/bats_allCentr.RData")
@@ -406,8 +442,8 @@ cat('end_netparameter', "\n")
 
 load("results/Bat_Net.RData")
 
-n_bats = subset(nodes, taxon == "Bats")
-n_plants = subset(nodes, taxon == "Plants")
+n_bats = subset(nodes2, taxon == "Bats")
+n_plants = subset(nodes2, taxon == "Plants")
 
 eig = eig_formated
 deg = deg_formated
@@ -708,50 +744,40 @@ cat('end_centrality', "\n")
 ################### TIMERS #####################################################
 
 
-cat('Begin running the code', "\n")
-print(currentTime_start)
+sink(file = "results/timers.txt")
 
-cat('Endtime for preparation', "\n")
-print(currentTime_prep)
+paste("Time spent running each section of the code")
+paste("Lotfi et al., in prep.")
+cat("\n")
+paste("Start running the code:", currentTime_start)
+cat("\n")
+paste("Endtime for preparation:", currentTime_prep)
+cat("\n")
+paste("Endtime for link construction:", currentTime_link)
+cat("\n")
+paste("Endtime for node construction:", currentTime_node)
+cat("\n")
+paste("Endtime for identifying the giant component:", currentTime_compo)
+cat("\n")
+paste("Endtime for network visualization:", currentTime_netvis)
+cat("\n")
+paste("Endtime for Gnorm calculation:", currentTime_Gnorm)
+cat("\n")
+paste("Endtime for modularity calculatio:", currentTime_modularity)
+cat("\n")
+paste("Endtime for Gnorm frequency calculation:", currentTime_gnormfreq)
+cat("\n")
+paste("Endtime for network parameters calculation:", currentTime_netparameter)
+cat("\n")
+paste("Endtime for separating network layers:", currentTime_netseparation)
+cat("\n")
+paste("Endtime for plotting separate correlograms for bats and plants:", currentTime_corrgrams)
+cat("\n")
+paste("Endtime for plotting joint correlograms:", currentTime_plots)
+cat("\n")
+paste("Endtime for plotting Gnorm:", currentTime_gnormplots)
+cat("\n")
+paste("Endtime for plotting centrality:", currentTime_centrality)
+cat("\n")
 
-cat('Endtime for link construction', "\n")
-print(currentTime_link)
-
-cat('Endtime for node construction', "\n")
-print(currentTime_node)
-
-cat('Endtime for network construction', "\n")
-print(currentTime_netcons)
-
-cat('Endtime for network visualization', "\n")
-print(currentTime_netvis)
-
-cat('Endtime for Gnorm calculation', "\n")
-print(currentTime_Gnorm)
-
-cat('Endtime for modularity calculation', "\n")
-print(currentTime_modularity)
-
-cat('Endtime for Gnorm frequency calculation', "\n")
-print(currentTime_gnormfreq)
-
-cat('Endtime for Gnorm calculation for the nodes', "\n")
-print(currentTime_gnormnodes)
-
-cat('Endtime for network parameters calculation', "\n")
-print(currentTime_netparameter)
-
-cat('Endtime for separating network layers', "\n")
-print(currentTime_netseparation)
-
-cat('Endtime for plotting separate correlograms for bats and plants', "\n")
-print(currentTime_corrgrams)
-
-cat('Endtime for plotting joint correlograms', "\n")
-print(currentTime_plots)
-
-cat('Endtime for plotting Gnorm plots', "\n")
-print(currentTime_gnormplots)
-
-cat('Endtime for plotting centrality', "\n")
-print(currentTime_centrality)
+sink(file = NULL, )
