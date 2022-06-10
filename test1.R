@@ -142,8 +142,8 @@ cat('end_node_construction', "\n")
 ###################Defining max component, make new list of nodes and links
 
 
-nodes = read.csv("results/nodes1.csv", header=T, as.is=T)
-links = read.csv("results/links1.csv", header=T, as.is=T)
+nodes = read.csv("data/nodes1.csv", header=T, as.is=T)
+links = read.csv("data/links1.csv", header=T, as.is=T)
 
 
 net_mono1 = graph_from_data_frame(d = links, vertices = nodes, directed = F)
@@ -380,8 +380,8 @@ cat('end_gnormnodes', "\n")
 
 ################### NETWORK PARAMETERS #########################################
 
-nodes = read.csv("results/nodes.csv", header=T, as.is=T)
-links = read.csv("results/links.csv", header=T, as.is=T)
+nodes = read.csv("data/nodes.csv", header=T, as.is=T)
+links = read.csv("data/links.csv", header=T, as.is=T)
 
 net_mono = graph_from_data_frame(d = links, vertices = nodes, directed = F)
 
