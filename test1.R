@@ -399,10 +399,12 @@ for (i in 1:length(selection)) {
   	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean,
   	                                      chosen_node, vec_W, gammas)
   	plot(plots)
+        dev.off()
   	png_name = paste("figures/",names(selection[i]), "_3d.png", sep = "")
   	png(png_name, width = 700, height = 700)
   	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, 
   	                          chosen_node, vec_W, gammas)
+        dev.off()
   	png_name = paste("figures/",names(selection[i]), "_heat.png", sep = "")
   	png(png_name, width = 700, height = 700)
   	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, 
@@ -664,10 +666,12 @@ for (i in 1:length(selection)) {
   	png(png_name, width = 700, height = 700)
   	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
   	plot(plots)
+        dev.off()
   	png_name = paste("figures/important_",selection[i],"_3d.png", sep = "")
   	png(png_name, width = 700, height = 700)
   	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	png_name = paste("figures/important_",selection[i],"_heat.png", sep = "")
+  	dev.off()
+        png_name = paste("figures/important_",selection[i],"_heat.png", sep = "")
   	png(png_name, width = 700, height = 700)
   	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
   	dev.off()
