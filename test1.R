@@ -259,7 +259,7 @@ gamma_min = 0.25
 gamma_max = 4
 gamma_spacing = 0.25
 gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
-iterations = 100
+iterations = 2
 
 # Saving lists definition
 Seq_G_Mean_gamma_list = list() 
@@ -763,7 +763,7 @@ paste("Endtime for network visualization:", currentTime_netvis)
 cat("\n")
 paste("Endtime for Gnorm calculation:", currentTime_Gnorm)
 cat("\n")
-paste("Endtime for modularity calculatio:", currentTime_modularity)
+paste("Endtime for modularity calculation:", currentTime_modularity)
 cat("\n")
 paste("Endtime for Gnorm frequency calculation:", currentTime_gnormfreq)
 cat("\n")

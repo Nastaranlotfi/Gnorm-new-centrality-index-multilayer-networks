@@ -1,33 +1,33 @@
 [1] "Time spent running each section of the code"
 [1] "Lotfi et al., in prep."
 
-[1] "Start running the code: 2022-06-10 17:13:54"
+[1] "Start running the code: 2022-06-11 18:56:50"
 
-[1] "Endtime for preparation: 2022-06-10 17:13:54"
+[1] "Endtime for preparation: 2022-06-11 18:56:50"
 
-[1] "Endtime for link construction: 2022-06-10 17:13:54"
+[1] "Endtime for link construction: 2022-06-11 18:56:50"
 
-[1] "Endtime for node construction: 2022-06-10 17:13:54"
+[1] "Endtime for node construction: 2022-06-11 18:56:50"
 
-[1] "Endtime for identifying the giant component: 2022-06-10 17:13:54"
+[1] "Endtime for identifying the giant component: 2022-06-11 18:56:50"
 
-[1] "Endtime for network visualization: 2022-06-10 17:14:00"
+[1] "Endtime for network visualization: 2022-06-11 18:56:56"
 
-[1] "Endtime for Gnorm calculation: 2022-06-10 19:47:05"
+[1] "Endtime for Gnorm calculation: 2022-06-11 19:00:30"
 
-[1] "Endtime for modularity calculatio: 2022-06-10 19:47:13"
+[1] "Endtime for modularity calculation: 2022-06-11 19:00:37"
 
-[1] "Endtime for Gnorm frequency calculation: 2022-06-10 19:47:13"
+[1] "Endtime for Gnorm frequency calculation: 2022-06-11 19:00:37"
 
-[1] "Endtime for network parameters calculation: 2022-06-10 19:47:16"
+[1] "Endtime for network parameters calculation: 2022-06-11 19:00:41"
 
-[1] "Endtime for separating network layers: 2022-06-10 19:47:19"
+[1] "Endtime for separating network layers: 2022-06-11 19:00:44"
 
-[1] "Endtime for plotting separate correlograms for bats and plants: 2022-06-10 19:47:20"
+[1] "Endtime for plotting separate correlograms for bats and plants: 2022-06-11 19:00:45"
 
-[1] "Endtime for plotting joint correlograms: 2022-06-10 19:47:21"
+[1] "Endtime for plotting joint correlograms: 2022-06-11 19:00:46"
 
-[1] "Endtime for plotting Gnorm: 2022-06-10 19:47:32"
+[1] "Endtime for plotting Gnorm: 2022-06-11 19:00:59"
 
-[1] "Endtime for plotting centrality: 2022-06-10 19:47:32"
+[1] "Endtime for plotting centrality: 2022-06-11 19:00:59"
 
