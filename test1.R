@@ -252,14 +252,14 @@ cat('end_network_visualization', "\n")
 # From here on, we analyze only the giant component of the network
 
 # Partitioning, omega, gamma, and number of iterations (for getting the mean)
-partitions_of_omega = 10 # Number of partitions
+partitions_of_omega = 10 #Number of partitions
 seq_G = Create_seq_G_Merged(net_multinet2, partitions_of_omega)
 vec_W = Create_vec_W(partitions_of_omega)
 gamma_min = 0.25
 gamma_max = 4
 gamma_spacing = 0.25
 gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
-iterations = 2
+iterations = 2 #For stable results, use at least 100
 
 # Saving lists definition
 Seq_G_Mean_gamma_list = list() 
