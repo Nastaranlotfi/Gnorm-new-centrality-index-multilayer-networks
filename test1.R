@@ -15,10 +15,11 @@ library(RColorBrewer)
 
 ################### SET UP AND DATA IMPORT #####################################
 
+cat("\014")  
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-cat("\014")  
+rm(list= ls())
 
 if (!dir.exists(path = "data")){
   dir.create(path = "data")
@@ -37,8 +38,6 @@ if (!dir.exists(path = "results")){
 } else {
   print("Dir already exists!")
 }
-
-rm(list= ls())
 
 currentTime_start <- Sys.time()
 
@@ -246,7 +245,7 @@ currentTime_netvis <- Sys.time()
 cat('end_network_visualization', "\n")
 
 
-################### G ANALYSIS #################################################
+################### GNORM CALCULATION ##########################################
 
 
 # From here on, we analyze only the giant component of the network
@@ -259,7 +258,7 @@ gamma_min = 0.25
 gamma_max = 4
 gamma_spacing = 0.25
 gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
-iterations = 2 #For stable results, use at least 100
+iterations = 100 #It takes a long time, but for stable results use at least 100
 
 # Saving lists definition
 Seq_G_Mean_gamma_list = list() 
