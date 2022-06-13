@@ -27,6 +27,12 @@ if (!dir.exists(path = "data")){
   print("Dir already exists!")
 }
 
+if (!dir.exists(path = "input")){
+  dir.create(path = "input")
+} else {
+  print("Dir already exists!")
+}
+
 if (!dir.exists(path = "figures")){
   dir.create(path = "figures")
 } else {
@@ -43,7 +49,7 @@ currentTime_start <- Sys.time()
 
 source("Aux_functions.R", encoding="utf-8")
 
-data = read.csv("data/links_clean.csv", header=T, as.is=T)
+data = read.csv("input/links_clean.csv", header=T, as.is=T)
 
 head(data)
 tail(data)
@@ -288,8 +294,8 @@ for (gamma_index in 1:length(gammas)) {
     		cat(cont_perc*100/(iterations*length(gammas)), "%  ")###print the run progress
     		cont_perc = cont_perc + 1
   		}#end of iterations
-  #----
-  #----
+  
+  
   #Removing names
   	seq_G_list_no_names = list()
   	for (i in 1:length(seq_G_list)) {
@@ -656,7 +662,7 @@ cat('end_plots', "\n")
 # Reading the names from a list, names taken from 2019 NatEcoEvo paper)
 
 seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
-selection =read.csv("data/Names_impo.csv",  as.is=1)
+selection =read.csv("input/Names_impo.csv",  as.is=1)
 selection = selection[order(selection$name),]
 for (i in 1:length(selection)) {
   	
