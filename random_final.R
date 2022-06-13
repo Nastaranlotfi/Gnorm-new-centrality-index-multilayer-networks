@@ -5,15 +5,36 @@ library(dplyr)
 
 ################### SET UP AND DATA IMPORT #####################################
 
+cat("\014")  
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-dir.create(path = "results_random")
-dir.create(path = "figures_random")
-
 rm(list= ls())
 
+if (!dir.exists(path = "figures_random")){
+  dir.create(path = "figures_random")
+} else {
+  print("Dir already exists!")
+}
+
+if (!dir.exists(path = "results_random")){
+  dir.create(path = "results_random")
+} else {
+  print("Dir already exists!")
+}
+
+currentTime_start <- Sys.time()
+
 source("Aux_functions_random.R", encoding="utf-8")
+
+
+
+currentTime_prep <- Sys.time()
+
+
+
+
+
 
 
 ################### EDGE LIST ##################################################
@@ -120,7 +141,9 @@ Network_random=function(number_of_nodes, number_of_connections,temp_number_links
 	
 
 	file_name_links1 = paste("results_random/rand_total_", permutation, "_links.csv", sep ="")
+	
   	write.csv(df1, file_name_links1, row.names = FALSE, quote = FALSE)
+  	
 	}#end network_random
 
 
@@ -221,8 +244,8 @@ Random_connection=function(links_dft,number_of_connections,node_name1,node_name2
 ######################################################
 ####loading the main data for having information to construct the random networks
 
-nodes1 = read.csv("results/nodes.csv", header=T, as.is=T)
-links1 = read.csv("results/links.csv", header=T, as.is=T)
+nodes1 = read.csv("data/nodes.csv", header=T, as.is=T)
+links1 = read.csv("data/links.csv", header=T, as.is=T)
 
 #Set the number of permutations to be used in all permutation analyses.
 
@@ -287,7 +310,7 @@ for (i in 1:permutation){
 	
 	}
 
-
+currentTime_link <- Sys.time()
 ######################################################################
 ## G_norm section
 
@@ -322,9 +345,23 @@ G_norm_list = list()
 cont_perc = 1 # Calculation of running progress
 
 for (gamma_index in 1:length(gammas)) {
+	start_time <- round(as.numeric(Sys.time()))
   	seq_G_list = list()
     	for (i in 1:iterations) {
-    		seq_G_list[[i]] = Create_seq_G_Merged(net_multinet, partitions_of_omega, gamma = gammas[gamma_index])
+    		seq_G_list[[i]] = Create_seq_G_Merged(net_multinet, 
+    		                                      partitions_of_omega,
+    		                                      gamma = gammas[gamma_index])
+    		                                      
+    		#####Run-time approximation
+    		if (cont_perc==1 ){
+    			end_time <- round(as.numeric(Sys.time()))
+			time_taken <- round(end_time - start_time,2)
+			print (time_taken)
+		
+			cat("Estimated time needed for run (secs): ", time_taken*(iterations*length(gammas)),"\n" )}
+			#cat("\n")}
+			#print (time_taken)
+		
     		cat(cont_perc*100/(iterations*length(gammas)), "%  ")###print the run progress
     		cont_perc = cont_perc + 1
   		}#end of iterations
@@ -377,16 +414,37 @@ G_norm_mean_ordered =  sort(G_norm_mean, decreasing = TRUE)
 
 
 
-save(gammas, vec_W, iterations, partitions_of_omega, links, nodes, Seq_G_Mean_gamma_list,G_norm_mean, G_norm_mean_ordered, file = "results_random/rand_same.RData")
-
+save(gammas, vec_W, iterations, partitions_of_omega, links, nodes, Seq_G_Mean_gamma_list,G_norm_mean, G_norm_mean_ordered, file = "results_random/rand_total.RData")
+currentTime_Gnorm <- Sys.time()
 #########Plot hist
 
-load("results_random/rand_same.RData")
+load("results_random/rand_total.RData")
 
 png(filename="figures_random/hist_Gnorm_random.png", 
     res = 300, width = 4000, height = 3000)
 
 hist(G_norm_mean,col="darkmagenta")
 dev.off()
+currentTime_gnormfreq <- Sys.time()
 cat('end_Gnorm', "\n")
+
+
+sink(file = "results_random/timers.txt")
+
+paste("Time spent running each section of the code")
+paste("Lotfi et al., in prep.")
+cat("\n")
+paste("Start running the code:", currentTime_start)
+cat("\n")
+paste("Endtime for preparation:", currentTime_prep)
+cat("\n")
+paste("Endtime for random network construction:", currentTime_link)
+cat("\n")
+paste("Endtime for Gnorm calculation:", currentTime_Gnorm)
+cat("\n")
+paste("Endtime for Gnorm frequency calculation:", currentTime_gnormfreq)
+cat("\n")
+sink(file = NULL, )
+
+
 
