@@ -773,6 +773,256 @@ save(similarity_bin,similarity_dist, file = "results/similarity_Bat_Net.RData")
 currentTime_centrality <- Sys.time()
 cat('end_centrality', "\n")
 
+###############TOP 10 CENTRALITIES DETECTION######################
+#Finding the top 10 in each centrality and plotting its relativ Gnorm
+
+#Bats section
+
+load("results/Bat_Net.RData")
+seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
+load("results/bats_bats_allCentr.RData")
+
+#Btas-> Clossness Centrality
+clo1 = sort(clo_bats,decreasing=TRUE)
+selection = names(clo1[1:10])
+save(selection, file = "results/Bats_impo_Clo.RData")
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/Bats_Clo_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/Bats_Clo_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/Bats_Clo_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+
+
+#Btas-> Betweenness Centrality
+btw1 = sort( btw_bats,decreasing=TRUE)
+
+selection = names(btw1[1:10])
+save(selection, file = "results/Bats_impo_btw.RData")
+
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/Bats_Btw_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/Bats_Btw_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/Bats_Btw_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+
+#Btas-> Eigenvector Centrality
+eig1 = sort(eig_bats,decreasing=TRUE)
+selection = names(eig1[1:10])
+save(selection, file = "results/Bats_impo_eig.RData")
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/Bats_Eig_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/Bats_Eig_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/Bats_Eig_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+
+#Btas-> Degree Centrality
+deg1 = sort(deg_bats,decreasing=TRUE)
+
+selection = names(deg1[1:10])
+save(selection, file = "results/Bats_impo_deg.RData")
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/Bats_Deg_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/Bats_Deg_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/Bats_Deg_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+	
+#Btas-> Gnorm Centrality
+Gnorm1 = sort(Gnorm_bats,decreasing=TRUE)
+
+selection = names(Gnorm1[1:10])
+save(selection, file = "results/Bats_impo_Gnorm.RData")
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/Bats_Gnorm_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/Bats_Gnorm_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/Bats_Gnorm_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+
+
+
+#Plants section
+
+load("results/Bat_Net.RData")
+seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
+load("results/bats_plants_allCentr.RData")
+
+#Plants-> Clossness Centrality
+clo1 = sort(clo_plants,decreasing=TRUE)
+selection = names(clo1[1:10])
+save(selection, file = "results/Plants_impo_Clo.RData")
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/Plants_Clo_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/Plants_Clo_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/Plants_Clo_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+
+
+#Plants-> Betweenness Centrality
+btw1 = sort( btw_plants,decreasing=TRUE)
+
+selection = names(btw1[1:10])
+save(selection, file = "results/Plants_impo_btw.RData")
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/Plants_Btw_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/Plants_Btw_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/Plants_Btw_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+
+#Plants-> Eigenvector Centrality
+eig1 = sort(eig_plants,decreasing=TRUE)
+selection = names(eig1[1:10])
+save(selection, file = "results/Plants_impo_eig.RData")
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/Plants_Eig_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/Plants_Eig_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/Plants_Eig_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+
+#Plants-> Degree Centrality
+deg1 = sort(deg_plants,decreasing=TRUE)
+
+selection = names(deg1[1:10])
+save(selection, file = "results/Plants_impo_deg.RData")
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/Plants_Deg_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/Plants_Deg_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/Plants_Deg_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+	
+#Plants-> Gnorm Centrality
+Gnorm1 = sort(Gnorm_plants,decreasing=TRUE)
+
+selection = names(Gnorm1[1:10])
+save(selection, file = "results/Plants_impo_Gnorm.RData")
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/Plants_Gnorm_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/Plants_Gnorm_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/Plants_Gnorm_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+
+
+currentTime_topten <- Sys.time()
+cat('end_top10', "\n")
+
 
 ################### TIMERS #####################################################
 
@@ -812,5 +1062,6 @@ paste("Endtime for plotting Gnorm:", currentTime_gnormplots)
 cat("\n")
 paste("Endtime for plotting centrality:", currentTime_centrality)
 cat("\n")
-
+paste("Endtime for plotting top 10 centrality:", currentTime_topten)
+cat("\n")
 sink(file = NULL, )
