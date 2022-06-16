@@ -189,7 +189,6 @@ cat('end_names_filtering-by-max-component', "\n")
 
 # Package multinet
 
-
 # Complete network #1
 nodes1 = read.csv("data/nodes1.csv", header=T, as.is=T)
 links1 = read.csv("data/links1.csv", header=T, as.is=T)
@@ -221,7 +220,6 @@ cat('end_network_construction', "\n")
 
 
 # Package igraph
-
 
 # Complete network #1
 links_no_dupl1 = links1[-which(duplicated(links1[,c("from", "to")])==T),] 
