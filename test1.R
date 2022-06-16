@@ -660,9 +660,33 @@ cat('end_plots', "\n")
 
 
 # Reading the names from a list, names taken from 2019 NatEcoEvo paper)
+#Bats
 
 seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
 selection =read.csv("input/Names_impo.csv",  as.is=1)
+selection = selection[order(selection$name),]
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/important_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/important_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/important_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+
+#Plants
+
+seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
+selection =read.csv("input/Names_impo_plants.csv",  as.is=1)
 selection = selection[order(selection$name),]
 for (i in 1:length(selection)) {
   	
