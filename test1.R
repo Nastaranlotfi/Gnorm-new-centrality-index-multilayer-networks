@@ -768,6 +768,65 @@ similarity_dist = similarity_dist/ranking_cutoff
 # Saving both items of similarity in one RData
 save(similarity_bin,similarity_dist, file = "results/similarity_Bat_Net.RData")
 
+
+#Plants
+load("results/bats_plants_allCentr.RData")
+clo1 = clo_plants
+btw1 = btw_plants
+eig1 = eig_plants
+deg1 = deg_plants
+Gnorm1 = Gnorm_plants
+centr_list_bats = list(clo1, btw1, eig1, deg1, Gnorm1)
+
+most_central_list = list()
+ranking_cutoff = 10
+for (i in 1:length(centr_list_bats)) {
+  centr_temp = centr_list_bats[[i]]
+  centr_temp = sort(centr_temp, decreasing = TRUE)
+  centr_temp = centr_temp[1:ranking_cutoff]
+  most_central_list[[i]] = centr_temp
+}
+
+# Compare how many nodes found in Gnorm are present in other methods
+Gnorm_most_central = most_central_list[[5]]
+similarity_bin = rep(0, length(most_central_list))
+names(similarity_bin) = c("clo", "btw", "eig", "deg", "Gnorm")
+similarity_string_list = list()
+for (i in 1:(length(most_central_list))) {
+  list_temp = list()
+  for (j in 1:ranking_cutoff) {
+    for (k in 1:ranking_cutoff) {
+      if (names(Gnorm_most_central[j]) == names(most_central_list[[i]][k])) {
+        similarity_bin[i] = similarity_bin[i] + 1
+        list_temp = append(list_temp, names(Gnorm_most_central[j]))
+      }
+    }
+  }
+  similarity_string_list[[i]] = list_temp
+}
+similarity_bin = similarity_bin/ranking_cutoff
+
+# Compare the distance between the rankings found in Gnorm with those present in the other methods
+Gnorm_most_central = most_central_list[[5]]
+similarity_dist = rep(0, length(most_central_list))
+names(similarity_dist) = c("clo", "btw", "eig", "deg", "Gnorm")
+for (i in 1:(length(most_central_list))) {
+  list_temp = list()
+  for (j in 1:ranking_cutoff) {
+    for (k in 1:ranking_cutoff) {
+      if (names(Gnorm_most_central[j]) == names(most_central_list[[i]][k])) {
+        similarity_dist[i] = similarity_dist[i] + (1/(1+abs(j-k)))
+      }
+    }
+  }
+}
+similarity_dist = similarity_dist/ranking_cutoff
+
+# Saving both items of similarity in one RData
+save(similarity_bin,similarity_dist, file = "results/similarity_Plants_Net.RData")
+
+
+
 currentTime_centrality <- Sys.time()
 cat('end_centrality', "\n")
 
