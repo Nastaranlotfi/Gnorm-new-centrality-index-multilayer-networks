@@ -1078,9 +1078,111 @@ for (i in 1:length(selection)) {
 
 
 currentTime_topten <- Sys.time()
-cat('end_top10', "\n")
+cat('end_top10_centralities', "\n")
 
 
+
+#############Plot top 10 and last 10 
+
+#Btas-> Gnorm Centrality
+
+
+load("results/bats_bats_allCentr.RData")
+Gnorm1 = sort(Gnorm_bats,decreasing=TRUE)
+
+selection = names(Gnorm1[1:10])
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/Bats_10top_Gnorm_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/Bats_10top_Gnorm_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/Bats_10top_Gnorm_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+
+
+Gnorm1 = sort(Gnorm_bats,decreasing=FALSE)
+
+selection = names(Gnorm1[1:10])
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/Bats_10last_Gnorm_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/Bats_10last_Gnorm_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/Bats_10last_Gnorm_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+
+
+
+#Plants-> Gnorm Centrality
+
+load("results/bats_plants_allCentr.RData")
+
+
+Gnorm1 = sort(Gnorm_plants,decreasing=TRUE)
+
+selection = names(Gnorm1[1:10])
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/Plants_10top_Gnorm_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/Plants_10top_Gnorm_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/Plants_10top_Gnorm_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+
+
+
+Gnorm1 = sort(Gnorm_plants,decreasing=FALSE)
+
+selection = names(Gnorm1[1:10])
+for (i in 1:length(selection)) {
+  	
+  	chosen_node = selection[i]
+  	png_name = paste("figures/Plants_10last_Gnorm_",selection[i], "_2d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	plot(plots)
+        dev.off()
+  	png_name = paste("figures/Plants_10last_Gnorm_",selection[i],"_3d.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+        png_name = paste("figures/Plants_10last_Gnorm_",selection[i],"_heat.png", sep = "")
+  	png(png_name, width = 700, height = 700)
+  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  	dev.off()
+	}#end for
+currentTime_toptenlastten <- Sys.time()
+cat('end_top10_last10_Gnorm', "\n")
 ################### TIMERS #####################################################
 
 
@@ -1120,5 +1222,8 @@ cat("\n")
 paste("Endtime for plotting centrality:", currentTime_centrality)
 cat("\n")
 paste("Endtime for plotting top 10 centrality:", currentTime_topten)
+cat("\n")
+
+paste("Endtime for plotting top 10 (last 10) Gnorm:", currentTime_toptenlastten)
 cat("\n")
 sink(file = NULL, )
