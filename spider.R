@@ -39,7 +39,7 @@ Ploting_bats<-function(selection,main_data, v_bats,savename){
 
 
 
-	max_min <- data.frame( Closeness=c(max(clo_bats),0) , Betweenness= c(max(btw_bats),0) , Eigenvector=c(max(eig_bats),0) ,  Degree=c(max(deg_bats),0) , Gnorm=c(max(G),0) )
+	max_min <- data.frame( Closeness=c(max(clo_bats),0) , Betweenness= c(max(btw_bats),0) , Eigenvector=c(max(eig_bats),0) ,  Degree=c(max(deg_bats),0) , Gnorm=c(max(Gnorm_bats),0) )
 	rownames(max_min) <- c("Max", "Min")
 
 	df <- rbind(max_min, data)
@@ -79,7 +79,7 @@ Ploting_plants<-function(selection,main_data, v_bats,savename){
 
 
 
-	max_min <- data.frame( Closeness=c(max(clo_plants),0) , Betweenness= c(max(btw_plants),0) , Eigenvector=c(max(eig_plants),0) ,  Degree=c(max(deg_plants),0) , Gnorm=c(max(G),0) )
+	max_min <- data.frame( Closeness=c(max(clo_plants),0) , Betweenness= c(max(btw_plants),0) , Eigenvector=c(max(eig_plants),0) ,  Degree=c(max(deg_plants),0) , Gnorm=c(max(Gnorm_plants),0) )
 	rownames(max_min) <- c("Max", "Min")
 
 	df <- rbind(max_min, data)
