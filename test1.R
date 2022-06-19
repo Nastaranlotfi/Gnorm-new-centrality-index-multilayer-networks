@@ -435,6 +435,13 @@ deg = centr_degree(net_mono)
 deg_formated = deg$res
 names(deg_formated) = names(clo)
 
+
+clo[order(names(clo))]
+btw[order(names(btw))]
+eig[order(names(eig))]
+deg[order(names(deg))]
+G_norm_mean[order(names(G_norm_mean))]
+
 save(clo, btw, eig_formated, deg_formated,
      G_norm_mean, file = "results/bats_allCentr.RData")
 
@@ -445,92 +452,29 @@ cat('end_netparameter', "\n")
 ################### SEPARATING NODE CLASSES ####################################
 
 
-load("results/Bat_Net.RData")
+nodes2 = read.csv("data/nodes2.csv", header=T, as.is=T)
 
-n_bats = subset(nodes2, taxon == "Bats")
-n_plants = subset(nodes2, taxon == "Plants")
 
+data=load("results/bats_allCentr.RData")
 eig = eig_formated
 deg = deg_formated
 
-Gnorm_bats = c()
-Gnorm_plants = c()
-names_bats = c()
-names_plants = c()
+n_bats = subset(nodes2, taxon == "Bats")
+n_plants = subset(nodes2, taxon == "Plants")
+#Bats
+clo_bats=Separation(n_bats,clo)
+btw_bats = Separation(n_bats,btw)
+eig_bats = Separation(n_bats,eig)
+deg_bats = Separation(n_bats,deg)
+Gnorm_bats=Separation(n_bats, G_norm_mean)
+#Plants
+clo_plants = Separation(n_plants,clo)
+btw_plants = Separation(n_plants,btw)
+eig_plants = Separation(n_plants,eig)
+deg_plants = Separation(n_plants,deg)
+Gnorm_plants = Separation(n_plants,G_norm_mean)
 
-clo_bats = c()
-clo_plants = c()
-names_bats = c()
-names_plants = c()
 
-btw_bats = c()
-btw_plants = c()
-names_bats = c()
-names_plants = c()
-
-eig_bats = c()
-eig_plants = c()
-names_bats = c()
-names_plants = c()
-
-deg_bats = c()
-deg_plants = c()
-names_bats = c()
-names_plants = c()
-
-k = 1
-for (i in 1:length(clo)) {
-  	for (j in 1:length(n_bats[,1])) {
-    		if (names(clo[i]) == n_bats[j,1]) {
-      			clo_bats[k] = clo[i]
-     		 	names_bats[k] = names(clo[i]) 
-      
-      			Gnorm_bats[k] = G_norm_mean[i]
-      
-      			btw_bats[k] = btw[i]
-
-      			eig_bats[k] = eig[i]
-      
-      			deg_bats[k] = deg[i]
-           
-     		 	k = k+1
-    			}#end if
-  		}#end for j
-	}#end for i
-
-k = 1
-for (i in 1:length(clo)) {
-	for (j in 1:length(n_plants[,1])) {
-    		if (names(clo[i]) == n_plants[j,1]) {
-      			clo_plants[k] = clo[i]
-      			names_plants[k] = names(clo[i]) 
-      
-      			Gnorm_plants[k] = G_norm_mean[i]
-      
-      			btw_plants[k] = btw[i]     
-      
-      			eig_plants[k] = eig[i]
-      
-      			deg_plants[k] = deg[i]           
-      			k = k+1
-    			}#end if
-  		}#end for j
-	}#end for i
-
-names(Gnorm_bats) = names_bats
-names(Gnorm_plants) = names_plants
-
-names(clo_bats) = names_bats
-names(clo_plants) = names_plants
-
-names(btw_bats) = names_bats
-names(btw_plants) = names_plants
-
-names(eig_bats) = names_bats
-names(eig_plants) = names_plants
-
-names(deg_bats) = names_bats
-names(deg_plants) = names_plants
 
 save(clo_bats, btw_bats, eig_bats,
      deg_bats, Gnorm_bats, file = "results/bats_bats_allCentr.RData")
