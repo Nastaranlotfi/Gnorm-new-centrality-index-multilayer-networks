@@ -582,7 +582,27 @@ Plot_number_modularity <- function(partitions_of_omega1,gamma_min1,gamma_max1,ga
 	dev.off()
 	return()
 	}
+#############################################################################
+####Seperating data of Bats and Plants from each other 
+
+Separation=function(names,data){
+	k=1
+	data_specie=c()
+	names_specie=c()
+	for (i in 1:length(data)) {
+  	for (j in 1:length(names[,1])) {
+    		if (names(data[i]) == names[j,1]) {
+      			data_specie[k] = data[i]
+     		 	names_specie[k] = names(data[i]) 
+     		 	k = k+1
+    			}#end if
+  		}#end for j
+	}#end for i
+	names(data_specie) = names_specie
 	
+	return (data_specie)
+
+}
 	
 #############################################################################
 #-------------------------------------------------------------------
