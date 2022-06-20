@@ -1,7 +1,7 @@
 library(ggplot2)
 library(png)
 library(fmsb)
-
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 ########Define the characters of the plot################
 create_beautiful_radarchart <- function(data, color = "#00AFBB", 
@@ -39,7 +39,7 @@ Ploting_bats<-function(selection,main_data, v_bats,savename){
 
 
 
-	max_min <- data.frame( Closeness=c(max(clo_bats),0) , Betweenness= c(max(btw_bats),0) , Eigenvector=c(max(eig_bats),0) ,  Degree=c(max(deg_bats),0) , Gnorm=c(max(Gnorm_bats),1) )
+	max_min <- data.frame( Closeness=c(max(clo_bats),0) , Betweenness= c(max(btw_bats),0) , Eigenvector=c(max(eig_bats),0) ,  Degree=c(max(deg_bats),0) , Gnorm=c(max(Gnorm_bats),min(Gnorm_bats)) )
 	rownames(max_min) <- c("Max", "Min")
 
 	df <- rbind(max_min, data)
@@ -72,14 +72,14 @@ Ploting_plants<-function(selection,main_data, v_plants,savename){
 	deg=deg_plants[selection]
 	G=Gnorm_plants[selection]
 
-	Name=v_bats$code[match(selection,v_bats$name)]
+	Name=v_plants$code[match(selection,v_plants$name)]
 	#######Prepare the data for plot
 
 	data <- data.frame( row.names = Name, Closeness=clo, Betweenness=btw, Eigenvector=eig, Degree=deg, Gnorm=G)
 
 
 
-	max_min <- data.frame( Closeness=c(max(clo_plants),0) , Betweenness= c(max(btw_plants),0) , Eigenvector=c(max(eig_plants),0) ,  Degree=c(max(deg_plants),0) , Gnorm=c(max(Gnorm_plants),1) )
+	max_min <- data.frame( Closeness=c(max(clo_plants),0) , Betweenness= c(max(btw_plants),0) , Eigenvector=c(max(eig_plants),0) ,  Degree=c(max(deg_plants),0) , Gnorm=c(max(Gnorm_plants),min(Gnorm_plants)) )
 	rownames(max_min) <- c("Max", "Min")
 
 	df <- rbind(max_min, data)
