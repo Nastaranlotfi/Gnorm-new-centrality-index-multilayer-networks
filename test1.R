@@ -15,6 +15,7 @@ library(RColorBrewer)
 
 ################### SET UP AND DATA IMPORT #####################################
 
+
 cat("\014")  
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
@@ -328,7 +329,6 @@ for (gamma_index in 1:length(gammas)) {
   
 	}#end of gamma
 
-
 ##Finding mean over Gamma
 G_norm_sum = G_norm_list[[1]]
 for (i in 2:length(G_norm_list)) {
@@ -435,7 +435,6 @@ deg = centr_degree(net_mono)
 deg_formated = deg$res
 names(deg_formated) = names(clo)
 
-
 clo[order(names(clo))]
 btw[order(names(btw))]
 eig[order(names(eig))]
@@ -473,8 +472,6 @@ btw_plants = Separation(n_plants,btw)
 eig_plants = Separation(n_plants,eig)
 deg_plants = Separation(n_plants,deg)
 Gnorm_plants = Separation(n_plants,G_norm_mean)
-
-
 
 save(clo_bats, btw_bats, eig_bats,
      deg_bats, Gnorm_bats, file = "results/bats_bats_allCentr.RData")
@@ -769,12 +766,13 @@ similarity_dist = similarity_dist/ranking_cutoff
 # Saving both items of similarity in one RData
 save(similarity_bin,similarity_dist, file = "results/similarity_Plants_Net.RData")
 
-
-
 currentTime_centrality <- Sys.time()
 cat('end_centrality', "\n")
 
-###############TOP 10 CENTRALITIES DETECTION######################
+
+################### TOP 10 CENTRALITIES DETECTION ##############################
+
+
 #Finding the top 10 in each centrality and plotting its relativ Gnorm
 
 #Bats section
@@ -897,7 +895,6 @@ for (i in 1:length(selection)) {
   	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
   	dev.off()
 	}#end for
-
 
 
 #Plants section
@@ -1025,11 +1022,10 @@ currentTime_topten <- Sys.time()
 cat('end_top10_centralities', "\n")
 
 
+################### PLOT TOP 10 AND BOTTOM 10 ##################################
 
-#############Plot top 10 and last 10 
 
 #Btas-> Gnorm Centrality
-
 
 load("results/bats_bats_allCentr.RData")
 Gnorm1 = sort(Gnorm_bats,decreasing=TRUE)
@@ -1076,7 +1072,6 @@ for (i in 1:length(selection)) {
 	}#end for
 
 
-
 #Plants-> Gnorm Centrality
 
 load("results/bats_plants_allCentr.RData")
@@ -1104,7 +1099,6 @@ for (i in 1:length(selection)) {
 	}#end for
 
 
-
 Gnorm1 = sort(Gnorm_plants,decreasing=FALSE)
 
 selection = names(Gnorm1[1:10])
@@ -1127,6 +1121,8 @@ for (i in 1:length(selection)) {
 	}#end for
 currentTime_toptenlastten <- Sys.time()
 cat('end_top10_last10_Gnorm', "\n")
+
+
 ################### TIMERS #####################################################
 
 

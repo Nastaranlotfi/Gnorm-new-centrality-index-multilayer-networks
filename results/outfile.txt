@@ -357,7 +357,7 @@ Poraqueiba sericea
 Poulsenia armata 
 Pouteria campechiana 
 Pouteria multiflora 
-Pouteria reticulata  
+Pouteria reticulata 
 Pouteria sapota 
 Praecereus euchlorus smithianus 
 Protium araguense 
@@ -378,7 +378,7 @@ Quararibea ochrocalyx
 Quararibea parvifolia 
 Randia armata 
 Rhinophylla pumilio 
-Rollinia exsucca  
+Rollinia exsucca 
 Rollinia mucosa 
 Roystonea borinquena 
 Roystonea oleracea 
@@ -839,7 +839,7 @@ Poraqueiba sericea,Frugivory
 Poulsenia armata,Frugivory
 Pouteria campechiana,Frugivory
 Pouteria multiflora,Frugivory
-Pouteria reticulata ,Frugivory
+Pouteria reticulata,Frugivory
 Pouteria sapota,Frugivory
 Praecereus euchlorus smithianus,Frugivory
 Protium araguense,Frugivory
@@ -860,7 +860,7 @@ Quararibea ochrocalyx,Frugivory
 Quararibea parvifolia,Frugivory
 Randia armata,Frugivory
 Rhinophylla pumilio,Frugivory
-Rollinia exsucca ,Frugivory
+Rollinia exsucca,Frugivory
 Rollinia mucosa,Frugivory
 Roystonea borinquena,Frugivory
 Roystonea oleracea,Frugivory
@@ -1319,7 +1319,7 @@ Poraqueiba sericea,Nectarivory
 Poulsenia armata,Nectarivory
 Pouteria campechiana,Nectarivory
 Pouteria multiflora,Nectarivory
-Pouteria reticulata ,Nectarivory
+Pouteria reticulata,Nectarivory
 Pouteria sapota,Nectarivory
 Praecereus euchlorus smithianus,Nectarivory
 Protium araguense,Nectarivory
@@ -1340,7 +1340,7 @@ Quararibea ochrocalyx,Nectarivory
 Quararibea parvifolia,Nectarivory
 Randia armata,Nectarivory
 Rhinophylla pumilio,Nectarivory
-Rollinia exsucca ,Nectarivory
+Rollinia exsucca,Nectarivory
 Rollinia mucosa,Nectarivory
 Roystonea borinquena,Nectarivory
 Roystonea oleracea,Nectarivory
@@ -1586,7 +1586,7 @@ Artibeus concolor,Cecropia obtusa,Frugivory
 Artibeus planirostris,Cecropia obtusa,Frugivory
 Artibeus lituratus,Cecropia obtusa,Frugivory
 Sturnira giannae,Cecropia obtusa,Frugivory
-Carollia perspicillata,Rollinia exsucca ,Frugivory
+Carollia perspicillata,Rollinia exsucca,Frugivory
 Carollia perspicillata,Protium araguense,Frugivory
 Carollia perspicillata,Vismia guianensis,Frugivory
 Carollia perspicillata,Vismia latifolia,Frugivory
@@ -1682,7 +1682,7 @@ Artibeus jamaicensis,Pseudolmedia glabrata,Frugivory
 Artibeus jamaicensis,Nectandra ambigens,Frugivory
 Artibeus jamaicensis,Pouteria campechiana,Frugivory
 Artibeus jamaicensis,Manilkara zapota,Frugivory
-Artibeus jamaicensis,Pouteria reticulata ,Frugivory
+Artibeus jamaicensis,Pouteria reticulata,Frugivory
 Artibeus jamaicensis,Sideroxylon capiri,Frugivory
 Artibeus jamaicensis,Spondias mombin,Frugivory
 Artibeus jamaicensis,Cynometra retusa,Frugivory
