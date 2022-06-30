@@ -390,33 +390,32 @@ cat('end_gnormfreq', "\n")
 ################### G-NORM OF SELECTED NODES ###################################
 
 
-load("results/Bat_Net.RData")
+#load("results/Bat_Net.RData")
 
-seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
-selection = Select_Example_Nodes(G_norm_mean_ordered) #function that finds the nodes we are interested
-for (i in 1:length(selection)) {
+#seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
+#selection = Select_Example_Nodes(G_norm_mean_ordered) #function that finds the nodes we are interested
+#for (i in 1:length(selection)) {
   	
-  	chosen_node = names(selection[i])
-  	png_name = paste("figures/",names(selection[i]), "_2d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean,
-  	                                      chosen_node, vec_W, gammas)
-  	plot(plots)
-        dev.off()
-  	png_name = paste("figures/",names(selection[i]), "_3d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, 
-  	                          chosen_node, vec_W, gammas)
-        dev.off()
-  	png_name = paste("figures/",names(selection[i]), "_heat.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, 
-  	                           chosen_node, vec_W, gammas)
-  	dev.off()
-	}#end for
+#  	chosen_node = names(selection[i])
+#  	png_name = paste("figures/",names(selection[i]), "_2d.png", sep = "")
+# 	png(png_name, width = 700, height = 700)
+#  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean,chosen_node, vec_W, gammas)
+#  	plot(plots)
+#        dev.off()
+#  	png_name = paste("figures/",names(selection[i]), "_3d.png", sep = "")
+#  	png(png_name, width = 700, height = 700)
+#  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, 
+#  	                          chosen_node, vec_W, gammas)
+#        dev.off()
+#  	png_name = paste("figures/",names(selection[i]), "_heat.png", sep = "")
+#  	png(png_name, width = 700, height = 700)
+#  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, 
+#  	                           chosen_node, vec_W, gammas)
+#  	dev.off()
+#	}#end for
 
-currentTime_gnormnodes <- Sys.time()
-cat('end_gnormnodes', "\n")
+#currentTime_gnormnodes <- Sys.time()
+#cat('end_gnormnodes', "\n")
 
 
 ################### NETWORK PARAMETERS #########################################
