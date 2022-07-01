@@ -111,7 +111,7 @@ The data and code provided here aim at making reproducible the graphical and num
 
     a.  Bat/Plant_impo_btw/eig/deg/clo/Gnorm.RData
 
-    b.  Bat_Net_RData  -\> Contain the first section results, for Gnorm of bats and plants,
+    b.  Bat_Net_RData  -\> Contain the main results obtianed in Gnorm section (bats and plants),
 
     c.  bats_allCentr.RData  -\> Contains the results of all centralities (Bats and Plants)
 
