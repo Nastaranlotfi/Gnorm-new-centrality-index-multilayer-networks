@@ -48,29 +48,42 @@ The data and code provided here aim at making reproducible the graphical and num
 
 3.  Figures (folder)
 
-    a.  ...\_end_bat/plant.png
+    a. Bats/Plants_10last/10top_Gnorm_name of species_2d/3d/heat.png
+            the 10 top and the 10 last of Gnorm list are plotted, naming is :
+               1. bats or plants
+               2. 10 top or 10 last
+               3. Gnorm
+               4. name of species
+               5. type of plot which is 2d, 3d or heat
+               
+    b. Bats/Plants_btw/Clo/Deg/Eig_name of species_2d/3d/heat.png  
+            Finding the top 10 in each centrality and plotting their relative Gnorm
+                1. bats or plants
+                2. type of centrality could be btw(betweenness), clo(closeness), eig(eigenvector), deg (degree) or Gnorm
+                3. name of species
+                4. type of plot which is 2d, 3d or heat
+                
+   c. important\_\_name of species_2d/3d/heat.png
+            plotting the Gnorm of species from a list (important names), names taken from 2019 NatEcoEvo paper)    
+                1. important
+                2. species name
+                3. type of plot which is 2d, 3d or heat
 
-    b.  ...\_firts_bat/plant.png
+    d.  ...\_end_bat/plant.png  -\> obtained from spider.R
 
-    c.  Bats/Plants_10last/10top_Gnorm_name of species_2d/3d/heat.png
-
-    d.  Bats/Plants_btw/Clo/Deg/Eig_name of species_2d/3d/heat.png
-
-    e.  Btas_Gnorm_name of species_2d/3d/heat.png
-
+    e.  ...\_firts_bat/plant.png -\> obtained from spider.R
+ 
     f.  Modularity.png
 
     g.  Number_of_modules.png
 
     h.  hist_Gnorm.png
 
-    i.  important\_\_name of species_2d/3d/heat.png
+    i.  Network_visualization_complete.png
 
-    j.  Network_visualization_complete.png
+    j.  Network_visualization_component.png
 
-    k.  Network_visualization_component.png
-
-    l.  C_correlogram_bats_bats/plants/all_pearson/spearman.png
+    k.  C_correlogram_bats_bats/plants/all_pearson/spearman.png
 
 4.  data_random
 
@@ -98,23 +111,26 @@ The data and code provided here aim at making reproducible the graphical and num
 
     a.  Bat/Plant_impo_btw/eig/deg/clo/Gnorm.RData
 
-    b.  Bat_Net_RData
+    b.  Bat_Net_RData  -\> Contain the first section results, for Gnorm of bats and plants,
 
-    c.  bats_allCentr.RData
+    c.  bats_allCentr.RData  -\> Contains the results of all centralities (Bats and Plants)
 
-    d.  bats_bats/plants_allCentr.RData
+    d.  bats_bats/plants_allCentr.RData  -\> Contains the results of centralities that they are separated for bats and plants
 
-    e.  outfile.txt
+    e.  outfile.txt  -\> general information of constructed multinet
 
-    f.  similarity_bat/plant_Net.RData
+    f.  similarity_bat/plant_Net.RData  -\> Values of similarity between Gnorm and other centralities
 
-    g.  timers.txt
+    g.  timers.txt  -\> time file
 
 ## Instructions
 
 1.  Run the respective script to reproduce the chosen figure or table;
 
-    Order of running programs: aa. test1.R (main code) bb. spider.R (producing spider plot) cc. random_final.R (main code for random network)
+    Order of running programs:
+        aa. test1.R (the main code, all the necessary information needed are gained from this code. It is necessary to run this first, and use the results for the next codes. It contains 95% of analysis and plots)
+        bb. spider.R (producing spider plot, the needed data is produced by test1.R)
+        cc. random_final.R (main code for random network, it uses the information of the number of links, and number of layers, and do the random network, and find the Gnorm for random network)
 
 2.  Follow the instructions provided in the script;
 
@@ -149,3 +165,6 @@ We are grateful to our lab mates and institutions, who helped us at different st
 -   Mucha, P. J., Richardson, T., Macon, K., Porter, M. A., & Onnela, J.-P. (2010). Com- munity structure in time-dependent, multiscale, and multiplex networks. Science, 328(5980), 876--878. <https://doi.org/10.1126/science.1184819>
 
 -   Pilosof, S., Porter, M. A., Pascual, M., & Kéfi, S. (2017). The multilayer nature of ecological networks. Nature Ecology & Evolution, 1(4). <https://doi.org/10.1038/s41559-017-0101>
+
+
+
