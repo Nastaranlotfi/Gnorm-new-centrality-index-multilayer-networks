@@ -100,10 +100,7 @@ The data and code provided here aim at making reproducible the graphical and num
     d.  random_final.R -\> Generate the random network, calculates the Gnorm, and plots the hist Gnorm of random network
 
     e.  spider.R -\> Generates the spider plot
-    
-    
-
-        
+            
         
         
 7.   results
@@ -121,14 +118,6 @@ The data and code provided here aim at making reproducible the graphical and num
     f. similarity_bat/plant_Net.RData
     
     g. timers.txt
-
-
-
-
-
-
-
-
 
 
 ## Instructions
