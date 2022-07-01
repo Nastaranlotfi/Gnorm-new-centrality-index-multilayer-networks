@@ -140,6 +140,6 @@ The data and code provided here aim at making reproducible the graphical and num
 If you have any questions, corrections, or suggestions, please feel free to open an [issue](https://github.com/Nastaranlotfi/Test1-code/issues) or make a [pull request](https://github.com/Nastaranlotfi/Test1-code/pulls).
 
 ## Acknowledgments
-
+N. Lotfi is thankful to the FAPESP (grant with number 2020/08359-1) for the support given to this research
 
 
