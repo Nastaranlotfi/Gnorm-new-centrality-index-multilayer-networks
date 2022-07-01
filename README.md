@@ -6,7 +6,7 @@ Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco A. Rodrigues & Marco A. 
 
 Follow-up of Henrique Requejo's BSc monograph:
 
-Requejo HS. 2021. Um teste do algoritmo de modularidade Louvain como uma ferramenta para detectar espécies-chave em redes de interações multicamada. Honors Degree Monograph, Graduação em Matemática Aplicada e Computacional, Instituto de Matemática e Estatística, Universidade de São Paulo, São Paulo, Brazil. Advisor: Mello MAR.
+Requejo HS. 2021. *Um teste do algoritmo de modularidade Louvain como uma ferramenta para detectar espécies-chave em redes de interações multicamada*. Honors Degree Monograph, Graduação em Matemática Aplicada e Computacional, Instituto de Matemática e Estatística, Universidade de São Paulo, São Paulo, Brazil. Advisor: Mello MAR.
 
 [Ecological Synthesis Lab](https://marcomellolab.wordpress.com) (SintECO), University of São Paulo.
 
@@ -24,117 +24,103 @@ The data and code provided here aim at making reproducible the graphical and num
 
 ## List of folders and files
 
-1.  Input (folder)
+1.  Code (main folder)
 
-    a.  links_clean.csv -\> Main input, contains connections and the layer they belong to.
+    a.  Aux_function.R -\> Script containing the functions used in other scripts.
 
-    b.  Names_impo.csv -\> contains the names of important Bat species which were obtained from other research.
+    b.  Aux_function_random.R -\> Script containing the functions used in random network scripts.
 
-    c.  Names_impo_plants.csv -\> contains the name of important Plants species which were obtained from other research.
+    c.  test1.R -\> Script for making a network, analyzing Gnorm, calculating closeness, degree, eigenvector, and betweenness centralities, and plotting the related figures.
 
-    d.  bats_code.csv -\> Name of the Bat species with their abbreviation format
+    d.  random_final.R -\> Generates the random network, calculates Gnorm, and plots the histogram of Gnorm of the random network.
 
-    e.  plants_code.csv -\> Name of the plant species with their abbreviation format
+    e.  spider.R -\> Plots the spidercharts.
 
-2.  Data (folder)
+2.  Input (folder)
 
-    a.  links1.csv -\> Produced with test1.R, links of the whole network
+    a.  links_clean.csv -\> Main input, contains the links and the layers they belong to.
 
-    b.  links2.csv -\> Produced with test1.R, links of the maximum component of the network
+    b.  Names_impo.csv -\> Contains the names of important bat species identified by Mello et al. (2019).
 
-    c.  nodes1.csv -\> Produced with test1.R, name of the nodes of the whole network
+    c.  Names_impo_plants.csv -\> Contains the name of important plant species identified by Mello et al. (2019).
 
-    d.  nodes2.csv -\> Produced with test1.R, name of the nodes of the maximum component of the network
+    d.  bats_code.csv -\> Full scientific names of the bat species with their abbreviation codes.
 
-3.  Figures (folder)
+    e.  plants_code.csv -\> Full scientific names of the plant species with their abbreviation codes.
 
-    a. Bats/Plants_10last/10top_Gnorm_name of species_2d/3d/heat.png
-            the 10 top and the 10 last of Gnorm list are plotted, naming is :
-               1. bats or plants
-               2. 10 top or 10 last
-               3. Gnorm
-               4. name of species
-               5. type of plot which is 2d, 3d or heat
-               
-    b. Bats/Plants_btw/Clo/Deg/Eig_name of species_2d/3d/heat.png  
-            Finding the top 10 in each centrality and plotting their relative Gnorm
-                1. bats or plants
-                2. type of centrality could be btw(betweenness), clo(closeness), eig(eigenvector), deg (degree) or Gnorm
-                3. name of species
-                4. type of plot which is 2d, 3d or heat
-                
-   c. important\_\_name of species_2d/3d/heat.png
-            plotting the Gnorm of species from a list (important names), names taken from 2019 NatEcoEvo paper)    
-                1. important
-                2. species name
-                3. type of plot which is 2d, 3d or heat
+3.  Data (folder)
 
-    d.  ...\_end_bat/plant.png  -\> obtained from spider.R
+    a.  links1.csv -\> Produced with test1.R, links of the complete network.
 
-    e.  ...\_firts_bat/plant.png -\> obtained from spider.R
- 
+    b.  links2.csv -\> Produced with test1.R, links of the maximum component of the network.
+
+    c.  nodes1.csv -\> Produced with test1.R, nodes of the complete network.
+
+    d.  nodes2.csv -\> Produced with test1.R, nodes of the maximum component of the network
+
+4.  Figures (folder)
+
+    a.  Bats/Plants_10last/10top_Gnorm_name of species_2d/3d/heat.png -\> The top 10 and bottom 10 species in the ranking of Gnorm are plotted. File naming goes like: 1. bats or plants; 2. 10 top or 10 last; 3. Gnorm; 4. name of species; 5. type of plot (2d, 3d or heat).
+
+    b.  Bats/Plants_btw/Clo/Deg/Eig_name of species_2d/3d/heat.png -\> The top 10 species in each ranking of centrality, which are plotted with their relative Gnorm. File naming goes like: 1. bats or plants; 2. type of centrality could be btw(betweenness), clo(closeness), eig(eigenvector), deg (degree) or Gnorm; 3. name of species 4. type of plot (2d, 3d or heat).
+
+    c.  important\_\_name of species_2d/3d/heat.png -\> Plotting the Gnorm of species from a list (important names), names taken from Mello et al. (2019). File naming goes like: 1. important; 2. species name; 3. type of plot (2d, 3d or heat).
+
+    d.  ...\_end_bat/plant.png -\> Spidercharts produced with `spider.R`.
+
+    e.  ...\_firts_bat/plant.png -\> Spidercharts produced with `spider.R`.
+
     f.  Modularity.png
 
     g.  Number_of_modules.png
 
     h.  hist_Gnorm.png
 
-    i.  Network_visualization_complete.png
+    i.  Network_visualization_complete.png -\> Graph of the complete netwotk.
 
-    j.  Network_visualization_component.png
+    j.  Network_visualization_component.png -\> Graph of the giant component of the network.
 
-    k.  C_correlogram_bats_bats/plants/all_pearson/spearman.png
+    k.  C_correlogram_bats_bats/plants/all_pearson/spearman.png -\> Centrality correlogram.
 
-4.  data_random
+5.  data_random
 
-    a.  rand_total\_...\_links.csv -\> random network produced with the same size of real network or maximum component
+    a.  rand_total\_...\_links.csv -\> Random network produced with the same size of real network or its maximum component.
 
-    b.  rand_total.RData -\> results obtained for Gnorm analysis of random network
+    b.  rand_total.RData -\> Results obtained for the Gnorm analysis of the random network.
 
-5.  figures_random (folder)
+6.  figures_random (folder)
 
     a.  hist_Gnorm_random.png
 
-6.  Code (main folder)
-
-    a.  Aux_function.R -\> script containing the functions used in other scripts
-
-    b.  Aux_function_random.R -\> script containing the functions used in random network scripts
-
-    c.  test1.R -\> script for making a network, analyzing Gnorm, calculation of closeness, degree, eigenvector and betweenness centralities, plotting the related figures.
-
-    d.  random_final.R -\> Generate the random network, calculates the Gnorm, and plots the hist Gnorm of random network
-
-    e.  spider.R -\> Generates the spider plot
-
-7.  results
+7.  Results (folder)
 
     a.  Bat/Plant_impo_btw/eig/deg/clo/Gnorm.RData
 
-    b.  Bat_Net_RData  -\> Contain the main results obtianed in Gnorm section (bats and plants),
+    b.  Bat_Net_RData -\> Contains the main results obtianed in the Gnorm section (bats and plants).
 
-    c.  bats_allCentr.RData  -\> Contains the results of all centralities (Bats and Plants)
+    c.  bats_allCentr.RData -\> Contains the results of all centralities (bats and plants).
 
-    d.  bats_bats/plants_allCentr.RData  -\> Contains the results of centralities that they are separated for bats and plants
+    d.  bats_bats/plants_allCentr.RData -\> Contains separate results of centralities for bats and plants.
 
-    e.  outfile.txt  -\> general information of constructed multinet
+    e.  outfile.txt -\> General information about the multilayer network created with the package *multinet*.
 
-    f.  similarity_bat/plant_Net.RData  -\> Values of similarity between Gnorm and other centralities
+    f.  similarity_bat/plant_Net.RData -\> Values of similarity between Gnorm and other centralities.
 
-    g.  timers.txt  -\> time file
+    g.  timers.txt -\> Time spent running each section of `test1.R`.
 
 ## Instructions
 
-1.  Run the respective script to reproduce the chosen figure or table;
+1.  Run the respective script to reproduce the chosen analysis, figure or table. You should run the scripts in the following order:
 
-    Order of running programs:
-        aa. test1.R (the main code, all the necessary information needed are gained from this code. It is necessary to run this first, and use the results for the next codes. It contains 95% of analysis and plots)
-        bb. spider.R (producing spider plot, the needed data is produced by test1.R)
-        cc. random_final.R (main code for random network, it uses the information of the number of links, and number of layers, and do the random network, and find the Gnorm for random network)
+i. `test1.R:` the main code, which produces all information needed for running the other scripts. It is necessary to run this first, and then use the results for the next codes. It contains 95% of all analyses;
 
-2.  Follow the instructions provided in the script;
+ii. `spider.R:` produces the spidercharts, using data produced by `test1.R`;
 
-3.  Check the file in the Figures folder.
+iii. `random_final.R:` the main code for producing the random network. It uses information about the number of links and number of layers, then it builds the random network and calculates Gnorm for it.
+
+2.  Follow the instructions provided in each script.
+
+3.  Check the files in the `Figures` folder.
 
 ## Feedback
 
@@ -165,6 +151,3 @@ We are grateful to our lab mates and institutions, who helped us at different st
 -   Mucha, P. J., Richardson, T., Macon, K., Porter, M. A., & Onnela, J.-P. (2010). Com- munity structure in time-dependent, multiscale, and multiplex networks. Science, 328(5980), 876--878. <https://doi.org/10.1126/science.1184819>
 
 -   Pilosof, S., Porter, M. A., Pascual, M., & Kéfi, S. (2017). The multilayer nature of ecological networks. Nature Ecology & Evolution, 1(4). <https://doi.org/10.1038/s41559-017-0101>
-
-
-
