@@ -26,8 +26,8 @@ if (!dir.exists(path = "figures_random")){
   print("Dir already exists!")
 }
 
-if (!dir.exists(path = "results_random")){
-  dir.create(path = "results_random")
+if (!dir.exists(path = "data_random")){
+  dir.create(path = "data_random")
 } else {
   print("Dir already exists!")
 }
@@ -307,7 +307,7 @@ Names1<-rbind(Fa,Na)
 colnames(Names1) <- c("name","taxon.label")
 
 
-write.csv(Names1,"results_random/Names_random.csv", row.names = FALSE)
+write.csv(Names1,"data_random/Names_random.csv", row.names = FALSE)
 
 
 ###############################################################
