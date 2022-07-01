@@ -1,3 +1,14 @@
+################################################################################
+#### Ecological Synthesis Lab (SintECO): https://marcomellolab.wordpress.com
+
+#### Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco Rodrigues &
+####          Marco A. R. Mello
+
+#### See README for further info:
+#### https://github.com/Nastaranlotfi/Test1-code#readme
+################################################################################
+
+
 #Functions---------------------------------------------------------------------------------------------
 
 #Convert a csv file nodes and links into a multinet input file of type MULTIPLEX (VErsion 3.0)

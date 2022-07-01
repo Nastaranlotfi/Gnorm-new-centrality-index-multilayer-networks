@@ -1,3 +1,16 @@
+################################################################################
+#### Ecological Synthesis Lab (SintECO): https://marcomellolab.wordpress.com
+
+#### Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco Rodrigues &
+####          Marco A. R. Mello
+
+#### See README for further info:
+#### https://github.com/Nastaranlotfi/Test1-code#readme
+################################################################################
+
+
+################### SET UP AND DATA IMPORT #####################################
+
 library(akima)
 library(CINNA)
 library(corrgram)
@@ -11,12 +24,6 @@ library(plot3D)
 library(plyr)
 library(png)
 library(RColorBrewer)
-
-
-################### SET UP AND DATA IMPORT #####################################
-
-
-cat("\014")  
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 

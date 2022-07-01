@@ -1,11 +1,20 @@
-library(multinet)
-library(igraph)
-library(dplyr)
+################################################################################
+#### Ecological Synthesis Lab (SintECO): https://marcomellolab.wordpress.com
+
+#### Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco Rodrigues &
+####          Marco A. R. Mello
+
+#### See README for further info:
+#### https://github.com/Nastaranlotfi/Test1-code#readme
+################################################################################
 
 
 ################### SET UP AND DATA IMPORT #####################################
 
-cat("\014")  
+
+library(multinet)
+library(igraph)
+library(dplyr)
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
