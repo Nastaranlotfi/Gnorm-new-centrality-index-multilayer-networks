@@ -82,7 +82,7 @@ The data and code provided here aim at making reproducible the graphical and num
 
     a.  hist_Gnorm_random.png
 
-6.  Code (main page)
+6.  Code (main folder)
 
     a.  Aux_function.R -\> script containing the functions used in other scripts
 
@@ -96,19 +96,19 @@ The data and code provided here aim at making reproducible the graphical and num
 
 7.  results
 
-    a. Bat/Plant_impo_btw/eig/deg/clo/Gnorm.RData
+    a.  Bat/Plant_impo_btw/eig/deg/clo/Gnorm.RData
 
-    b. Bat_Net_RData
+    b.  Bat_Net_RData
 
-    c. bats_allCentr.RData
+    c.  bats_allCentr.RData
 
-    d. bats_bats/plants_allCentr.RData
+    d.  bats_bats/plants_allCentr.RData
 
-    e. outfile.txt
+    e.  outfile.txt
 
-    f. similarity_bat/plant_Net.RData
+    f.  similarity_bat/plant_Net.RData
 
-    g. timers.txt
+    g.  timers.txt
 
 ## Instructions
 
