@@ -31,7 +31,7 @@ Convert_csv_to_multinet_multiplex = function(nodes, links){
   
   	##Defining the output file and its characteristics
   	# Name of output file
-  	outfile <- "results_random/outfile.txt"
+  	outfile <- "data_random/outfile.txt"
   
   	# first line of the file
   	cat("#TYPE","\n", file = outfile)
@@ -227,7 +227,7 @@ Plot_Decaimento <- function(node_index, vec_W, seq_G_Merged, seq_G_StdDev = NULL
 
 Convert_to_Multinet <- function(nodes, links){
   	Convert_csv_to_multinet_multiplex(nodes, links) #convert the nodes and links files to the "outfile.txt" file that is importable on multinet
-  	net_multinet = read_ml("results_random/outfile.txt", name = "unnamed", sep = ',', aligned = FALSE) #import "outifile.txt" to a multinet type network
+  	net_multinet = read_ml("data_random/outfile.txt", name = "unnamed", sep = ',', aligned = FALSE) #import "outifile.txt" to a multinet type network
   	return(net_multinet)
 	}#end function
 
