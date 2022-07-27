@@ -1,6 +1,6 @@
 # Test1-code
 
-## Supplement to the paper: Lofti N, Requejo HS, Rodrigues F, Mello MAR. A new centrality index for multilayer networks. *In prep*.
+## Supplement to the paper: Lotfi N, Requejo HS, Rodrigues F, Mello MAR. A new centrality index for multilayer networks. *In prep*.
 
 Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco A. Rodrigues & Marco A. R. Mello
 
