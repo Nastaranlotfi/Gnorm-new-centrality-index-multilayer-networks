@@ -528,7 +528,7 @@ Plot_number_modularity <- function(partitions_of_omega1,gamma_min1,gamma_max1,ga
 	#Initializes the number of modules array
 	modules_quantity = matrix(0, nrow = length(vec_W1), ncol = length(gammas1))
 
-	#Inicializa a matriz de valores de modularidade
+	#Initializes the modularity array
 	modularity = matrix(0, nrow = length(vec_W1), ncol = length(gammas1))
 
 	for (j in 1:length(gammas1)) {
