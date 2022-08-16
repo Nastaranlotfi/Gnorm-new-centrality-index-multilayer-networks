@@ -142,7 +142,7 @@ Custom_plot2D = function(links, nodes, layout = NULL, colorCategory = 1, vertex_
   	for (i in 1:number_of_layers) {
     		plot(net_by_layers[[i]],
          	vertex.color = V(net_by_layers[[i]])$color,
-         	vertex.frame.color= "black",
+         	#vertex.frame.color= "black",
          	vertex.shape = "circle",
          	vertex.size= vertex_size,
          	vertex.label=vertex_label,
@@ -153,7 +153,8 @@ Custom_plot2D = function(links, nodes, layout = NULL, colorCategory = 1, vertex_
          	layout=layout,
          	bty = "c",
          	frame = TRUE) 
-    		title(layer_index$layer[i],cex.main=3,col.main="#515357") #Print layer name as title
+    		title(layer_index$layer[i],cex.main=8,col.main="#515357",adj = 0,line = -5) #Print layer name as title
+    		#text(1, 3, layer_index$layer[i],cex=5, family = "sans")#, family = "sans")
   		}#end for 
   
   
