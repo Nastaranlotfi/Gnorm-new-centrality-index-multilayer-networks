@@ -381,12 +381,12 @@ G_plot<-G_norm_mean
 names(G_plot)<-NULL 
 df<-unlist(G_plot) 
 
-png(filename="figures/hist_Gnorm.png", 
-    res = 300, width = 4000, height = 3000)
+png(filename="hist_Gnorm.png", 
+    res = 500, width = 4000, height = 3000)
 labs = colnames(df)
 
 hist(df,breaks=5,col="darkmagenta", xlim=c(1,2),
-     main="Distribution of Gnorm", xlab='G_norm')
+     main="Distribution of Gnorm", xlab='G_norm',cex=40,pch = 190,cex.lab = 1.6,cex.main=2,col.main="#515357")
 
 dev.off()
 
