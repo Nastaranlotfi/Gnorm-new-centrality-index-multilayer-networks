@@ -138,7 +138,7 @@ Custom_plot2D = function(links, nodes, layout = NULL, colorCategory = 1, vertex_
   		}#end if
   
   
-  	par(mfrow=c(par_x, par_y), bg = "#f4f4f4", cex = 0.4) #change mfrow to optimize plot space
+  	par(mfrow=c(par_x, par_y), bg = "#f4f4f4", cex = 0.3) #change mfrow to optimize plot space
   	for (i in 1:number_of_layers) {
     		plot(net_by_layers[[i]],
          	vertex.color = V(net_by_layers[[i]])$color,
