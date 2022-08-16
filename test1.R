@@ -505,8 +505,8 @@ labs = colnames(df)
 corrgram(df, cor.method = "pearson", order=FALSE, oma=c(12, 12, 7, 2), 
          lower.panel=panel.cor, upper.panel=panel.pts, 
          diag.panel=panel.density, text.panel=panel.txt,
-         outer.labels=list(bottom=list(labels=labs,cex=2,srt=90),
-                           left=list(labels=labs,cex=2,srt=0)),
+         outer.labels=list(bottom=list(labels=labs,cex=2.5,srt=90),
+                           left=list(labels=labs,cex=2.5,srt=0)),
          main="Correlogram (Pearson) between centralities and Gnorm for bats",
          cex.main = 1.5)
 dev.off()
@@ -517,8 +517,8 @@ labs = colnames(df)
 corrgram(df, cor.method = "spearman", order=FALSE, oma=c(12, 12, 7, 2), 
          lower.panel=panel.cor, upper.panel=panel.pts, 
          diag.panel=panel.density, text.panel=panel.txt,
-         outer.labels=list(bottom=list(labels=labs,cex=2,srt=90),
-                           left=list(labels=labs,cex=2,srt=0)),
+         outer.labels=list(bottom=list(labels=labs,cex=2.5,srt=90),
+                           left=list(labels=labs,cex=2.5,srt=0)),
          main="Correlogram (Spearman) between centralities and Gnorm for bats",
          cex.main = 1.5)
 dev.off()
@@ -539,8 +539,8 @@ labs = colnames(df)
 corrgram(df, cor.method = "pearson", order=FALSE, oma=c(12, 12, 7, 2), 
          lower.panel=panel.cor, upper.panel=panel.pts, 
          diag.panel=panel.density, text.panel=panel.txt,
-         outer.labels=list(bottom=list(labels=labs,cex=2,srt=90),
-                           left=list(labels=labs,cex=2,srt=0)),
+         outer.labels=list(bottom=list(labels=labs,cex=2.5,srt=90),
+                           left=list(labels=labs,cex=2.5,srt=0)),
          main="Correlogram (Pearson) between centralities and Gnorm for plants",
          cex.main = 1.5)
 dev.off()
@@ -551,8 +551,8 @@ labs = colnames(df)
 corrgram(df, cor.method = "spearman", order=FALSE, oma=c(12, 12, 7, 2), 
          lower.panel=panel.cor, upper.panel=panel.pts, 
          diag.panel=panel.density, text.panel=panel.txt,
-         outer.labels=list(bottom=list(labels=labs,cex=2,srt=90),
-                           left=list(labels=labs,cex=2,srt=0)),
+         outer.labels=list(bottom=list(labels=labs,cex=2.5,srt=90),
+                           left=list(labels=labs,cex=2.5,srt=0)),
          main="Correlogram (Spearman) between centralities and Gnorm for plants",
          cex.main = 1.5)
 dev.off()
@@ -566,6 +566,8 @@ cat('end_corrgrams', "\n")
 
 load("results/bats_allCentr.RData")
 sp_names = names(G_norm_mean)
+eig=eig_formated
+deg=deg_formated
 
 df = data.frame(clo, btw, eig, deg, G_norm_mean)
 names(df) = c("closeness", "betweeness", "eigen vector", "degreee", "Gnorm")
@@ -578,8 +580,8 @@ labs = colnames(df)
 corrgram(df, cor.method = "pearson", order=FALSE, oma=c(12, 12, 7, 2), 
          lower.panel=panel.cor, upper.panel=panel.pts, 
          diag.panel=panel.density, text.panel=panel.txt,
-         outer.labels=list(bottom=list(labels=labs,cex=2,srt=90),
-                           left=list(labels=labs,cex=2,srt=0)),
+         outer.labels=list(bottom=list(labels=labs,cex=2.5,srt=90),
+                           left=list(labels=labs,cex=2.5,srt=0)),
          main="Correlogram (Pearson) between centralities and Gnorm for bats and plants",
          cex.main = 1.5)
 dev.off()
@@ -591,8 +593,8 @@ labs = colnames(df)
 corrgram(df, cor.method = "spearman", order=FALSE, oma=c(12, 12, 7, 2), 
          lower.panel=panel.cor, upper.panel=panel.pts, 
          diag.panel=panel.density, text.panel=panel.txt,
-         outer.labels=list(bottom=list(labels=labs,cex=2,srt=90),
-                           left=list(labels=labs,cex=2,srt=0)),
+         outer.labels=list(bottom=list(labels=labs,cex=2.5,srt=90),
+                           left=list(labels=labs,cex=2.5,srt=0)),
          main="Correlogram (Spearman) between centralities and Gnorm for bats and plants",
          cex.main = 1.5)
 dev.off()
