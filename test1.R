@@ -236,7 +236,7 @@ net_layout1 = graph_from_data_frame(d = links_no_dupl1,
 layout1 = layout_nicely(net_layout1) 
 
 png(filename="figures/network_visualization_complete.png", 
-    res = 300, width = 4000, height = 3000)
+    res = 300, width = 4000, height = 2200)
 Custom_plot2D(links1, nodes1, layout1, vertex_label_cex = NULL, vertex_size = 3)
 dev.off()
 
@@ -248,7 +248,7 @@ net_layout2 = graph_from_data_frame(d = links_no_dupl2,
 layout2 = layout_nicely(net_layout2) 
 
 png(filename="figures/network_visualization_component.png", 
-    res = 300, width = 4000, height = 3000)
+    res = 300, width = 4000, height = 2200)
 Custom_plot2D(links2, nodes2, layout2, vertex_label_cex = NULL, vertex_size = 3)
 dev.off()
 
