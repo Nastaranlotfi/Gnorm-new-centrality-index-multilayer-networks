@@ -381,7 +381,7 @@ G_plot<-G_norm_mean
 names(G_plot)<-NULL 
 df<-unlist(G_plot) 
 
-png(filename="hist_Gnorm.png", 
+png(filename="figures/hist_Gnorm.png", 
     res = 500, width = 4000, height = 3000)
 labs = colnames(df)
 
