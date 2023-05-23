@@ -1,4 +1,4 @@
-# A-new-centrality-index-designed-for-multilayer-networks
+# Gnorm-A-new-centrality-index-designed-for-multilayer-networks
 
 ## Supplement to the paper: Lotfi N, Requejo HS, Rodrigues F, Mello MAR. A new centrality index for multilayer networks. *In prep*.
 
