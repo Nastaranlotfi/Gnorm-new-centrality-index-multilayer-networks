@@ -14,7 +14,7 @@ E-mails: [nas.naslot\@gmail.com](mailto:nas.naslot@gmail.com){.email} OR [marmel
 
 First published on June 15th, 2022 (English version).
 
-Run in R version 4.2.0 (2022-04-22) -- "Vigorous Calisthenics".
+Run in R version 4.3.0 (2023-04-21) -- "Already Tomorrow"
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7963011.svg)](https://doi.org/10.5281/zenodo.7963011)
 
