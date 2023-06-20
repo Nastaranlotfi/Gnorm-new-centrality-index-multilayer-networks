@@ -26,8 +26,8 @@ if (!dir.exists(path = "figures_random")){
   print("Dir already exists!")
 }
 
-if (!dir.exists(path = "data_random")){
-  dir.create(path = "data_random")
+if (!dir.exists(path = "random")){
+  dir.create(path = "random")
 } else {
   print("Dir already exists!")
 }
@@ -127,7 +127,7 @@ Network_random=function(number_of_nodes, number_of_connections,temp_number_links
   	
   	
 
-	#file_name_links = paste("data_random/rand_same_", permutation, "_links.csv", sep ="")
+	#file_name_links = paste("random/rand_same_", permutation, "_links.csv", sep ="")
   	#write.csv(df, file_name_links, row.names = FALSE, quote = FALSE)  	
   	
   	  	
@@ -149,7 +149,7 @@ Network_random=function(number_of_nodes, number_of_connections,temp_number_links
 		
 	
 
-	file_name_links1 = paste("data_random/rand_total_", permutation, "_links.csv", sep ="")
+	file_name_links1 = paste("random/rand_total_", permutation, "_links.csv", sep ="")
 	
   	write.csv(df1, file_name_links1, row.names = FALSE, quote = FALSE)
   	
@@ -307,7 +307,7 @@ Names1<-rbind(Fa,Na)
 colnames(Names1) <- c("name","taxon.label")
 
 
-write.csv(Names1,"data_random/Names_random.csv", row.names = FALSE)
+write.csv(Names1,"random/Names_random.csv", row.names = FALSE)
 
 
 ###############################################################
@@ -323,8 +323,8 @@ currentTime_link <- Sys.time()
 ######################################################################
 ## G_norm section
 
-nodes = read.csv("data_random/Names_random.csv", header=T, as.is=T)
-links = read.csv("data_random/rand_total_1_links.csv", header=T, as.is=T)
+nodes = read.csv("random/Names_random.csv", header=T, as.is=T)
+links = read.csv("random/rand_total_1_links.csv", header=T, as.is=T)
 
 ##sorting nodes to be in order
 nodes = nodes[order(nodes$name),] 
@@ -423,11 +423,11 @@ G_norm_mean_ordered =  sort(G_norm_mean, decreasing = TRUE)
 
 
 
-save(gammas, vec_W, iterations, partitions_of_omega, links, nodes, Seq_G_Mean_gamma_list,G_norm_mean, G_norm_mean_ordered, file = "data_random/rand_total.RData")
+save(gammas, vec_W, iterations, partitions_of_omega, links, nodes, Seq_G_Mean_gamma_list,G_norm_mean, G_norm_mean_ordered, file = "random/rand_total.RData")
 currentTime_Gnorm <- Sys.time()
 #########Plot hist
 
-load("data_random/rand_total.RData")
+load("random/rand_total.RData")
 
 png(filename="figures_random/hist_Gnorm_random.png", 
     res = 300, width = 4000, height = 3000)
@@ -438,7 +438,7 @@ currentTime_gnormfreq <- Sys.time()
 cat('end_Gnorm', "\n")
 
 
-sink(file = "data_random/timers.txt")
+sink(file = "random/timers.txt")
 
 paste("Time spent running each section of the code")
 paste("Lotfi et al., in prep.")
