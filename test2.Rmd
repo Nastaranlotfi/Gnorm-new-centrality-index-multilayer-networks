@@ -1213,7 +1213,7 @@ for (mm in 1:permutation){
   gamma_max = 4
   gamma_spacing = 0.25
   gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
-  iterations = 20
+  iterations = 40
   
   
   ##Saving lists definition
