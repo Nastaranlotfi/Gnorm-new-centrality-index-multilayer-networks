@@ -325,7 +325,7 @@ gamma_min = 0.25
 gamma_max = 4
 gamma_spacing = 0.25
 gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
-iterations = 5 #It takes a long time, but for stable results use at least 100
+iterations = 100 #It takes a long time, but for stable results use at least 100
 
 # Saving lists definition
 Seq_G_Mean_gamma_list = list() 
@@ -1048,6 +1048,22 @@ library(dplyr)
 
 
 
+rm(list= ls())
+
+if (!dir.exists(path = "figures_random")){
+  dir.create(path = "figures_random")
+} else {
+  print("Dir already exists!")
+}
+
+if (!dir.exists(path = "random")){
+  dir.create(path = "random")
+} else {
+  print("Dir already exists!")
+}
+
+currentTime_start <- Sys.time()
+
 source("Aux_functions_random.R", encoding="utf-8")
 ```
 
@@ -1179,7 +1195,7 @@ for (i in 1:permutation){
 nodes = read.csv("random/Names_random_10.csv", header=T, as.is=T)
 path_out = 'random/'
 for (mm in 1:permutation){
-  file_name_links = paste(path_out,"rand_", mm, "_links_10_492.csv", sep ="")
+  file_name_links = paste(path_out,"rand_", permutation, "_links_10_",T_nodes,".csv", sep ="")
   links = read.csv(file_name_links, header=T, as.is=T)
   
   ##sorting nodes to be in order
