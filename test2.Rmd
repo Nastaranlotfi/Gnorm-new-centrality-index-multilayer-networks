@@ -643,7 +643,7 @@ cat('end_plots', "\n")
 #Bats
 
 seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
-selection =read.csv("C:/Users/nlotfi/Desktop/Run_r//input/Names_impo.csv",  as.is=1)
+selection =read.csv("input/Names_impo.csv",  as.is=1)
 selection = selection[order(selection$name),]
 for (i in 1:length(selection)) {
   	
@@ -666,7 +666,7 @@ for (i in 1:length(selection)) {
 #Plants
 
 seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
-selection =read.csv("C:/Users/nlotfi/Desktop/Run_r//input/Names_impo_plants.csv",  as.is=1)
+selection =read.csv("input/Names_impo_plants.csv",  as.is=1)
 selection = selection[order(selection$name),]
 for (i in 1:length(selection)) {
   	
