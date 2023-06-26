@@ -1,0 +1,449 @@
+---
+title: "Gnorm: A new centrality index designed for multilayer networks"
+output: html_document
+date: "2023-06-15"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Supplement to the paper: Lotfi N, Requejo HS, Rodrigues F, Mello MAR. A new centrality index for multilayer networks. In prep.**
+
+*Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco A. Rodrigues & Marco A. R. Mello*
+
+Follow-up to Henrique Requejo's BSc monograph:
+
+Requejo HS. 2021. Um teste do algoritmo de modularidade Louvain como uma ferramenta para detectar espécies-chave em redes de interações multicamada. Honors Degree Monograph, Graduação em Matemática Aplicada e Computacional, Instituto de Matemática e Estatística, Universidade de São Paulo, São Paulo, Brazil. Advisor: Mello MAR.
+
+[Ecological Synthesis Lab](https://marcomellolab.wordpress.com)(SintECO), University of São Paulo.
+
+E-mails: [*nas.naslot\@gmail.com*](mailto:nas.naslot@gmail.com){.email}{.email} OR [*marmello\@usp.br*](mailto:marmello@usp.br){.email}{.email}
+
+First published on June 15th, 2022 (English version).
+
+Run in R version 4.3.0 (2023-04-21) -- "Already Tomorrow" [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7963011.svg)](https://doi.org/10.5281/zenodo.7963011)
+
+Disclaimer: You may freely use the software and data provided here for any purposes at your own risk. We assume no responsibility or liability for the use of this material, convey no license or title under any patent, copyright, or mask work right to the product. We reserve the right to make changes in the material without notification. We also make no representation or warranty that such application will be suitable for the specified use without further testing or modification. If this material helps you produce any academic work (paper, book, chapter, monograph, dissertation, report, talk, lecture or similar), please acknowledge the authors and cite the original paper and this repository. To run the code, you just need to use the main source code named (test1.R), and replace your data name.
+
+## Summary
+
+1.  [Preparing the data](#data)
+2.  [Network construction](#network)
+3.  [GNORM Calculation](#Gnorm)
+4.  [Source studies](#studies)
+
+## 1. PREPARING THE DATA {#data}
+
+Set the working directory:
+
+```{r}
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+```
+
+Delete all previous objects:
+
+```{r}
+rm(list= ls())
+```
+
+Clear the console:
+
+```{r}
+cat("\014") 
+```
+
+Load the required packages and functions:
+
+```{r}
+library(akima)
+library(CINNA)
+library(corrgram)
+library(dplyr)
+library(ggplot2)
+library(igraph)
+library(kableExtra)
+library(multinet)
+library(pheatmap)
+library(plot3D)
+library(plyr)
+library(png)
+library(RColorBrewer)
+```
+
+We Create the output folders
+
+```{r}
+
+rm(list= ls())
+
+if (!dir.exists(path = "data")){
+  dir.create(path = "data")
+} else {
+  print("Dir already exists!")
+}
+
+if (!dir.exists(path = "input")){
+  dir.create(path = "input")
+} else {
+  print("Dir already exists!")
+}
+
+if (!dir.exists(path = "figures")){
+  dir.create(path = "figures")
+} else {
+  print("Dir already exists!")
+}
+
+if (!dir.exists(path = "results")){
+  dir.create(path = "results")
+} else {
+  print("Dir already exists!")
+}
+
+currentTime_start <- Sys.time()
+```
+
+Load source file:
+
+```{r}
+
+source("Aux_functions.R", encoding="utf-8")
+```
+
+Load the data:
+
+```{r}
+data = read.csv("input\\links_clean.csv", header=T, as.is=T)
+```
+
+Take a look at the data:
+
+```{r}
+head(data)
+tail(data)
+
+currentTime_prep <- Sys.time()
+```
+
+Define the edge list of the network:
+
+```{r}
+Fruit1 <- list()
+Fruit2 <- list()
+Fruit3 <- list()
+Fruit4 <- list()
+Nectar1 <- list()
+Nectar2 <- list()
+Nectar3 <- list()
+Nectar4 <- list()
+
+leng<-dim(data)[1]
+k2=1
+k1=1
+for (i in 1:leng) {
+	if(data[[i,3]]=="Frugivory"){
+		Fruit1[k1]<-c(data[[i,1]])
+		Fruit2[k1]<-c(data[[i,2]])
+		Fruit3[k1]<-c(1)
+		Fruit4[k1]<-c(data[[i,3]])
+		#cat('hi',"\n")
+		k1=k1+1
+		}
+	if(data[[i,3]]=="Nectarivory"){
+		Nectar1[k2]<-c(data[[i,1]])
+		Nectar2[k2]<-c(data[[i,2]])
+		Nectar3[k2]<-c(2)
+		Nectar4[k2]<-c(data[[i,3]])
+		
+		k2=k2+1
+		}
+		
+	}
+
+
+Fruit<-list()
+Nectar<-list()
+Fruit<-cbind(Fruit1,Fruit2,Fruit3,Fruit4)
+Nectar<-cbind(Nectar1,Nectar2,Nectar3,Nectar4)
+
+Links<-rbind(Fruit,Nectar)
+colnames(Links) <- c("from","to", "layer_num", "layer")
+
+dim(Links)
+head(Links)
+tail(Links)
+
+currentTime_link <- Sys.time()
+cat('end_link_construction', "\n")
+
+```
+
+Define node lists of the network:
+
+```{r}
+name1=unique(data$CurrentBatSpecies)
+name1<- name1[order(name1) ]
+
+Fa1=rep("Bats",length(name1))
+Fa2=rep(1,length(name1))
+Fa3=rep(1,length(name1))
+
+name2=unique(data$CurrentPlantSpecies)
+name2<- name2[order(name2) ]
+
+Na1=rep("Plants",length(name2))
+Na2=rep(2,length(name2))
+Na3=rep(1,length(name2))
+
+
+Fa<-cbind(name1,Fa1,Fa2,Fa3)
+Na<-cbind(name2,Na1,Na2,Na3)
+
+Nodes<-rbind(Fa,Na)
+colnames(Nodes) <- c("name","taxon","taxon.label","species.size")
+
+dim(Nodes)
+head(Nodes)
+tail(Nodes)
+```
+
+Save the nodes and links:
+
+```{r}
+write.csv(Nodes,"data/nodes1.csv", row.names = FALSE)
+write.csv(Links,"data/links1.csv", row.names = FALSE)
+
+currentTime_node <- Sys.time()
+cat('end_node_construction', "\n")
+
+```
+
+## 2. Network construction {#network}
+
+Finding the giant component:
+
+```{r}
+
+nodes1 = read.csv("data/nodes1.csv", header=T, as.is=T)
+links1 = read.csv("data/links1.csv", header=T, as.is=T)
+
+
+net_mono1 = graph_from_data_frame(d = links1, vertices = nodes1, directed = F)
+
+c=clusters(net_mono1, mode="weak") #finding the clusters
+b=which.max(c$csize) #find the max
+v=V(net_mono1)[c$membership!=b] #find the names of nodes in the max component
+
+b1=split(names(v),v) #formating the v file into a list
+b2=list()
+for (i in 1:length(b1)){
+	b2=append(b2,b1[[i]])}
+
+b2=unlist(b2)
+
+df1<-nodes1
+df2<-links1
+
+for (i in 1:length(b2)){#remove the nodes that don't belong to the max component
+	df1<-df1 %>% filter(!name==b1[i])}
+
+for (i in 1:length(b2)){#removing the links related to the removed nodes
+	df2<-df2 %>% filter(!from==b1[i])
+	df2<-df2 %>% filter(!to==b1[i])}
+	
+	
+write.csv(df1,"data/nodes2.csv", row.names = FALSE)
+write.csv(df2,"data/links2.csv", row.names = FALSE)
+
+currentTime_compo <- Sys.time()
+cat('end_names_filtering-by-max-component', "\n")
+
+```
+
+Building the multilayer networks for both the real network and the giant component:
+
+```{r}
+
+# Complete network #1
+nodes1 = read.csv("data/nodes1.csv", header=T, as.is=T)
+links1 = read.csv("data/links1.csv", header=T, as.is=T)
+
+nodes1 = nodes1[order(nodes1$name),] 
+
+net_multinet1 = Convert_to_Multinet(nodes1, links1)
+
+
+# The giant component of the network #2
+nodes2 = read.csv("data/nodes2.csv", header=T, as.is=T)
+links2 = read.csv("data/links2.csv", header=T, as.is=T)
+
+nodes2 = nodes2[order(nodes2$name),] 
+
+net_multinet2 = Convert_to_Multinet(nodes2, links2)
+
+
+# Compare the complete network to its giant component
+net_multinet1
+net_multinet2
+
+
+currentTime_netcons <- Sys.time()
+cat('end_network_construction', "\n")
+```
+
+To have a view of the network, we plot both the real network, and the network constructed with the giant component:
+
+```{r}
+
+links_no_dupl1 = links1[-which(duplicated(links1[,c("from", "to")])==T),] 
+net_layout1 = graph_from_data_frame(d = links_no_dupl1,
+                                   vertices = nodes1, directed = F) 
+layout1 = layout_nicely(net_layout1) 
+
+png(filename="figures/network_visualization_complete.png", 
+    res = 300, width = 4000, height = 2200)
+Custom_plot2D(links1, nodes1, layout1, vertex_label_cex = NULL, vertex_size = 3)
+dev.off()
+
+
+# The giant component of the network #2
+links_no_dupl2 = links2[-which(duplicated(links2[,c("from", "to")])==T),] 
+net_layout2 = graph_from_data_frame(d = links_no_dupl2,
+                                   vertices = nodes2, directed = F) 
+layout2 = layout_nicely(net_layout2) 
+
+png(filename="figures/network_visualization_component.png", 
+    res = 300, width = 4000, height = 2200)
+Custom_plot2D(links2, nodes2, layout2, vertex_label_cex = NULL, vertex_size = 3)
+dev.off()
+
+
+
+Custom_plot2D(links1, nodes1, layout1, vertex_label_cex = NULL, vertex_size = 3)
+Custom_plot2D(links2, nodes2, layout2, vertex_label_cex = NULL, vertex_size = 3)
+
+currentTime_netvis <- Sys.time()
+cat('end_network_visualization', "\n")
+```
+
+## 3. GNORM Calculation {#Gnorm}
+
+In the rest of the analysis, we work with the giant component. In the following, we define the main parameter to calculate the Gnorm and find the Gnorm:
+
+```{r}
+
+# Partitioning, omega, gamma, and number of iterations (for getting the mean)
+partitions_of_omega = 10 #Number of partitions
+seq_G = Create_seq_G_Merged(net_multinet2, partitions_of_omega)
+vec_W = Create_vec_W(partitions_of_omega)
+gamma_min = 0.25
+gamma_max = 4
+gamma_spacing = 0.25
+gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
+iterations = 100 #It takes a long time, but for stable results use at least 100
+
+# Saving lists definition
+Seq_G_Mean_gamma_list = list() 
+G_norm_list = list()
+
+# G_analysis
+cont_perc = 1 # Calculation of running progress
+
+for (gamma_index in 1:length(gammas)) {
+	start_time <- round(as.numeric(Sys.time()))
+  	seq_G_list = list()
+    	for (i in 1:iterations) {
+    		seq_G_list[[i]] = Create_seq_G_Merged(net_multinet2, 
+    		                                      partitions_of_omega,
+    		                                      gamma = gammas[gamma_index])
+    		                                      
+    		#####Run-time approximation
+    		if (cont_perc==1 ){
+    			end_time <- round(as.numeric(Sys.time()))
+			time_taken <- round(end_time - start_time,2)
+			print (time_taken)
+		
+			cat("Estimated time needed for run (secs): ", time_taken*(iterations*length(gammas)),"\n" )}
+			#cat("\n")}
+			#print (time_taken)
+		
+    		cat(cont_perc*100/(iterations*length(gammas)), "%  ")###print the run progress
+    		cont_perc = cont_perc + 1
+  		}#end of iterations
+  
+  
+  #Removing names
+  	seq_G_list_no_names = list()
+  	for (i in 1:length(seq_G_list)) {
+		seq_G_list_temp = seq_G_list[[i]]
+		seq_G_list_temp[,1] = 1
+		seq_G_list_no_names[[i]] = seq_G_list_temp
+  		}#end of seg_G_list
+  
+  #Summation of Gvalues during the iteration
+  	seq_G_sum = seq_G_list_no_names[[1]]
+	for (i in 2:length(seq_G_list)) {
+		seq_G_sum = seq_G_sum + seq_G_list_no_names[[i]]
+		}#end of sum for 100 iterations
+		#seq_G_sum
+  
+  	#Finding the mean-G_value over iteration
+	seq_G_mean = seq_G_sum / iterations
+  
+  	#Adding names
+	seq_G_mean[,1] = seq_G_list[[1]]$actor
+  
+  	#STD-calculation
+	seq_G_StdDev = StdDev_list_of_seq_G(seq_G_list)
+  
+  	#Sorting with G_norm
+	nodes_G_norm = Sort_Nodes_by_Total_G(seq_G_mean, ordered = FALSE)
+	nodes_G_norm_Ordered = Sort_Nodes_by_Total_G(seq_G_mean, ordered = TRUE)
+
+  	#Saving G_values respect to gamma
+	Seq_G_Mean_gamma_list[[gamma_index]] = cbind(seq_G_mean, gammas[gamma_index])
+	G_norm_list[[gamma_index]] = nodes_G_norm
+  
+	}#end of gamma
+
+##Finding mean over Gamma
+G_norm_sum = G_norm_list[[1]]
+for (i in 2:length(G_norm_list)) {
+	G_norm_sum = G_norm_sum + G_norm_list[[i]]
+	}
+G_norm_mean = G_norm_sum / (length(G_norm_list))
+
+##Sorting G_norm_mean
+G_norm_mean_ordered =  sort(G_norm_mean, decreasing = TRUE)
+
+save(gammas, vec_W, iterations, partitions_of_omega, links2, nodes2,
+     Seq_G_Mean_gamma_list,G_norm_mean, G_norm_mean_ordered,
+     file = "results/Bat_Net.RData")
+
+currentTime_Gnorm <- Sys.time()
+cat('end_Gnorm', "\n")
+
+```
+
+Reference
+
+-   Lofti N, Requejo HS, Rodrigues FA, Mello MAR. A new centrality index for multilayer networks. *In prep*.
+
+Source repos
+
+[TF](https://github.com/marmello77/TF)
+
+## 4. Source studies {#studies}
+
+-   Bianconi, G. (2018). Multilayer networks: Structure and function. Oxford University Press. <http://dx.doi.org/10.1093/oso/9780198753919.001.0001>
+
+-   Blondel, V. D., Guillaume, J.-L., Lambiotte, R., & Lefebvre, E. (2008). Fast unfolding of communities in large networks. Journal of Statistical Mechanics: Theory and Experiment, 2008(10), P10008. <https://doi.org/10.1088/1742-5468/2008/10/p10008>
+
+-   Mello, M., Rodrigues, F., Costa, L., Kissling, W., Şekercioğlu, Ç., Marquitti, F., & Kalko, E. (2014). Keystone species in seed dispersal networks are mainly determined by dietary specialization. Oikos, 124(8), 1031--1039. <https://doi.org/10.1111/oik.01613>
+
+-   Mello, M. A. R., Felix, G. M., Pinheiro, R. B. P., Muylaert, R. L., Geiselman, C., Santana, S. E., Tschapka, M., Lotfi, N., Rodrigues, F. A., & Stevens, R. D. (2019). Insights into the assembly rules of a continent-wide multilayer network. Nature Ecology & Evolution, 3(11), 1525--1532. <https://doi.org/10.1038/s41559-019-1002-3>
+
+-   Mucha, P. J., Richardson, T., Macon, K., Porter, M. A., & Onnela, J.-P. (2010). Com- munity structure in time-dependent, multiscale, and multiplex networks. Science, 328(5980), 876--878. <https://doi.org/10.1126/science.1184819>
+
+-   Pilosof, S., Porter, M. A., Pascual, M., & Kéfi, S. (2017). The multilayer nature of ecological networks. Nature Ecology & Evolution, 1(4). <https://doi.org/10.1038/s41559-017-0101> \`\`\`
