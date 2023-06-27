@@ -8,23 +8,17 @@ date: "2023-06-15"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-**Supplement to the paper: Lotfi N, Requejo HS, Rodrigues F, Mello MAR. A new centrality index for multilayer networks. In prep.**
+# TUTORIAL
 
-*Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco A. Rodrigues & Marco A. R. Mello*
+Supplement to the paper: Lotfi N, Requejo HS, Rodrigues F, Mello MAR. A new centrality index for multilayer networks. *In prep*.
 
-Follow-up to Henrique Requejo's BSc monograph:
+*Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco A. Rodrigues & Marco A. R. Mello.*
 
-Requejo HS. 2021. Um teste do algoritmo de modularidade Louvain como uma ferramenta para detectar espécies-chave em redes de interações multicamada. Honors Degree Monograph, Graduação em Matemática Aplicada e Computacional, Instituto de Matemática e Estatística, Universidade de São Paulo, São Paulo, Brazil. Advisor: Mello MAR.
+[Ecological Synthesis Lab](https://marcomellolab.wordpress.com) (SintECO), University of São Paulo.
 
-[Ecological Synthesis Lab](https://marcomellolab.wordpress.com)(SintECO), University of São Paulo.
+Contact: [*nas.naslot\@gmail.com*](mailto:nas.naslot@gmail.com){.email}{.email} OR [*marmello\@usp.br*](mailto:marmello@usp.br){.email}{.email}
 
-E-mails: [*nas.naslot\@gmail.com*](mailto:nas.naslot@gmail.com){.email}{.email} OR [*marmello\@usp.br*](mailto:marmello@usp.br){.email}{.email}
-
-First published on June 15th, 2022 (English version).
-
-Run in R version 4.3.0 (2023-04-21) -- "Already Tomorrow" [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7963011.svg)](https://doi.org/10.5281/zenodo.7963011)
-
-Disclaimer: You may freely use the software and data provided here for any purposes at your own risk. We assume no responsibility or liability for the use of this material, convey no license or title under any patent, copyright, or mask work right to the product. We reserve the right to make changes in the material without notification. We also make no representation or warranty that such application will be suitable for the specified use without further testing or modification. If this material helps you produce any academic work (paper, book, chapter, monograph, dissertation, report, talk, lecture or similar), please acknowledge the authors and cite the original paper and this repository. To run the code, you just need to use the main source code named (test1.R), and replace your data name.
+See [README](https://github.com/Nastaranlotfi/Gnorm-new-centrality-index-multilayer-networks/blob/main/README.md) for further info.
 
 ## Summary
 
@@ -33,7 +27,7 @@ Disclaimer: You may freely use the software and data provided here for any purpo
 3.  [GNORM Calculation](#Gnorm)
 4.  [Source studies](#studies)
 
-## 1. PREPARING THE DATA {#data}
+## 1. Setting the stage  {#data}
 
 Set the working directory:
 
@@ -45,12 +39,6 @@ Delete all previous objects:
 
 ```{r}
 rm(list= ls())
-```
-
-Clear the console:
-
-```{r}
-cat("\014") 
 ```
 
 Load the required packages and functions:
@@ -71,7 +59,7 @@ library(png)
 library(RColorBrewer)
 ```
 
-We Create the output folders
+Create the output folders:
 
 ```{r}
 
@@ -104,7 +92,7 @@ if (!dir.exists(path = "results")){
 currentTime_start <- Sys.time()
 ```
 
-Load source file:
+Source the auxiliary functions:
 
 ```{r}
 
@@ -114,10 +102,10 @@ source("Aux_functions.R", encoding="utf-8")
 Load the data:
 
 ```{r}
-data = read.csv("input\\links_clean.csv", header=T, as.is=T)
+data = read.csv("input/links_clean.csv", header=T, as.is=T)
 ```
 
-Take a look at the data:
+Inspect the data:
 
 ```{r}
 head(data)
@@ -179,7 +167,7 @@ cat('end_link_construction', "\n")
 
 ```
 
-Define node lists of the network:
+Define the node list of the network:
 
 ```{r}
 name1=unique(data$CurrentBatSpecies)
@@ -219,7 +207,7 @@ cat('end_node_construction', "\n")
 
 ```
 
-## 2. Network construction {#network}
+## 2. Building the network {#network}
 
 Finding the giant component:
 
@@ -261,7 +249,7 @@ cat('end_names_filtering-by-max-component', "\n")
 
 ```
 
-Building the multilayer networks for both the real network and the giant component:
+Building multilayer networks for both the empirical network and its giant component:
 
 ```{r}
 
@@ -327,7 +315,7 @@ currentTime_netvis <- Sys.time()
 cat('end_network_visualization', "\n")
 ```
 
-## 3. GNORM Calculation {#Gnorm}
+## 3. Calculating Gnorm {#Gnorm}
 
 In the rest of the analysis, we work with the giant component. In the following, we define the main parameter to calculate the Gnorm and find the Gnorm:
 
