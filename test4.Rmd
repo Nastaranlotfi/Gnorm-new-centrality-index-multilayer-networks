@@ -27,7 +27,7 @@ See [README](https://github.com/Nastaranlotfi/Gnorm-new-centrality-index-multila
 3.  [GNORM Calculation](#Gnorm)
 4.  [Source studies](#studies)
 
-## 1. Setting the stage  {#data}
+## 1. Setting the stage {#data}
 
 Set the working directory:
 
