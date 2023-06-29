@@ -27,7 +27,7 @@ See [README](https://github.com/Nastaranlotfi/Gnorm-new-centrality-index-multila
 3.  [GNORM Calculation](#Gnorm)
 4.  [Source studies](#studies)
 
-## 1. Setting the stage {#data}
+## 1. Setting the stage  {#data}
 
 Set the working directory:
 
@@ -45,16 +45,13 @@ Load the required packages and functions:
 
 ```{r}
 library(akima)
-library(CINNA)
-library(corrgram)
+
+
+library(plyr)
 library(dplyr)
 library(ggplot2)
 library(igraph)
-library(kableExtra)
 library(multinet)
-library(pheatmap)
-library(plot3D)
-library(plyr)
 library(png)
 library(RColorBrewer)
 ```
