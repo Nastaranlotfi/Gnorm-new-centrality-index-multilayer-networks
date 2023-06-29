@@ -398,34 +398,38 @@ Plot_G_gamma_omega_suf_3D = function(df, nodeName, vec_W, gammas){
 #######################################################################################
 #Plot a 2D heatmap G, gamma and omega
 
+
 Plot_G_gamma_omega_heat_3D = function(df, nodeName, vec_W, gammas){
-  	df_new = df[which(df$actor==nodeName),]
+  df_new = df[which(df$actor==nodeName),]
   
-  	#prepare the dataframe to be plotted
-  	vec_G = as.numeric(df_new[1, 2:(length(vec_W)+1)])
-  	vec_gamma = rep(gammas[1], length(vec_G))
-  	dataToPlot = as.data.frame(cbind(vec_W, vec_G, vec_gamma))
-  	for (i in 2:length(gammas)) {
-    		vec_G = as.numeric(df_new[i, 2:(length(vec_W)+1)])
-    		vec_gamma = rep(gammas[i], length(vec_G))
-    		dataPrep = as.data.frame(cbind(vec_W, vec_G, vec_gamma))
-    		dataToPlot = rbind(dataToPlot, dataPrep)
-  		}#end for
+  #prepara o dataframe que sera plotado
+  vec_G = as.numeric(df_new[1, 2:(length(vec_W)+1)])
+  vec_gamma = rep(gammas[1], length(vec_G))
+  dataToPlot = as.data.frame(cbind(vec_W, vec_G, vec_gamma))
+  for (i in 2:length(gammas)) {
+    vec_G = as.numeric(df_new[i, 2:(length(vec_W)+1)])
+    vec_gamma = rep(gammas[i], length(vec_G))
+    dataPrep = as.data.frame(cbind(vec_W, vec_G, vec_gamma))
+    dataToPlot = rbind(dataToPlot, dataPrep)
+  }
   
-  	# plot a surface G*W*GAMMA
-  	x = dataToPlot$vec_W
-  	y = dataToPlot$vec_gamma
-  	z = dataToPlot$vec_G
-  	s = interp(x,y,z)
+  # plota a superficie GxWxGAMMA
+  x = dataToPlot$vec_W
+  y = dataToPlot$vec_gamma
+  z = dataToPlot$vec_G
+  s = interp(x,y,z)
   
-  	p = image2D(z = s,
-              xlab = "Coupling", ylab = "Resolution",
+  p = image2D(z = s,
+              xlab = "Acoplamento", ylab = "Resolução",
               ticktype = "detailed", 
-              clab = "Mean Gnorm",
+              clab = "Gnorm médio",
               main = nodeName)
   
-  	return()
-	}#end function
+  return()
+}
+
+
+
 
 
 #########################################################################################
