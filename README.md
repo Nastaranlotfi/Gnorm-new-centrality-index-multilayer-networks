@@ -134,7 +134,7 @@ We are grateful to our lab mates and institutions, who helped us at different st
 
 ## Reference
 
--   Lofti N, Requejo HS, Rodrigues FA, Mello MAR. A new centrality index for multilayer networks. *In prep*.
+-   Lotfi N, Requejo HS, Rodrigues FA, Mello MAR. A new centrality index for multilayer networks. *In prep*.
 
 ## Source repos
 
