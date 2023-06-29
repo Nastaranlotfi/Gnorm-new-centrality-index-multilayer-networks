@@ -25,13 +25,17 @@ See [README](https://github.com/Nastaranlotfi/Gnorm-new-centrality-index-multila
 1.  [Preparing the data](#data)
 2.  [Network construction](#network)
 3.  [GNORM Calculation](#Gnorm)
-4.  [Source studies](#studies)
+4.  [Summarize the Gnorm results](#Summarize)
+5.  [Plot the Gnorm curves](#plot)
+6.  [Export the results in TXT format](#export)
+7.  [Source studies](#studies)
 
 ## 1. Setting the stage {#data}
 
 Set the working directory:
 
 ```{r}
+cat("\014") 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 ```
 
@@ -52,6 +56,8 @@ library(igraph)
 library(multinet)
 library(png)
 library(RColorBrewer)
+library(pheatmap)
+library(plot3D)
 ```
 
 Create the output folders:
@@ -204,7 +210,7 @@ cat('end_node_construction', "\n")
 
 ## 2. Building the network {#network}
 
-Find the giant component:
+Finding the giant component:
 
 ```{r}
 
@@ -234,7 +240,14 @@ for (i in 1:length(b2)){#remove the nodes that don't belong to the max component
 for (i in 1:length(b2)){#removing the links related to the removed nodes
 	df2<-df2 %>% filter(!from==b1[i])
 	df2<-df2 %>% filter(!to==b1[i])}
-	
+
+
+
+
+
+
+
+
 	
 write.csv(df1,"data/nodes2.csv", row.names = FALSE)
 write.csv(df2,"data/links2.csv", row.names = FALSE)
@@ -244,7 +257,7 @@ cat('end_names_filtering-by-max-component', "\n")
 
 ```
 
-Build multilayer networks for the complete empirical network and its giant component:
+Building multilayer networks for both the empirical network and its giant component:
 
 ```{r}
 
@@ -275,7 +288,7 @@ currentTime_netcons <- Sys.time()
 cat('end_network_construction', "\n")
 ```
 
-To have a view of the network, we plot both the empirical network and its giant component:
+To have a view of the network, we plot both the real network, and the network constructed with the giant component:
 
 ```{r}
 
@@ -312,7 +325,7 @@ cat('end_network_visualization', "\n")
 
 ## 3. Calculating Gnorm {#Gnorm}
 
-In the subsequent analyses, we work only with the giant component. First, we define the main parameters to calculate  Gnorm:
+In the rest of the analysis, we work with the giant component. In the following, we define the main parameter to calculate the Gnorm and find the Gnorm:
 
 ```{r}
 
@@ -324,7 +337,7 @@ gamma_min = 0.25
 gamma_max = 4
 gamma_spacing = 0.25
 gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
-iterations = 100 #It takes a long time, but for stable results use at least 100
+iterations = 2 #It takes a long time, but for stable results use at least 100
 
 # Saving lists definition
 Seq_G_Mean_gamma_list = list() 
@@ -409,9 +422,91 @@ cat('end_Gnorm', "\n")
 
 ```
 
+## 4. Summarize the Gnorm results {#Summarize}
+
+To have a better view of the Gnorm, we plot the histogram of the frequency of the Gnorm as the following:
+
+```{r}
+partitions_of_omega1 = 4 
+gamma_min1 = 0.5
+gamma_max1 = 3.5
+gamma_spacing1 = 0.5
+
+plots = Plot_number_modularity(partitions_of_omega1,
+                             gamma_min1,
+                             gamma_max1,
+                             gamma_spacing1,
+                             net_multinet2)
+
+currentTime_modularity <- Sys.time()
+cat('end_modularity', "\n")
+
+
+################### G-NORM FREQUENCY ###########################################
+
+
+load("results/Bat_Net.RData")
+
+G_plot<-G_norm_mean 
+names(G_plot)<-NULL 
+df<-unlist(G_plot) 
+
+png(filename="figures/hist_Gnorm.png", 
+    res = 500, width = 4000, height = 3000)
+labs = colnames(df)
+
+hist(df,breaks=5,col="darkmagenta", xlim=c(1,2),
+     main="Distribution of Gnorm", xlab='G_norm',cex=40,pch = 190,cex.lab = 1.6,cex.main=2,col.main="#515357")
+
+dev.off()
+
+
+hist(df,breaks=5,col="darkmagenta", xlim=c(1,2),
+     main="Distribution of Gnorm", xlab='G_norm',cex=40,pch = 190,cex.lab = 1.6,cex.main=2,col.main="#515357")
+currentTime_gnormfreq <- Sys.time()
+cat('end_gnormfreq', "\n")
+
+
+
+
+```
+
+## 5. Plot the Gnorm curves {#plot}
+
+To have a better view of the species Gnorm value, we plotted the Gnorm of the species that they were detected being important in the nature (names taken from 2019 NatEcoEvo paper).
+
+```{r}
+load("results/Bat_Net.RData")
+seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
+selection =read.csv("input/Names_impo.csv",  as.is=1)
+selection = selection[order(selection$name),]
+for (i in 1:length(selection)) {
+  
+  chosen_node = selection[i]
+  png_name = paste("figures//important_",selection[i], "_2d.png", sep = "")
+  png(png_name, width = 700, height = 700)
+  plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  plot(plots)
+  dev.off()
+  png_name = paste("figures//important_",selection[i],"_heat.png", sep = "")
+  png(png_name, width = 700, height = 700)
+  Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
+  dev.off()
+
+}#end for
+
+```
+
+## 6. Export the results in TXT format {#export}
+
+```{r}
+write.table(G_norm_mean,file = "results/Bat_Gnorm.txt")
+
+```
+
 Reference
 
--   Lofti N, Requejo HS, Rodrigues FA, Mello MAR. A new centrality index for multilayer networks. *In prep*.
+-   Lotfi N, Requejo HS, Rodrigues FA, Mello MAR. A new centrality index for multilayer networks. *In prep*.
 
 Source repos
 
