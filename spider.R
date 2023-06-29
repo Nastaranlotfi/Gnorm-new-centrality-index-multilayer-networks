@@ -82,7 +82,6 @@ dev.off()
 main_data=load("results/bats_bats_allCentr.RData")
 v_bats=read.csv('input/bats_code.csv',header=T, as.is=T)
 
-
 G1 = sort(Gnorm_bats,decreasing=TRUE)
 
 ### Find the first 5
