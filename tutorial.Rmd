@@ -8,41 +8,55 @@ date: "2023-06-15"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Tutorial
+# TUTORIAL
 
-**Supplement to the paper: Lotfi N, Requejo HS, Rodrigues F, Mello MAR. A new centrality index for multilayer networks. *In prep*.**
+Supplement to the paper: Lotfi N, Requejo HS, Rodrigues F, Mello MAR. A new centrality index for multilayer networks. *In prep*.
 
 *Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco A. Rodrigues & Marco A. R. Mello.*
 
 [Ecological Synthesis Lab](https://marcomellolab.wordpress.com) (SintECO), University of São Paulo.
 
-E-mails: [*nas.naslot\@gmail.com*](mailto:nas.naslot@gmail.com){.email}{.email} OR [*marmello\@usp.br*](mailto:marmello@usp.br){.email}{.email}.
+Contact: [*nas.naslot\@gmail.com*](mailto:nas.naslot@gmail.com){.email}{.email} OR [*marmello\@usp.br*](mailto:marmello@usp.br){.email}{.email}
 
-See [README](https://github.com/Nastaranlotfi/Gnorm-new-centrality-index-multilayer-networks#readme) for further info.
+See [README](https://github.com/Nastaranlotfi/Gnorm-new-centrality-index-multilayer-networks/blob/main/README.md) for further info.
 
-## Instructions
+## Summary
 
-## Main file named test1.R
+1.  [Preparing the data](#data)
+2.  [Network construction](#network)
+3.  [GNORM Calculation](#Gnorm)
+4.  [Source studies](#studies)
 
-## Essential Libraries
+## 1. Setting the stage  {#data}
+
+Set the working directory:
+
+```{r}
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+```
+
+Delete all previous objects:
+
+```{r}
+rm(list= ls())
+```
+
+Load the required packages and functions:
 
 ```{r}
 library(akima)
-library(CINNA)
-library(corrgram)
+
+
+library(plyr)
 library(dplyr)
 library(ggplot2)
 library(igraph)
-library(kableExtra)
 library(multinet)
-library(pheatmap)
-library(plot3D)
-library(plyr)
 library(png)
 library(RColorBrewer)
 ```
 
-## Creating the output folders
+Create the output folders:
 
 ```{r}
 
@@ -75,26 +89,29 @@ if (!dir.exists(path = "results")){
 currentTime_start <- Sys.time()
 ```
 
-## Load source file
+Source the auxiliary functions:
 
 ```{r}
 
 source("Aux_functions.R", encoding="utf-8")
 ```
 
-## Load data
+Load the data:
 
 ```{r}
-data = read.csv("input\\links_clean.csv", header=T, as.is=T)
+data = read.csv("input/links_clean.csv", header=T, as.is=T)
+```
 
+Inspect the data:
+
+```{r}
 head(data)
 tail(data)
 
 currentTime_prep <- Sys.time()
-
 ```
 
-## Define the edge list
+Define the edge list of the network:
 
 ```{r}
 Fruit1 <- list()
@@ -147,7 +164,7 @@ cat('end_link_construction', "\n")
 
 ```
 
-## Define node lists
+Define the node list of the network:
 
 ```{r}
 name1=unique(data$CurrentBatSpecies)
@@ -176,7 +193,7 @@ head(Nodes)
 tail(Nodes)
 ```
 
-## Save the nodes and links
+Save the nodes and links:
 
 ```{r}
 write.csv(Nodes,"data/nodes1.csv", row.names = FALSE)
@@ -187,7 +204,9 @@ cat('end_node_construction', "\n")
 
 ```
 
-## FINDING THE GIANT COMPONENT
+## 2. Building the network {#network}
+
+Finding the giant component:
 
 ```{r}
 
@@ -227,7 +246,7 @@ cat('end_names_filtering-by-max-component', "\n")
 
 ```
 
-## BUILDING THE MULTILAYER NETWORK
+Building multilayer networks for both the empirical network and its giant component:
 
 ```{r}
 
@@ -258,7 +277,7 @@ currentTime_netcons <- Sys.time()
 cat('end_network_construction', "\n")
 ```
 
-## PLOTTING THE MULTILAYER NETWORK
+To have a view of the network, we plot both the real network, and the network constructed with the giant component:
 
 ```{r}
 
@@ -293,11 +312,11 @@ currentTime_netvis <- Sys.time()
 cat('end_network_visualization', "\n")
 ```
 
-## GNORM CALCULATION
+## 3. Calculating Gnorm {#Gnorm}
+
+In the rest of the analysis, we work with the giant component. In the following, we define the main parameter to calculate the Gnorm and find the Gnorm:
 
 ```{r}
-
-# From here on, we analyze only the giant component of the network
 
 # Partitioning, omega, gamma, and number of iterations (for getting the mean)
 partitions_of_omega = 10 #Number of partitions
@@ -392,1099 +411,15 @@ cat('end_Gnorm', "\n")
 
 ```
 
-## MODULARITY FOR ONE RUN
-
-```{r}
-
-partitions_of_omega1 = 4 
-gamma_min1 = 0.5
-gamma_max1 = 3.5
-gamma_spacing1 = 0.5
-
-plots = Plot_number_modularity(partitions_of_omega1,
-                             gamma_min1,
-                             gamma_max1,
-                             gamma_spacing1,
-                             net_multinet2)
-
-currentTime_modularity <- Sys.time()
-cat('end_modularity', "\n")
-```
-
-## G-NORM FREQUENCY
-
-```{r}
-load("results/Bat_Net.RData")
-
-G_plot<-G_norm_mean 
-names(G_plot)<-NULL 
-df<-unlist(G_plot) 
-
-png(filename="figures/hist_Gnorm.png", 
-    res = 500, width = 4000, height = 3000)
-labs = colnames(df)
-
-hist(df,breaks=5,col="darkmagenta", xlim=c(1,2),
-     main="Distribution of Gnorm", xlab='G_norm',cex=40,pch = 190,cex.lab = 1.6,cex.main=2,col.main="#515357")
-
-dev.off()
-
-
-
-hist(df,breaks=5,col="darkmagenta", xlim=c(1,2),
-     main="Distribution of Gnorm", xlab='G_norm',cex=40,pch = 190,cex.lab = 1.6,cex.main=2,col.main="#515357")
-currentTime_gnormfreq <- Sys.time()
-cat('end_gnormfreq', "\n")
-```
-
-## NETWORK PARAMETERS
-
-```{r}
-
-nodes2 = read.csv("data/nodes2.csv", header=T, as.is=T)
-links2 = read.csv("data/links2.csv", header=T, as.is=T)
-
-net_mono = graph_from_data_frame(d = links2, vertices = nodes2, directed = F)
-
-clo = closeness(net_mono, normalized = FALSE)
-btw = betweenness(net_mono, directed = FALSE, normalized = TRUE)
-eig = eigen_centrality(net_mono)
-eig_formated = eig$vector
-deg = centr_degree(net_mono)
-deg_formated = deg$res
-names(deg_formated) = names(clo)
-
-clo[order(names(clo))]
-btw[order(names(btw))]
-eig[order(names(eig))]
-deg[order(names(deg))]
-G_norm_mean[order(names(G_norm_mean))]
-
-save(clo, btw, eig_formated, deg_formated,
-     G_norm_mean, file = "results/bats_allCentr.RData")
-
-currentTime_netparameter <- Sys.time()
-cat('end_netparameter', "\n")
-```
-
-## SEPARATING NODE CLASSES
-
-```{r}
-nodes2 = read.csv("data/nodes2.csv", header=T, as.is=T)
-
-
-data=load("results/bats_allCentr.RData")
-eig = eig_formated
-deg = deg_formated
-
-n_bats = subset(nodes2, taxon == "Bats")
-n_plants = subset(nodes2, taxon == "Plants")
-#Bats
-clo_bats=Separation(n_bats,clo)
-btw_bats = Separation(n_bats,btw)
-eig_bats = Separation(n_bats,eig)
-deg_bats = Separation(n_bats,deg)
-Gnorm_bats=Separation(n_bats, G_norm_mean)
-#Plants
-clo_plants = Separation(n_plants,clo)
-btw_plants = Separation(n_plants,btw)
-eig_plants = Separation(n_plants,eig)
-deg_plants = Separation(n_plants,deg)
-Gnorm_plants = Separation(n_plants,G_norm_mean)
-
-save(clo_bats, btw_bats, eig_bats,
-     deg_bats, Gnorm_bats, file = "results/bats_bats_allCentr.RData")
-save(clo_plants, btw_plants, eig_plants,
-     deg_plants, Gnorm_plants, file = "results/bats_plants_allCentr.RData")
-
-currentTime_netseparation <- Sys.time()
-cat('end_netseparation', "\n")
-```
-
-## CORRELOGRAMS
-
-```{r}
-# Bats
-load("results/bats_bats_allCentr.RData")
-sp_names = names(Gnorm_bats)
-
-df = data.frame(clo_bats, btw_bats, eig_bats, deg_bats, Gnorm_bats)
-names(df) = c("closeness", "betweeness", "eigen vector", "degreee", "Gnorm")
-head(df)
-
-png(filename="figures/C_correlogram_bats_bats_pearson.png",
-    res = 300, width = 4000, height = 3000)
-labs = colnames(df)
-corrgram(df, cor.method = "pearson", order=FALSE, oma=c(12, 12, 7, 2), 
-         lower.panel=panel.cor, upper.panel=panel.pts, 
-         diag.panel=panel.density, text.panel=panel.txt,
-         outer.labels=list(bottom=list(labels=labs,cex=2.5,srt=90),
-                           left=list(labels=labs,cex=2.5,srt=0)),
-         main="Correlogram (Pearson) between centralities and Gnorm for bats",
-         cex.main = 1.5)
-dev.off()
-
-png(filename="figures/C_correlogram_bats_bats_spearman.png", 
-    res = 300, width = 4000, height = 3000)
-labs = colnames(df)
-corrgram(df, cor.method = "spearman", order=FALSE, oma=c(12, 12, 7, 2), 
-         lower.panel=panel.cor, upper.panel=panel.pts, 
-         diag.panel=panel.density, text.panel=panel.txt,
-         outer.labels=list(bottom=list(labels=labs,cex=2.5,srt=90),
-                           left=list(labels=labs,cex=2.5,srt=0)),
-         main="Correlogram (Spearman) between centralities and Gnorm for bats",
-         cex.main = 1.5)
-dev.off()
-
-
-# Plants
-
-load("results/bats_plants_allCentr.RData")
-sp_names = names(Gnorm_plants)
-
-df = data.frame(clo_plants, btw_plants, eig_plants, deg_plants, Gnorm_plants)
-names(df) = c("closeness", "betweeness", "eigen vector", "degreee", "Gnorm")
-head(df)
-
-png(filename="figures/C_correlogram_bats_plants_pearson.png", 
-    res = 300, width = 4000, height = 3000)
-labs = colnames(df)
-corrgram(df, cor.method = "pearson", order=FALSE, oma=c(12, 12, 7, 2), 
-         lower.panel=panel.cor, upper.panel=panel.pts, 
-         diag.panel=panel.density, text.panel=panel.txt,
-         outer.labels=list(bottom=list(labels=labs,cex=2.5,srt=90),
-                           left=list(labels=labs,cex=2.5,srt=0)),
-         main="Correlogram (Pearson) between centralities and Gnorm for plants",
-         cex.main = 1.5)
-dev.off()
-
-png(filename="figures/C_correlogram_bats_plants_spearman.png",
-    res = 300, width = 4000, height = 3000)
-labs = colnames(df)
-corrgram(df, cor.method = "spearman", order=FALSE, oma=c(12, 12, 7, 2), 
-         lower.panel=panel.cor, upper.panel=panel.pts, 
-         diag.panel=panel.density, text.panel=panel.txt,
-         outer.labels=list(bottom=list(labels=labs,cex=2.5,srt=90),
-                           left=list(labels=labs,cex=2.5,srt=0)),
-         main="Correlogram (Spearman) between centralities and Gnorm for plants",
-         cex.main = 1.5)
-dev.off()
-
-currentTime_corrgrams <- Sys.time()
-cat('end_corrgrams', "\n")
-
-
-################### TOTAL ######################################################
-
-
-load("results/bats_allCentr.RData")
-sp_names = names(G_norm_mean)
-eig=eig_formated
-deg=deg_formated
-
-df = data.frame(clo, btw, eig, deg, G_norm_mean)
-names(df) = c("closeness", "betweeness", "eigen vector", "degreee", "Gnorm")
-head(df)
-
-#create a png with the correlogram Pearson
-png(filename="figures/C_correlogram_bats_all_pearson.png",
-    res = 300, width = 4000, height = 3000)
-labs = colnames(df)
-corrgram(df, cor.method = "pearson", order=FALSE, oma=c(12, 12, 7, 2), 
-         lower.panel=panel.cor, upper.panel=panel.pts, 
-         diag.panel=panel.density, text.panel=panel.txt,
-         outer.labels=list(bottom=list(labels=labs,cex=2.5,srt=90),
-                           left=list(labels=labs,cex=2.5,srt=0)),
-         main="Correlogram (Pearson) between centralities and Gnorm for bats and plants",
-         cex.main = 1.5)
-dev.off()
-
-#create a png with the correlogram Spearman
-png(filename="figures/C_correlogram_bats_all_spearman.png",
-    res = 300, width = 4000, height = 3000)
-labs = colnames(df)
-corrgram(df, cor.method = "spearman", order=FALSE, oma=c(12, 12, 7, 2), 
-         lower.panel=panel.cor, upper.panel=panel.pts, 
-         diag.panel=panel.density, text.panel=panel.txt,
-         outer.labels=list(bottom=list(labels=labs,cex=2.5,srt=90),
-                           left=list(labels=labs,cex=2.5,srt=0)),
-         main="Correlogram (Spearman) between centralities and Gnorm for bats and plants",
-         cex.main = 1.5)
-dev.off()
-
-currentTime_plots <- Sys.time()
-cat('end_plots', "\n")
-
-```
-
-## G-NORM PLOTS
-
-```{r}
-
-# Reading the names from a list, names taken from 2019 NatEcoEvo paper)
-#Bats
-
-seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
-selection =read.csv("input/Names_impo.csv",  as.is=1)
-selection = selection[order(selection$name),]
-for (i in 1:length(selection)) {
-  	
-  	chosen_node = selection[i]
-  	png_name = paste("figures/important_",selection[i], "_2d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	plot(plots)
-        dev.off()
-  	png_name = paste("figures/important_",selection[i],"_3d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-        png_name = paste("figures/important_",selection[i],"_heat.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-	}#end for
-
-#Plants
-
-seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
-selection =read.csv("input/Names_impo_plants.csv",  as.is=1)
-selection = selection[order(selection$name),]
-for (i in 1:length(selection)) {
-  	
-  	chosen_node = selection[i]
-  	png_name = paste("figures/important_",selection[i], "_2d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	plot(plots)
-        dev.off()
-  	png_name = paste("figures/important_",selection[i],"_3d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-        png_name = paste("figures/important_",selection[i],"_heat.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-	}#end for
-
-currentTime_gnormplots <- Sys.time()
-cat('end_gnormplots', "\n")
-
-```
-
-## CENTRALITY
-
-```{r}
-# Bats (for plants, just needed to replace clo_bats to clo_plants)
-
-load("results/bats_bats_allCentr.RData")
-clo1 = clo_bats
-btw1 = btw_bats
-eig1 = eig_bats
-deg1 = deg_bats
-Gnorm1 = Gnorm_bats
-centr_list_bats = list(clo1, btw1, eig1, deg1, Gnorm1)
-
-most_central_list = list()
-ranking_cutoff = 10
-for (i in 1:length(centr_list_bats)) {
-  centr_temp = centr_list_bats[[i]]
-  centr_temp = sort(centr_temp, decreasing = TRUE)
-  centr_temp = centr_temp[1:ranking_cutoff]
-  most_central_list[[i]] = centr_temp
-}
-
-# Compare how many nodes found in Gnorm are present in other methods
-Gnorm_most_central = most_central_list[[5]]
-similarity_bin = rep(0, length(most_central_list))
-names(similarity_bin) = c("clo", "btw", "eig", "deg", "Gnorm")
-similarity_string_list = list()
-for (i in 1:(length(most_central_list))) {
-  list_temp = list()
-  for (j in 1:ranking_cutoff) {
-    for (k in 1:ranking_cutoff) {
-      if (names(Gnorm_most_central[j]) == names(most_central_list[[i]][k])) {
-        similarity_bin[i] = similarity_bin[i] + 1
-        list_temp = append(list_temp, names(Gnorm_most_central[j]))
-      }
-    }
-  }
-  similarity_string_list[[i]] = list_temp
-}
-similarity_bin = similarity_bin/ranking_cutoff
-
-# Compare the distance between the rankings found in Gnorm with those present in the other methods
-Gnorm_most_central = most_central_list[[5]]
-similarity_dist = rep(0, length(most_central_list))
-names(similarity_dist) = c("clo", "btw", "eig", "deg", "Gnorm")
-for (i in 1:(length(most_central_list))) {
-  list_temp = list()
-  for (j in 1:ranking_cutoff) {
-    for (k in 1:ranking_cutoff) {
-      if (names(Gnorm_most_central[j]) == names(most_central_list[[i]][k])) {
-        similarity_dist[i] = similarity_dist[i] + (1/(1+abs(j-k)))
-      }
-    }
-  }
-}
-similarity_dist = similarity_dist/ranking_cutoff
-
-# Saving both items of similarity in one RData
-save(similarity_bin,similarity_dist, file = "results/similarity_Bat_Net.RData")
-
-
-
-currentTime_centrality <- Sys.time()
-cat('end_centrality', "\n")
-```
-
-## TOP 10 CENTRALITIES DETECTION
-
-```{r}
-#Finding the top 10 in each centrality and plotting its relativ Gnorm
-
-#Bats section
-
-load("results/Bat_Net.RData")
-seq_Gnorm_gamma_mean = Unite_list_of_dataframes(Seq_G_Mean_gamma_list)
-load("results/bats_bats_allCentr.RData")
-
-#Btas-> Clossness Centrality
-clo1 = sort(clo_bats,decreasing=TRUE)
-selection = names(clo1[1:10])
-save(selection, file = "results/Bats_impo_Clo.RData")
-for (i in 1:length(selection)) {
-  	
-  	chosen_node = selection[i]
-  	png_name = paste("figures/Bats_Clo_",selection[i], "_2d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	plot(plots)
-        dev.off()
-  	png_name = paste("figures/Bats_Clo_",selection[i],"_3d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-        png_name = paste("figures/Bats_Clo_",selection[i],"_heat.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-	}#end for
-
-
-#Btas-> Betweenness Centrality
-btw1 = sort( btw_bats,decreasing=TRUE)
-
-selection = names(btw1[1:10])
-save(selection, file = "results/Bats_impo_btw.RData")
-
-for (i in 1:length(selection)) {
-  	
-  	chosen_node = selection[i]
-  	png_name = paste("figures/Bats_Btw_",selection[i], "_2d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	plot(plots)
-        dev.off()
-  	png_name = paste("figures/Bats_Btw_",selection[i],"_3d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-        png_name = paste("figures/Bats_Btw_",selection[i],"_heat.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-	}#end for
-
-#Btas-> Eigenvector Centrality
-eig1 = sort(eig_bats,decreasing=TRUE)
-selection = names(eig1[1:10])
-save(selection, file = "results/Bats_impo_eig.RData")
-for (i in 1:length(selection)) {
-  	
-  	chosen_node = selection[i]
-  	png_name = paste("figures/Bats_Eig_",selection[i], "_2d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	plot(plots)
-        dev.off()
-  	png_name = paste("figures/Bats_Eig_",selection[i],"_3d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-        png_name = paste("figures/Bats_Eig_",selection[i],"_heat.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-	}#end for
-
-#Btas-> Degree Centrality
-deg1 = sort(deg_bats,decreasing=TRUE)
-
-selection = names(deg1[1:10])
-save(selection, file = "results/Bats_impo_deg.RData")
-for (i in 1:length(selection)) {
-  	
-  	chosen_node = selection[i]
-  	png_name = paste("figures/Bats_Deg_",selection[i], "_2d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	plot(plots)
-        dev.off()
-  	png_name = paste("figures/Bats_Deg_",selection[i],"_3d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-        png_name = paste("figures/Bats_Deg_",selection[i],"_heat.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-	}#end for
-	
-#Btas-> Gnorm Centrality
-Gnorm1 = sort(Gnorm_bats,decreasing=TRUE)
-
-selection = names(Gnorm1[1:10])
-save(selection, file = "results/Bats_impo_Gnorm.RData")
-for (i in 1:length(selection)) {
-  	
-  	chosen_node = selection[i]
-  	png_name = paste("figures/Bats_Gnorm_",selection[i], "_2d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	plot(plots)
-        dev.off()
-  	png_name = paste("figures/Bats_Gnorm_",selection[i],"_3d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-        png_name = paste("figures/Bats_Gnorm_",selection[i],"_heat.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-	}#end for
-
-
-
-currentTime_topten <- Sys.time()
-cat('end_top10_centralities', "\n")
-```
-
-## PLOT TOP 10 AND BOTTOM 10
-
-```{r}
-
-#Btas-> Gnorm Centrality
-
-load("results/bats_bats_allCentr.RData")
-Gnorm1 = sort(Gnorm_bats,decreasing=TRUE)
-
-selection = names(Gnorm1[1:10])
-for (i in 1:length(selection)) {
-  	
-  	chosen_node = selection[i]
-  	png_name = paste("figures/Bats_10top_Gnorm_",selection[i], "_2d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	plot(plots)
-        dev.off()
-  	png_name = paste("figures/Bats_10top_Gnorm_",selection[i],"_3d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-        png_name = paste("figures/Bats_10top_Gnorm_",selection[i],"_heat.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-	}#end for
-
-
-Gnorm1 = sort(Gnorm_bats,decreasing=FALSE)
-
-selection = names(Gnorm1[1:10])
-for (i in 1:length(selection)) {
-  	
-  	chosen_node = selection[i]
-  	png_name = paste("figures/Bats_10last_Gnorm_",selection[i], "_2d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	plot(plots)
-        dev.off()
-  	png_name = paste("figures/Bats_10last_Gnorm_",selection[i],"_3d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-        png_name = paste("figures/Bats_10last_Gnorm_",selection[i],"_heat.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-	}#end for
-
-
-#Plants-> Gnorm Centrality
-
-load("results/bats_plants_allCentr.RData")
-
-
-Gnorm1 = sort(Gnorm_plants,decreasing=TRUE)
-
-selection = names(Gnorm1[1:10])
-for (i in 1:length(selection)) {
-  	
-  	chosen_node = selection[i]
-  	png_name = paste("figures/Plants_10top_Gnorm_",selection[i], "_2d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	plot(plots)
-        dev.off()
-  	png_name = paste("figures/Plants_10top_Gnorm_",selection[i],"_3d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-        png_name = paste("figures/Plants_10top_Gnorm_",selection[i],"_heat.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-	}#end for
-
-
-Gnorm1 = sort(Gnorm_plants,decreasing=FALSE)
-
-selection = names(Gnorm1[1:10])
-for (i in 1:length(selection)) {
-  	
-  	chosen_node = selection[i]
-  	png_name = paste("figures/Plants_10last_Gnorm_",selection[i], "_2d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	plots = G_curves_for_different_gammas(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	plot(plots)
-        dev.off()
-  	png_name = paste("figures/Plants_10last_Gnorm_",selection[i],"_3d.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_suf_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-        png_name = paste("figures/Plants_10last_Gnorm_",selection[i],"_heat.png", sep = "")
-  	png(png_name, width = 700, height = 700)
-  	Plot_G_gamma_omega_heat_3D(seq_Gnorm_gamma_mean, chosen_node, vec_W, gammas)
-  	dev.off()
-	}#end for
-currentTime_toptenlastten <- Sys.time()
-cat('end_top10_last10_Gnorm', "\n")
-
-```
-
-```{r}
-sink(file = "results/timers.txt")
-
-paste("Time spent running each section of the code")
-paste("Lotfi et al., in prep.")
-cat("\n")
-paste("Start running the code:", currentTime_start)
-cat("\n")
-paste("Endtime for preparation:", currentTime_prep)
-cat("\n")
-paste("Endtime for link construction:", currentTime_link)
-cat("\n")
-paste("Endtime for node construction:", currentTime_node)
-cat("\n")
-paste("Endtime for identifying the giant component:", currentTime_compo)
-cat("\n")
-paste("Endtime for network visualization:", currentTime_netvis)
-cat("\n")
-paste("Endtime for Gnorm calculation:", currentTime_Gnorm)
-cat("\n")
-paste("Endtime for modularity calculation:", currentTime_modularity)
-cat("\n")
-paste("Endtime for Gnorm frequency calculation:", currentTime_gnormfreq)
-cat("\n")
-paste("Endtime for network parameters calculation:", currentTime_netparameter)
-cat("\n")
-paste("Endtime for separating network layers:", currentTime_netseparation)
-cat("\n")
-paste("Endtime for plotting separate correlograms for bats and plants:", currentTime_corrgrams)
-cat("\n")
-paste("Endtime for plotting joint correlograms:", currentTime_plots)
-cat("\n")
-paste("Endtime for plotting Gnorm:", currentTime_gnormplots)
-cat("\n")
-paste("Endtime for plotting centrality:", currentTime_centrality)
-cat("\n")
-paste("Endtime for plotting top 10 centrality:", currentTime_topten)
-cat("\n")
-
-paste("Endtime for plotting top 10 (last 10) Gnorm:", currentTime_toptenlastten)
-cat("\n")
-sink(file = NULL, )
-
-```
-
-d.  random_final.R -\> Generates the random network, calculates Gnorm, and plots the histogram of Gnorm of the random network.
-
-## Libraries
-
-```{r}
-library(multinet)
-library(igraph)
-library(dplyr)
-
-
-
-rm(list= ls())
-
-if (!dir.exists(path = "figures_random")){
-  dir.create(path = "figures_random")
-} else {
-  print("Dir already exists!")
-}
-
-if (!dir.exists(path = "random")){
-  dir.create(path = "random")
-} else {
-  print("Dir already exists!")
-}
-
-currentTime_start <- Sys.time()
-
-source("Aux_functions_random.R", encoding="utf-8")
-```
-
-## Random network construction as a function
-
-```{r}
-Network_random=function(T_nodes, perc,layer_number,permutation){
-  #print (T_nodes)
-  node=as.integer(T_nodes/2.0)
-  
-  links_df = data.frame(from = numeric(0), to = numeric(0), layer=numeric(0))
-  
-  
-  #####Defining the main name of the nodes in each layer
-  #####Real nameing
-  
-  node_name1<-seq(from = 1, to = node, by = 1)
-  node_name2<-seq(from = node+1, to = node+node, by = 1)
-  
-  ###########################################################
-  ####making all nodes availble in both layers
-  
-  for (i in 1:length(node_name1)){
-    links_df[i,1]=node_name1[i]
-    links_df[i,2]=node_name2[i]
-    links_df[i,3]=sample(as.integer(layer_number),1,replace=FALSE)
-  }#end for
-  
-  
-  remain_link=perc-node
-  T_connections=perc
-  #print ("Hi")
-  ###########################################################
-  ####rest of connections
-  links_df1=Add_edges_layer(links_df,T_connections,node_name1,node_name2,layer_number)
-  #print (links_df1)
-  
-  df<-links_df1[order(links_df1$from),]
-  
-  path_out = 'random/'
-  
-  file_name_links = paste(path_out,"rand_", permutation, "_links_10_",T_nodes,".csv", sep ="")
-  write.csv(df, file_name_links, row.names = FALSE, quote = FALSE)  	
-}
-##################################################################
-#######Adding extra edge to the network to make same edge size
-#We have two options: distribute totally random, 
-#distribute related to the main network
-#I add both functions
-
-Add_edges_layer=function(links_df,T_connections,node_name1,node_name2,layer_number){
-  length_link=dim(links_df)[1]+1
-  #print ("Hi")
-  while (length_link<T_connections){
-    
-    k=length_link
-    links_df[k,1]=sample (node_name1,1,replace=FALSE)
-    links_df[k,2]=sample (node_name2,1,replace=FALSE)
-    links_df[k,3]=sample(as.integer(layer_number),1,replace=FALSE)
-    
-    links_df=distinct(links_df)
-    
-    length_link=dim(links_df)[1]+1
-  }
-  
-  return (links_df)
-  
-}#end Add_edges_layer
-
-
-
-```
-
-## Network characterizes definitions
-
-```{r}
-
-###################################################################
-#####Name construction
-T_nodes=as.integer(492)
-perc=as.integer(1842*10/100)
-
-
-node=as.integer(T_nodes/2)
-nodes_ID1<- 1:node
-t1<-1+node
-
-nod=1+node
-nodes_ID2 <- nod: T_nodes
-
-
-
-Fa1=rep(1,length(nodes_ID1))
-Fa2=rep(2,length(nodes_ID2))
-
-
-Fa<-cbind(nodes_ID1,Fa1)
-Na<-cbind(nodes_ID2,Fa2)
-
-Names1<-rbind(Fa,Na)
-
-colnames(Names1) <- c("name","taxon.label")
-
-
-write.csv(Names1,"random/Names_random_10.csv", row.names = FALSE)
-#print ("hi")
-
-###############################################################
-#####Random Network construction
-permutation=50
-
-layer_number=2
-for (i in 1:permutation){
-  print (i)
-
-  network<-Network_random(T_nodes,perc,layer_number,i)
-}
-
-```
-
-## Gnorm Analysis of random networks
-
-```{r}
-
-
-######################################################################
-## G_norm section
-
-nodes = read.csv("random/Names_random_10.csv", header=T, as.is=T)
-path_out = 'random/'
-for (mm in 1:permutation){
-  file_name_links = paste(path_out,"rand_", permutation, "_links_10_",T_nodes,".csv", sep ="")
-  links = read.csv(file_name_links, header=T, as.is=T)
-  
-  ##sorting nodes to be in order
-  nodes = nodes[order(nodes$name),] 
-  
-  ##Network construction
-  net_multinet = Convert_to_Multinet(nodes, links)
-  
-  ##Parameters definition regarding the partitioning and Omega and Gamma and number of iteration (for getting the mean)
-  
-  partitions_of_omega = 10 # Number of partitions
-  seq_G = Create_seq_G_Merged(net_multinet, partitions_of_omega)
-  vec_W = Create_vec_W(partitions_of_omega)
-  gamma_min = 0.25
-  gamma_max = 4
-  gamma_spacing = 0.25
-  gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
-  iterations = 40
-  
-  
-  ##Saving lists definition
-  Seq_G_Mean_gamma_list = list() #different datasets of Seq_G_MeanG_norm_ordered_list = list() #guarda os diferentes nohs selecionados para plot
-  G_norm_list = list()
-  
-  ######################################################################
-  ## G_analysis
-  
-  cont_perc = 1 # Calculation of running progress
-  
-  for (gamma_index in 1:length(gammas)) {
-    start_time <- round(as.numeric(Sys.time()))
-    seq_G_list = list()
-    for (i in 1:iterations) {
-      seq_G_list[[i]] = Create_seq_G_Merged(net_multinet, 
-                                            partitions_of_omega,
-                                            gamma = gammas[gamma_index])
-
-      cat(cont_perc*100/(iterations*length(gammas)), "%  ")###print the run progress
-      cont_perc = cont_perc + 1
-    }#end of iterations
-    #----
-    #Removing names
-    seq_G_list_no_names = list()
-    for (i in 1:length(seq_G_list)) {
-      seq_G_list_temp = seq_G_list[[i]]
-      seq_G_list_temp[,1] = 1
-      seq_G_list_no_names[[i]] = seq_G_list_temp
-    }#end of seg_G_list
-    
-    #Summation of Gvalues during the iteration
-    seq_G_sum = seq_G_list_no_names[[1]]
-    for (i in 2:length(seq_G_list)) {
-      seq_G_sum = seq_G_sum + seq_G_list_no_names[[i]]
-    }#end of sum for 100 iterations
-    #seq_G_sum
-    
-    #Finding the mean-G_value over iteration
-    seq_G_mean = seq_G_sum / iterations
-    
-    #Adding names
-    seq_G_mean[,1] = seq_G_list[[1]]$actor
-    
-    #STD-calculation
-    seq_G_StdDev = StdDev_list_of_seq_G(seq_G_list)
-    
-    #Sorting with G_norm
-    nodes_G_norm = Sort_Nodes_by_Total_G(seq_G_mean, ordered = FALSE)
-    nodes_G_norm_Ordered = Sort_Nodes_by_Total_G(seq_G_mean, ordered = TRUE)
-    
-    
-    #Saving G_values respect to gamma
-    Seq_G_Mean_gamma_list[[gamma_index]] = cbind(seq_G_mean, gammas[gamma_index])
-    G_norm_list[[gamma_index]] = nodes_G_norm
-    
-  }#end of gamma
-  
-  
-  ##Finding mean over Gamma
-  G_norm_sum = G_norm_list[[1]]
-  for (i in 2:length(G_norm_list)) {
-    G_norm_sum = G_norm_sum + G_norm_list[[i]]
-  }
-  G_norm_mean = G_norm_sum / (length(G_norm_list))
-  
-  ##Sorting G_norm_mean
-  G_norm_mean_ordered =  sort(G_norm_mean, decreasing = TRUE)
-  
-  
-  file_name_links = paste(path_out,"rand_total_", mm, "_links_10.RData", sep ="")
-  save(gammas, vec_W, iterations, partitions_of_omega, links, nodes, Seq_G_Mean_gamma_list,G_norm_mean, G_norm_mean_ordered, file = file_name_links)
-  
-  
-}
-
-
-```
-
-e.  spider.R -\> Plots the spidercharts.
-
-## Librarie needed for the Spider plot
-
-```{r}
-
-library(ggplot2)
-library(png)
-library(fmsb)
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-
-```
-
-## PLOTTING FUNCTIONS defined
-
-```{r}
-
-
-create_beautiful_radarchart <- function(data, color, vlabels = colnames(data), vlcex =0.75,caxislabels = NULL, title = NULL){
-  radarchart(
-    data, axistype = 1,
-    # Customize the polygon
-    pcol = color, pfcol = scales::alpha(color, 0.5), plwd = 2, plty = 1,
-    # Customize the grid
-    cglcol = "grey", cglty = 1, cglwd = 0.8,
-    # Customize the axis
-    axislabcol = "white", cex=5,cex.lab=2.5, cex.axis=1.5,calcex=3,
-    # Variable labels
-    vlcex = vlcex, vlabels = vlabels,
-    caxislabels = caxislabels, title = title )
-}
-
-
-Ploting_bats<-function(selection,main_data, v_bats,savename){
-
-clo=clo_bats[selection]
-btw=btw_bats[selection]
-eig=eig_bats[selection]
-deg=deg_bats[selection]
-G=Gnorm_bats[selection]
-
-Name=v_bats$code[match(selection,v_bats$name)]
-print (Name)
-print (selection)
-data <- data.frame( row.names = Name, Closeness=clo,Degree=deg,
-                    Betweenness=btw, Eigenvector=eig,  Gnorm=G)
-
-max_min <- data.frame( Closeness=c(max(clo_bats),0),
-			Degree=c(max(deg_bats),0),
-                       Betweenness= c(max(btw_bats),0),
-                       Eigenvector=c(max(eig_bats),0),
-                       
-                       Gnorm=c(max(Gnorm_bats),min(Gnorm_bats)) )
-rownames(max_min) <- c("Max", "Min")
-
-df <- rbind(max_min, data)
-
-### Plotting setup
-png_name = paste("figures/",savename,".png", sep = "")
-png(png_name, width = 700, height = 700)
-
-op <- par(mar = c(1, 2, 2, 2))
-# Create the radar charts
-create_beautiful_radarchart(data = df,color = c("#FFC0CB","#87CEFA", "#FFDAB9","#90EE90", "#EEE8AA"), vlabels = colnames(data), vlcex = 1.8,caxislabels = NULL, title = NULL)
-# Add an horizontal legend
-legend(x=0.6, y=1.3, legend = rownames(df[-c(1,2),]), horiz = FALSE, bty = "n", pch = 20 , 
-	col =c("#FFC0CB","#87CEFA", "#FFDAB9","#90EE90", "#EEE8AA"),text.col = "black", cex = 2, pt.cex = 2.5)
-par(op)
-dev.off()
-
-create_beautiful_radarchart(data = df,color = c("#FFC0CB","#87CEFA", "#FFDAB9","#90EE90", "#EEE8AA"), vlabels = colnames(data), vlcex = 1.8,caxislabels = NULL, title = NULL)
-# Add an horizontal legend
-legend(x=0.6, y=1.3, legend = rownames(df[-c(1,2),]), horiz = FALSE, bty = "n", pch = 20 , 
-	col =c("#FFC0CB","#87CEFA", "#FFDAB9","#90EE90", "#EEE8AA"),text.col = "black", cex = 2, pt.cex = 2.5)
-}
-
-
-
-################### DATA IMPORT AND PLOTTING ###################################
-```
-
-## Plot Spider Fig
-
-```{r}
-
-
-######## Bats
-
-main_data=load("results/bats_bats_allCentr.RData")
-v_bats=read.csv('input/bats_code.csv',header=T, as.is=T)
-
-
-G1 = sort(Gnorm_bats,decreasing=TRUE)
-
-### Find the first 5
-selection = names(G1[1:5])
-
-Ploting_bats(selection,main_data, v_bats,"1-5_first_bat")
-cat("'end first 1-5 bats\n")
-
-### Find the 5 second
-
-selection = names(G1[6:10])
-
-Ploting_bats(selection,main_data, v_bats,"6-10_first_bat")
-
-cat("'end first 6-10 bats\n")
-
-### Reverse
-G1 = sort(Gnorm_bats,decreasing=FALSE)
-
-### Find the last 5
-selection = names(G1[1:5])
-
-Ploting_bats(selection,main_data, v_bats,"1-5_end_bat")
-cat("'end last 1-5 bats\n")
-
-### Find the 5 second
-
-selection = names(G1[6:10])
-
-Ploting_bats(selection,main_data, v_bats,"6-10_end_bat")
-
-cat("'end last 6-10 bats\n")
-
-
-
-```
-
-2.  Input (folder)
-
-    a.  links_clean.csv -\> Main input, contains the links and the layers they belong to.
-
-    b.  Names_impo.csv -\> Contains the names of important bat species identified by Mello et al. (2019).
-
-    c.  Names_impo_plants.csv -\> Contains the name of important plant species identified by Mello et al. (2019).
-
-    d.  bats_code.csv -\> Full scientific names of the bat species with their abbreviation codes.
-
-    e.  plants_code.csv -\> Full scientific names of the plant species with their abbreviation codes.
-
-3.  Data (folder)
-
-    a.  links1.csv -\> Produced with test1.R, links of the complete network.
-
-    b.  links2.csv -\> Produced with test1.R, links of the maximum component of the network.
-
-    c.  nodes1.csv -\> Produced with test1.R, nodes of the complete network.
-
-    d.  nodes2.csv -\> Produced with test1.R, nodes of the maximum component of the network
-
-4.  Figures (folder)
-
-    a.  Bats/Plants_10last/10top_Gnorm_name of species_2d/3d/heat.png -\> The top 10 and bottom 10 species in the ranking of Gnorm are plotted. File naming goes like: 1. bats or plants; 2. 10 top or 10 last; 3. Gnorm; 4. name of species; 5. type of plot (2d, 3d or heat).
-
-    b.  Bats/Plants_btw/Clo/Deg/Eig_name of species_2d/3d/heat.png -\> The top 10 species in each ranking of centrality, which are plotted with their relative Gnorm. File naming goes like: 1. bats or plants; 2. type of centrality could be btw(betweenness), clo(closeness), eig(eigenvector), deg (degree) or Gnorm; 3. name of species 4. type of plot (2d, 3d or heat).
-
-    c.  important\_\_name of species_2d/3d/heat.png -\> Plotting the Gnorm of species from a list (important names), names taken from Mello et al. (2019). File naming goes like: 1. important; 2. species name; 3. type of plot (2d, 3d or heat).
-
-    d.  ...\_end_bat/plant.png -\> Spidercharts produced with `spider.R`.
-
-    e.  ...\_firts_bat/plant.png -\> Spidercharts produced with `spider.R`.
-
-    f.  Modularity.png
-
-    g.  Number_of_modules.png
-
-    h.  hist_Gnorm.png
-
-    i.  Network_visualization_complete.png -\> Graph of the complete netwotk.
-
-    j.  Network_visualization_component.png -\> Graph of the giant component of the network.
-
-    k.  C_correlogram_bats_bats/plants/all_pearson/spearman.png -\> Centrality correlogram.
-
-5.  data_random
-
-    a.  rand_total\_...\_links.csv -\> Random network produced with the same size of real network or its maximum component.
-
-    b.  rand_total.RData -\> Results obtained for the Gnorm analysis of the random network.
-
-6.  figures_random (folder)
-
-    a.  hist_Gnorm_random.png
-
-7.  Results (folder)
-
-    a.  Bat/Plant_impo_btw/eig/deg/clo/Gnorm.RData
-
-    b.  Bat_Net_RData -\> Contains the main results obtianed in the Gnorm section (bats and plants).
-
-    c.  bats_allCentr.RData -\> Contains the results of all centralities (bats and plants).
-
-    d.  bats_bats/plants_allCentr.RData -\> Contains separate results of centralities for bats and plants.
-
-    e.  outfile.txt -\> General information about the multilayer network created with the package *multinet*.
-
-    f.  similarity_bat/plant_Net.RData -\> Values of similarity between Gnorm and other centralities.
-
-    g.  timers.txt -\> Time spent running each section of `test1.R`.
-
-## Reference
+Reference
 
 -   Lofti N, Requejo HS, Rodrigues FA, Mello MAR. A new centrality index for multilayer networks. *In prep*.
 
-## Source repos
+Source repos
 
 [TF](https://github.com/marmello77/TF)
 
-## Source studies
+## 4. Source studies {#studies}
 
 -   Bianconi, G. (2018). Multilayer networks: Structure and function. Oxford University Press. <http://dx.doi.org/10.1093/oso/9780198753919.001.0001>
 
