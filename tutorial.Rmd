@@ -27,7 +27,7 @@ See [README](https://github.com/Nastaranlotfi/Gnorm-new-centrality-index-multila
 3.  [GNORM Calculation](#Gnorm)
 4.  [Source studies](#studies)
 
-## 1. Setting the stage  {#data}
+## 1. Setting the stage {#data}
 
 Set the working directory:
 
@@ -45,8 +45,6 @@ Load the required packages and functions:
 
 ```{r}
 library(akima)
-
-
 library(plyr)
 library(dplyr)
 library(ggplot2)
@@ -206,7 +204,7 @@ cat('end_node_construction', "\n")
 
 ## 2. Building the network {#network}
 
-Finding the giant component:
+Find the giant component:
 
 ```{r}
 
@@ -246,7 +244,7 @@ cat('end_names_filtering-by-max-component', "\n")
 
 ```
 
-Building multilayer networks for both the empirical network and its giant component:
+Build multilayer networks for the complete empirical network and its giant component:
 
 ```{r}
 
@@ -277,7 +275,7 @@ currentTime_netcons <- Sys.time()
 cat('end_network_construction', "\n")
 ```
 
-To have a view of the network, we plot both the real network, and the network constructed with the giant component:
+To have a view of the network, we plot both the empirical network and its giant component:
 
 ```{r}
 
@@ -314,7 +312,7 @@ cat('end_network_visualization', "\n")
 
 ## 3. Calculating Gnorm {#Gnorm}
 
-In the rest of the analysis, we work with the giant component. In the following, we define the main parameter to calculate the Gnorm and find the Gnorm:
+In the subsequent analyses, we work only with the giant component. First, we define the main parameters to calculate  Gnorm:
 
 ```{r}
 
