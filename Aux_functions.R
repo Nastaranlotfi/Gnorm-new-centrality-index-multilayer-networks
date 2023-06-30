@@ -420,9 +420,9 @@ Plot_G_gamma_omega_heat_3D = function(df, nodeName, vec_W, gammas){
   s = interp(x,y,z)
   
   p = image2D(z = s,
-              xlab = "Acoplamento", ylab = "Resolução",
+              xlab = "Coupling", ylab = "Resolution",
               ticktype = "detailed", 
-              clab = "Gnorm médio",
+              clab = "Mean Gnorm",
               main = nodeName)
   
   return()
