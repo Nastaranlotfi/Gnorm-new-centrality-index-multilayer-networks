@@ -45,7 +45,7 @@ Delete all previous objects:
 rm(list= ls())
 ```
 
-Load the required packages and functions:
+Load the required packages:
 
 ```{r}
 library(akima)
@@ -210,7 +210,7 @@ cat('end_node_construction', "\n")
 
 ## 2. Building the network {#network}
 
-Finding the giant component:
+Find the giant component:
 
 ```{r}
 
@@ -257,7 +257,7 @@ cat('end_names_filtering-by-max-component', "\n")
 
 ```
 
-Building multilayer networks for both the empirical network and its giant component:
+Build multilayer networks for both the empirical network and its giant component:
 
 ```{r}
 
@@ -288,7 +288,7 @@ currentTime_netcons <- Sys.time()
 cat('end_network_construction', "\n")
 ```
 
-To have a view of the network, we plot both the real network, and the network constructed with the giant component:
+To inspect the network, plot both the complete empirical network and its giant component:
 
 ```{r}
 
@@ -325,7 +325,7 @@ cat('end_network_visualization', "\n")
 
 ## 3. Calculating Gnorm {#Gnorm}
 
-In the rest of the analysis, we work with the giant component. In the following, we define the main parameter to calculate the Gnorm and find the Gnorm:
+In the subsequent analyses, we'll work only with the giant component. Set the main parameters used to calculate Gnorm:
 
 ```{r}
 
@@ -422,9 +422,9 @@ cat('end_Gnorm', "\n")
 
 ```
 
-## 4. Summarize the Gnorm results {#Summarize}
+## 4. Summarizing Gnorm results {#Summarize}
 
-To have a better view of the Gnorm, we plot the histogram of the frequency of the Gnorm as the following:
+Inspect the distribution of Gnorm values in the network:
 
 ```{r}
 partitions_of_omega1 = 4 
@@ -471,9 +471,9 @@ cat('end_gnormfreq', "\n")
 
 ```
 
-## 5. Plot the Gnorm curves {#plot}
+## 5. Plotting Gnorm curves {#plot}
 
-To have a better view of the species Gnorm value, we plotted the Gnorm of the species that they were detected being important in the nature (names taken from 2019 NatEcoEvo paper).
+Inspect the Gnorm curves produced for each node of the network. In this tutorial, we've selected only the most important species pointed out by a previous study, based on other centrality metrics (see [Mello et al. 2019 NatEcoEvo](https://doi.org/10.1038/s41559-019-1002-3)).
 
 ```{r}
 load("results/Bat_Net.RData")
@@ -497,22 +497,16 @@ for (i in 1:length(selection)) {
 
 ```
 
-## 6. Export the results in TXT format {#export}
+## 6. Exporting the results {#export}
+
+Export the Gnorm values as a TXT file.
 
 ```{r}
 write.table(G_norm_mean,file = "results/Bat_Gnorm.txt")
 
 ```
 
-Reference
-
--   Lotfi N, Requejo HS, Rodrigues FA, Mello MAR. A new centrality index for multilayer networks. *In prep*.
-
-Source repos
-
-[TF](https://github.com/marmello77/TF)
-
-## 4. Source studies {#studies}
+## 7. Source studies {#studies}
 
 -   Bianconi, G. (2018). Multilayer networks: Structure and function. Oxford University Press. <http://dx.doi.org/10.1093/oso/9780198753919.001.0001>
 
@@ -522,6 +516,6 @@ Source repos
 
 -   Mello, M. A. R., Felix, G. M., Pinheiro, R. B. P., Muylaert, R. L., Geiselman, C., Santana, S. E., Tschapka, M., Lotfi, N., Rodrigues, F. A., & Stevens, R. D. (2019). Insights into the assembly rules of a continent-wide multilayer network. Nature Ecology & Evolution, 3(11), 1525--1532. <https://doi.org/10.1038/s41559-019-1002-3>
 
--   Mucha, P. J., Richardson, T., Macon, K., Porter, M. A., & Onnela, J.-P. (2010). Com- munity structure in time-dependent, multiscale, and multiplex networks. Science, 328(5980), 876--878. <https://doi.org/10.1126/science.1184819>
+-   Mucha, P. J., Richardson, T., Macon, K., Porter, M. A., & Onnela, J.-P. (2010). Community structure in time-dependent, multiscale, and multiplex networks. Science, 328(5980), 876--878. <https://doi.org/10.1126/science.1184819>
 
--   Pilosof, S., Porter, M. A., Pascual, M., & Kéfi, S. (2017). The multilayer nature of ecological networks. Nature Ecology & Evolution, 1(4). <https://doi.org/10.1038/s41559-017-0101> \`\`\`
+-   Pilosof, S., Porter, M. A., Pascual, M., & Kéfi, S. (2017). The multilayer nature of ecological networks. Nature Ecology & Evolution, 1(4). <https://doi.org/10.1038/s41559-017-0101>
