@@ -474,6 +474,9 @@ cat('end_gnormfreq', "\n")
 ## 5. Plotting Gnorm curves {#plot}
 
 Inspect the Gnorm curves produced for each node of the network. In this tutorial, we've selected only the most important species pointed out by a previous study, based on other centrality metrics (see [Mello et al. 2019 NatEcoEvo](https://doi.org/10.1038/s41559-019-1002-3)).
+In the following, we gain two major plots: 1. the 2D plots and 2. 2D heatmap plots. 
+1. The 2D plots show that how the variation of the Gnorm changes for the selected species by variation of the omega (w). Different lines indicated for different gammas. 
+2. The 2D heatmap plots show the variation the Gnorm with respect to the omega and the gamma. The color of the plot is the mean Gnorm of the species.
 
 ```{r}
 load("results/Bat_Net.RData")
@@ -502,7 +505,13 @@ for (i in 1:length(selection)) {
 Export the Gnorm values as a TXT file.
 
 ```{r}
-write.table(G_norm_mean,file = "results/Bat_Gnorm.txt")
+nodes3<-list()
+
+nodes3<-cbind.data.frame(name=nodes2$name,taxon=nodes2$taxon,taxon.lable=nodes2$taxon.label,G_norm_mean=G_norm_mean)
+nodes3<-nodes3[with(nodes3, order(taxon,name)), ]
+rownames(nodes3) <- 1:nrow(nodes3)
+
+write.table(nodes3,file = "results/names_Gnorm.txt")
 
 ```
 
