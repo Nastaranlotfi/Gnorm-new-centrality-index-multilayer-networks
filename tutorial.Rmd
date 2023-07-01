@@ -10,25 +10,28 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # TUTORIAL
 
-Supplement to the paper: Lotfi N, Requejo HS, Rodrigues F, Mello MAR. A new centrality index for multilayer networks. *In prep*.
+This tutorial is part of the supplement to the paper: Lotfi N, Requejo HS, Rodrigues F, Mello MAR. A new centrality index for multilayer networks. *Under review*.
 
 *Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco A. Rodrigues & Marco A. R. Mello.*
 
-[Ecological Synthesis Lab](https://marcomellolab.wordpress.com) (SintECO), University of São Paulo.
+[Ecological Synthesis Lab](https://marcomellolab.wordpress.com) (SintECO), University of São Paulo, Brazil.
 
 Contact: [*nas.naslot\@gmail.com*](mailto:nas.naslot@gmail.com){.email}{.email} OR [*marmello\@usp.br*](mailto:marmello@usp.br){.email}{.email}
 
 See [README](https://github.com/Nastaranlotfi/Gnorm-new-centrality-index-multilayer-networks/blob/main/README.md) for further info.
 
+## Objective
+
+This tutorial, prepared as an RMD notebook, aims to help you calculate `Gnorm` for the example data used in our paper. You can adapt it to calculate `Gnorm` for your own data.
+
 ## Summary
 
-1.  [Preparing the data](#data)
-2.  [Network construction](#network)
-3.  [GNORM Calculation](#Gnorm)
-4.  [Summarize the Gnorm results](#Summarize)
-5.  [Plot the Gnorm curves](#plot)
-6.  [Export the results in TXT format](#export)
-7.  [Source studies](#studies)
+1.  [Setting the stage](#data)
+2.  [Building the network](#network)
+3.  [Calculating Gnorm](#Gnorm)
+4.  [Summarizing Gnorm results](#Summarize)
+5.  [Plotting Gnorm curves](#plot)
+6.  [Exporting Gnorm results](#export)
 
 ## 1. Setting the stage {#data}
 
@@ -257,7 +260,7 @@ cat('end_names_filtering-by-max-component', "\n")
 
 ```
 
-Build multilayer networks for both the empirical network and its giant component:
+Build multilayer networks for both the complete empirical network and its giant component:
 
 ```{r}
 
@@ -288,7 +291,7 @@ currentTime_netcons <- Sys.time()
 cat('end_network_construction', "\n")
 ```
 
-To inspect the network, plot both the complete empirical network and its giant component:
+Inspect the complete empirical network and its giant component:
 
 ```{r}
 
@@ -337,7 +340,8 @@ gamma_min = 0.25
 gamma_max = 4
 gamma_spacing = 0.25
 gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
-iterations = 2 #It takes a long time, but for stable results use at least 100
+iterations = 2 #Increasing the number of iterations increases the computing time
+               #considerably. But for stable, reliable results use at least 100.
 
 # Saving lists definition
 Seq_G_Mean_gamma_list = list() 
@@ -474,9 +478,8 @@ cat('end_gnormfreq', "\n")
 ## 5. Plotting Gnorm curves {#plot}
 
 Inspect the Gnorm curves produced for each node of the network. In this tutorial, we've selected only the most important species pointed out by a previous study, based on other centrality metrics (see [Mello et al. 2019 NatEcoEvo](https://doi.org/10.1038/s41559-019-1002-3)).
-In the following, we gain two major plots: 1. the 2D plots and 2. 2D heatmap plots. 
-1. The 2D plots show that how the variation of the Gnorm changes for the selected species by variation of the omega (w). Different lines indicated for different gammas. 
-2. The 2D heatmap plots show the variation the Gnorm with respect to the omega and the gamma. The color of the plot is the mean Gnorm of the species.
+
+In the following, we produce two major kinds of plots: (1) 2D line plots and (2) 2D heatmaps. (1) The 2D line plots show how Gnorm varies with omega for the selected species. Different lines indicate different values of gamma. (2) The 2D heatmaps show how Gnorm varies with omega and gamma. The blue-red gradient represents the mean Gnorm values calculated for the selected species.
 
 ```{r}
 load("results/Bat_Net.RData")
@@ -500,9 +503,9 @@ for (i in 1:length(selection)) {
 
 ```
 
-## 6. Exporting the results {#export}
+## 6. Exporting Gnorm results {#export}
 
-Export the Gnorm values as a TXT file.
+Export the Gnorm values as a TXT file, organized by network layer and species.
 
 ```{r}
 nodes3<-list()
@@ -514,17 +517,3 @@ rownames(nodes3) <- 1:nrow(nodes3)
 write.table(nodes3,file = "results/names_Gnorm.txt")
 
 ```
-
-## 7. Source studies {#studies}
-
--   Bianconi, G. (2018). Multilayer networks: Structure and function. Oxford University Press. <http://dx.doi.org/10.1093/oso/9780198753919.001.0001>
-
--   Blondel, V. D., Guillaume, J.-L., Lambiotte, R., & Lefebvre, E. (2008). Fast unfolding of communities in large networks. Journal of Statistical Mechanics: Theory and Experiment, 2008(10), P10008. <https://doi.org/10.1088/1742-5468/2008/10/p10008>
-
--   Mello, M., Rodrigues, F., Costa, L., Kissling, W., Şekercioğlu, Ç., Marquitti, F., & Kalko, E. (2014). Keystone species in seed dispersal networks are mainly determined by dietary specialization. Oikos, 124(8), 1031--1039. <https://doi.org/10.1111/oik.01613>
-
--   Mello, M. A. R., Felix, G. M., Pinheiro, R. B. P., Muylaert, R. L., Geiselman, C., Santana, S. E., Tschapka, M., Lotfi, N., Rodrigues, F. A., & Stevens, R. D. (2019). Insights into the assembly rules of a continent-wide multilayer network. Nature Ecology & Evolution, 3(11), 1525--1532. <https://doi.org/10.1038/s41559-019-1002-3>
-
--   Mucha, P. J., Richardson, T., Macon, K., Porter, M. A., & Onnela, J.-P. (2010). Community structure in time-dependent, multiscale, and multiplex networks. Science, 328(5980), 876--878. <https://doi.org/10.1126/science.1184819>
-
--   Pilosof, S., Porter, M. A., Pascual, M., & Kéfi, S. (2017). The multilayer nature of ecological networks. Nature Ecology & Evolution, 1(4). <https://doi.org/10.1038/s41559-017-0101>
