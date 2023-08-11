@@ -1,22 +1,6 @@
 # Gnorm-A-new-centrality-index-designed-for-multilayer-networks
 
-## Supplement to the paper: Lotfi N, Requejo HS, Rodrigues F, Mello MAR. A new centrality index for multilayer networks. *In prep*.
 
-Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco A. Rodrigues & Marco A. R. Mello
-
-Follow-up to Henrique Requejo's BSc monograph:
-
-Requejo HS. 2021. *Um teste do algoritmo de modularidade Louvain como uma ferramenta para detectar espécies-chave em redes de interações multicamada*. Honors Degree Monograph, Graduação em Matemática Aplicada e Computacional, Instituto de Matemática e Estatística, Universidade de São Paulo, São Paulo, Brazil. Advisor: Mello MAR.
-
-[Ecological Synthesis Lab](https://marcomellolab.wordpress.com) (SintECO), University of São Paulo, Brazil.
-
-E-mails: [nas.naslot\@gmail.com](mailto:nas.naslot@gmail.com){.email} OR [marmello\@usp.br](mailto:marmello@usp.br){.email}
-
-First published on June 15th, 2022 (English version).
-
-Run in R version 4.3.0 (2023-04-21) -- "Already Tomorrow"
-
-[![](https://zenodo.org/badge/DOI/10.5281/zenodo.7963011.svg)](https://doi.org/10.5281/zenodo.7963011)
 
 Disclaimer: You may freely use the software and data provided here for any purposes at your own risk. We assume no responsibility or liability for the use of this material, convey no license or title under any patent, copyright, or mask work right to the product. We reserve the right to make changes in the material without notification. We also make no representation or warranty that such application will be suitable for the specified use without further testing or modification. If this material helps you produce any academic work (paper, book, chapter, monograph, dissertation, report, talk, lecture or similar), please acknowledge the authors and cite the original paper and this repository.
 
@@ -128,17 +112,7 @@ iii. `random_final.R:` the main code for producing the random network. It uses i
 
 3.  Check the files in the `Figures` folder.
 
-## Feedback
 
-If you have any questions, corrections, or suggestions, please feel free to open an [issue](https://github.com/Nastaranlotfi/Test1-code/issues) or make a [pull request](https://github.com/Nastaranlotfi/Test1-code/pulls).
-
-## Acknowledgments
-
-We are grateful to our lab mates and institutions, who helped us at different stages of this project. This study is derived from the B.Sc. monograph of H.S. Requejo. C. Emer participated in the defense committee and contributed with insightful suggestions. N. Lotfi is thankful to the FAPESP (grant with number 2020/08359-1) for the support given to this research. MARM was funded by the Alexander von Humboldt Foundation (AvH, 3.4-8151/15037 and 3.2-BRA/1134644), National Council for Scientific and Technological Development (CNPq, 304498/2019-0), São Paulo Research Foundation (FAPESP, 2018/20695-7), and Dean of Research of the University of São Paulo (PRP-USP, 18.1.660.41.7). We also thank the [Stack Overflow](https://stackoverflow.com) community, where we solve most of our coding dilemmas.
-
-## Source repos
-
-[TF](https://github.com/marmello77/TF)
 
 ## Source studies
 
