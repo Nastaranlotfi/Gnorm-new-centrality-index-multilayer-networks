@@ -8,14 +8,12 @@
 #### https://github.com/Nastaranlotfi/Test1-code#readme
 ################################################################################
 
-
 ################### SET UP #####################################################
 
 
 library(ggplot2)
 library(png)
 library(fmsb)
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 
 ################### PLOTTING FUNCTIONS #########################################
@@ -37,50 +35,59 @@ create_beautiful_radarchart <- function(data, color, vlabels = colnames(data), v
 
 
 Ploting_bats<-function(selection,main_data, v_bats,savename){
-
-clo=clo_bats[selection]
-btw=btw_bats[selection]
-eig=eig_bats[selection]
-deg=deg_bats[selection]
-G=Gnorm_bats[selection]
-
-Name=v_bats$code[match(selection,v_bats$name)]
-print (Name)
-print (selection)
-data <- data.frame( row.names = Name, Closeness=clo,Degree=deg,
-                    Betweenness=btw, Eigenvector=eig,  Gnorm=G)
-
-max_min <- data.frame( Closeness=c(max(clo_bats),0),
-			Degree=c(max(deg_bats),0),
-                       Betweenness= c(max(btw_bats),0),
-                       Eigenvector=c(max(eig_bats),0),
-                       
-                       Gnorm=c(max(Gnorm_bats),min(Gnorm_bats)) )
-rownames(max_min) <- c("Max", "Min")
-
-df <- rbind(max_min, data)
-
-### Plotting setup
-png_name = paste("figures/",savename,".png", sep = "")
-png(png_name, width = 700, height = 700)
-
-op <- par(mar = c(1, 2, 2, 2))
-# Create the radar charts
-create_beautiful_radarchart(data = df,color = c("#FFC0CB","#87CEFA", "#FFDAB9","#90EE90", "#EEE8AA"), vlabels = colnames(data), vlcex = 1.8,caxislabels = NULL, title = NULL)
-# Add an horizontal legend
-legend(x=0.6, y=1.3, legend = rownames(df[-c(1,2),]), horiz = FALSE, bty = "n", pch = 20 , 
-	col =c("#FFC0CB","#87CEFA", "#FFDAB9","#90EE90", "#EEE8AA"),text.col = "black", cex = 2, pt.cex = 2.5)
-par(op)
-dev.off()
-
+  
+  clo=clo_bats[selection]
+  btw=btw_bats[selection]
+  eig=eig_bats[selection]
+  deg=deg_bats[selection]
+  G=Gnorm_bats[selection]
+  
+  Name=v_bats$code[match(selection,v_bats$name)]
+  print (Name)
+  print (selection)
+  data <- data.frame( row.names = Name, Closeness=clo,Degree=deg,
+                      Betweenness=btw, Eigenvector=eig,  Gnorm=G)
+  
+  max_min <- data.frame( Closeness=c(max(clo_bats),0),
+                         Degree=c(max(deg_bats),0),
+                         Betweenness= c(max(btw_bats),0),
+                         Eigenvector=c(max(eig_bats),0),
+                         
+                         Gnorm=c(max(Gnorm_bats),min(Gnorm_bats)) )
+  rownames(max_min) <- c("Max", "Min")
+  
+  df <- rbind(max_min, data)
+  
+  ### Plotting setup
+  png_name = paste("figures/",savename,".png", sep = "")
+  png(png_name, width = 700, height = 700)
+  
+  op <- par(mar = c(1, 2, 2, 2))
+  # Create the radar charts
+  create_beautiful_radarchart(data = df,color = c("#CC79A7","#56B4E9", "#E69F00","#009E73", "#F0E442"), vlabels = colnames(data), vlcex = 1.8,caxislabels = NULL, title = NULL)
+  # Add an horizontal legend
+  legend(x=0.6, y=1.3, legend = rownames(df[-c(1,2),]), horiz = FALSE, bty = "n", pch = 20 , 
+         col =c("#CC79A7","#56B4E9", "#E69F00","#009E73", "#F0E442"),text.col = "black", cex = 2, pt.cex = 5)
+  par(op)
+  dev.off()
 }
 
 
+
+
+
+
+
+
+
 ################### DATA IMPORT AND PLOTTING ###################################
+
+
 ######## Bats
 
 main_data=load("results/bats_bats_allCentr.RData")
 v_bats=read.csv('input/bats_code.csv',header=T, as.is=T)
+
 
 G1 = sort(Gnorm_bats,decreasing=TRUE)
 
