@@ -270,7 +270,7 @@ gamma_min = 0.25
 gamma_max = 4
 gamma_spacing = 0.25
 gammas = seq(from = gamma_min, to = gamma_max, by = gamma_spacing)
-iterations = 2 #It takes a long time, but for stable results use at least 100
+iterations = 100 #It takes a long time, but for stable results use at least 100
 
 # Saving lists definition
 Seq_G_Mean_gamma_list = list() 
