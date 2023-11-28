@@ -334,32 +334,35 @@ Unite_list_of_dataframes = function(df_list){
 # Extract the G curves for each gamma from a specific node. Important: The nodeName must be a string
 
 G_curves_for_different_gammas = function(df, nodeName, vec_W, gammas){
-  	df_new = df[which(df$actor==nodeName),]
+  df_new = df[which(df$actor==nodeName),]
+  #library(wesanderson)
+  #prepare the dataframe to be plotted
+  vec_G = as.numeric(df_new[1, 2:(length(vec_W)+1)])
+  vec_gamma = rep(gammas[1], length(vec_G))
+  dataToPlot = as.data.frame(cbind(vec_W, vec_G, vec_gamma))
+  for (i in 2:length(gammas)) {
+    vec_G = as.numeric(df_new[i, 2:(length(vec_W)+1)])
+    vec_gamma = rep(gammas[i], length(vec_G))
+    dataPrep = as.data.frame(cbind(vec_W, vec_G, vec_gamma))
+    dataToPlot = rbind(dataToPlot, dataPrep)
+  }#end for
   
-  	#prepare the dataframe to be plotted
-  	vec_G = as.numeric(df_new[1, 2:(length(vec_W)+1)])
-  	vec_gamma = rep(gammas[1], length(vec_G))
-  	dataToPlot = as.data.frame(cbind(vec_W, vec_G, vec_gamma))
-  	for (i in 2:length(gammas)) {
-    		vec_G = as.numeric(df_new[i, 2:(length(vec_W)+1)])
-    		vec_gamma = rep(gammas[i], length(vec_G))
-    		dataPrep = as.data.frame(cbind(vec_W, vec_G, vec_gamma))
-    		dataToPlot = rbind(dataToPlot, dataPrep)
-  		}#end for
+  #plot the curve families in 2D
+  plt2D <- ggplot(dataToPlot, aes(x=vec_W, y=vec_G, color = factor(vec_gamma))) + #'aes' defines the axes. 'geom_point' plots the points. 'geom_path' plots the lines
+    geom_point(size=3) + geom_line(size=1.2) +#scale_colour_colorblind()+
+    ggtitle(df_new[1, 1]) + 
+    xlab(expression( omega)) + 
+    ylab("Number of modules the node belongs to (G)") +
+    theme(title = element_text(size = 40), axis.title.x = element_text(size = 40),
+          axis.title.y = element_text(size = 40), axis.text.y = element_text(size = 40),
+          axis.text.x = element_text(size = 40),legend.text = element_text(size = 40),legend.title=element_text(size=40))
+  #plt2D = plt2D + scale_color_brewer(palette = "Safe") #scale_fill_viridis(discrete = TRUE))#scale_colour_discrete(name=expression(gamma))
+  #plt2D = plt2D +scale_fill_manual("PiYG")
+  #plt2D = plt2D +scale_x_continuous(limits = c(0, 15))
+  plt2D = plt2D+ theme_bw()+guides(color = guide_legend(override.aes = list(size = 10)))#+geom_line(aes(group=factor(vec_gamma),size=2))#theme(legend.key.size = unit(2,"line"))#(panel.background = element_rect(fill = "white"))
   
-  	#plot the curve families in 2D
-  	plt2D = ggplot(dataToPlot, aes(x=vec_W, y=vec_G, colour=factor(vec_gamma))) + #'aes' defines the axes. 'geom_point' plots the points. 'geom_path' plots the lines
-    	geom_point() + geom_line() +
-    	ggtitle(df_new[1, 1]) + 
-    	xlab(expression(paste("Coupling parameter(", omega,")"))) + 
-    	ylab("Number of modules the node belongs to (G)") +
-    	theme(title = element_text(size = 16), axis.title.x = element_text(size = 16),
-        	axis.title.y = element_text(size = 16), axis.text.y = element_text(size = 14),
-       	axis.text.x = element_text(size = 14))
-  	plt2D = plt2D + scale_colour_discrete(name=expression(paste(gamma)))
-  
-  	return(plt2D)
-	}#end function
+  return(plt2D)
+}#end function
 
 
 ########################################################################################
@@ -398,11 +401,13 @@ Plot_G_gamma_omega_suf_3D = function(df, nodeName, vec_W, gammas){
 #######################################################################################
 #Plot a 2D heatmap G, gamma and omega
 
-
 Plot_G_gamma_omega_heat_3D = function(df, nodeName, vec_W, gammas){
+  
+  library(RColorBrewer)
+  coul <- colorRampPalette(brewer.pal(8, "PiYG"))(40)
   df_new = df[which(df$actor==nodeName),]
   
-  #prepara o dataframe que sera plotado
+  #prepare the dataframe to be plotted
   vec_G = as.numeric(df_new[1, 2:(length(vec_W)+1)])
   vec_gamma = rep(gammas[1], length(vec_G))
   dataToPlot = as.data.frame(cbind(vec_W, vec_G, vec_gamma))
@@ -411,25 +416,31 @@ Plot_G_gamma_omega_heat_3D = function(df, nodeName, vec_W, gammas){
     vec_gamma = rep(gammas[i], length(vec_G))
     dataPrep = as.data.frame(cbind(vec_W, vec_G, vec_gamma))
     dataToPlot = rbind(dataToPlot, dataPrep)
-  }
+  }#end for
   
-  # plota a superficie GxWxGAMMA
+  # plot a surface G*W*GAMMA
   x = dataToPlot$vec_W
   y = dataToPlot$vec_gamma
   z = dataToPlot$vec_G
   s = interp(x,y,z)
-  
-  p = image2D(z = s,
-              xlab = "Coupling", ylab = "Resolution",
+  #show_col(colorblind_pal()(8))
+  #setHook("grid.newpage", function() pushViewport(viewport(x=1,y=1,width=0.8, height=0.92, name="vp", just=c("right","top"))), action="prepend")  
+  p = image2D(z = s,xlab = expression( omega), ylab = expression( gamma),cex.lab=2.5, cex.axis=1.5,cex = 1.7,# gp=gpar(fontsize=45),
+              #main = "viridis",
+              #xlab = "Coupling", ylab = "Resolution",
               ticktype = "detailed", 
               clab = "Mean Gnorm",
-              main = nodeName)
+              main = nodeName,col=coul)
+  #p=p + scale_fill_gradient2(low="black", mid="orange", high="skyblue", #colors in the scale
+  # midpoint=mean(rng),    #same midpoint for plots (mean of the range)
+  #breaks=seq(0,1,0.25),) #breaks in the scale bar
+  #limits=c(floor(rng[1]), ceiling(rng[2])))
+  theme(title = element_text(size = 20), axis.title.x = element_text(size = 30),
+        axis.title.y = element_text(size = 20), axis.text.y = element_text(size = 20),
+        axis.text.x = element_text(size = 20),legend.text = element_text(size = 20),legend.title=element_text(size=25))
   
   return()
-}
-
-
-
+}#end function
 
 
 #########################################################################################
