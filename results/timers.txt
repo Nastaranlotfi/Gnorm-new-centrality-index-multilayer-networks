@@ -1,0 +1,35 @@
+[1] "Time spent running each section of the code"
+[1] "Lotfi et al., in prep."
+
+[1] "Start running the code: 2023-11-28 10:23:11.872643"
+
+[1] "Endtime for preparation: 2023-11-28 10:23:11.902671"
+
+[1] "Endtime for link construction: 2023-11-28 10:23:11.97912"
+
+[1] "Endtime for node construction: 2023-11-28 10:23:12.010099"
+
+[1] "Endtime for identifying the giant component: 2023-11-28 10:23:12.094183"
+
+[1] "Endtime for network visualization: 2023-11-28 10:23:24.725574"
+
+[1] "Endtime for Gnorm calculation: 2023-11-28 12:09:13.08448"
+
+[1] "Endtime for modularity calculation: 2023-11-28 12:18:48.007379"
+
+[1] "Endtime for Gnorm frequency calculation: 2023-11-28 12:18:48.285026"
+
+[1] "Endtime for network parameters calculation: 2023-11-28 12:18:48.406201"
+
+[1] "Endtime for separating network layers: 2023-11-28 12:18:49.971562"
+
+[1] "Endtime for plotting separate correlograms for bats and plants: 2023-11-28 12:18:50.954866"
+
+[1] "Endtime for plotting Gnorm: 2023-11-28 12:18:57.005798"
+
+[1] "Endtime for plotting centrality: 2023-11-28 12:18:57.069392"
+
+[1] "Endtime for plotting top 10 centrality: 2023-11-28 12:19:15.104897"
+
+[1] "Endtime for plotting top 10 (last 10) Gnorm: 2023-11-28 12:19:22.457777"
+
