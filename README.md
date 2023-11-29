@@ -9,9 +9,9 @@ Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco A. Rodrigues & Marco A. 
 Contact: [nas.naslot\@gmail.com](mailto:nas.naslot@gmail.com){.email} & [marmello\@usp.br](mailto:marmello@usp.br).
 
 First published on May 23rd, 2023 (English version).
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10219625.svg)](https://doi.org/10.5281/zenodo.10219625)
 
 
-[![DOI:10.5281/zenodo.10219625](http://img.shields.io/badge/DOI-10.5281/zenodo.10219625.svg)](https://doi.org/10.5281/zenodo.10219625)
 
 
 ZENODO BADGE: 10.5281/zenodo.10219625
