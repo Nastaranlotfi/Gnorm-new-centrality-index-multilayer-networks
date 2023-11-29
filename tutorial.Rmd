@@ -10,9 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # TUTORIAL
 
-This tutorial is part of the supplement to the paper: Lotfi N, Requejo HS, Rodrigues F, Mello MAR. A new centrality index for multilayer networks. *Under review*.
+This tutorial is part of the supplement to the paper: Lotfi N, Requejo HS, Rodrigues F, Mello MAR. (2023). A new centrality index designed for multilayer networks. Methods in Ecology and Evolution: *in press*.
 
-*Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco A. Rodrigues & Marco A. R. Mello.*
+Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco A. Rodrigues & Marco A. R. Mello.
 
 [Ecological Synthesis Lab](https://marcomellolab.wordpress.com) (SintECO), University of São Paulo, Brazil.
 

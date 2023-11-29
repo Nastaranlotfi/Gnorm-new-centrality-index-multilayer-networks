@@ -1,8 +1,20 @@
 # Gnorm-A-new-centrality-index-designed-for-multilayer-networks
 
+Supplement to the paper Lotfi N, Requejo HS, Rodrigues F, Mello MAR. (2023). A new centrality index designed for multilayer networks. Methods in Ecology and Evolution: *in press*.
 
+[Ecological Synthesis Lab](https://marcomellolab.wordpress.com) (SintECO), University of São Paulo, Brazil.
 
-Disclaimer: You may freely use the software and data provided here for any purposes at your own risk. We assume no responsibility or liability for the use of this material, convey no license or title under any patent, copyright, or mask work right to the product. We reserve the right to make changes in the material without notification. We also make no representation or warranty that such application will be suitable for the specified use without further testing or modification. If this material helps you produce any academic work (paper, book, chapter, monograph, dissertation, report, talk, lecture or similar), please acknowledge the authors and cite the original paper and this repository.
+Authors: Nastaran Lotfi, Henrique S. Requejo, Francisco A. Rodrigues & Marco A. R. Mello.
+
+Contact: [nas.naslot\@gmail.com](mailto:nas.naslot@gmail.com){.email} & [marmello\@usp.br](mailto:marmello@usp.br).
+
+First published on May 23rd, 2023 (English version).
+
+ZENODO BADGE <!--# Nastaran, please add here the code of the Zenodo badge -->
+
+Run in R version 4.3.2 (2023-10-31) -- "Eye Holes".
+
+Disclaimer: You may freely use the software and data provided here for any purposes at your own risk. We assume no responsibility or liability for the use of this material, convey no license or title under any patent, copyright, or mask work right to the product. We reserve the right to make changes in the material without notification. We also make no representation or warranty that such application will be suitable for the specified use without further testing or modification. If this material helps you produce any academic work (paper, book, chapter, monograph, dissertation, poster, report, talk, lecture, keynote, or similar), please acknowledge the authors and cite the original paper and this repository.
 
 ## Functionality and origin
 
@@ -21,6 +33,8 @@ The data and code provided here aim at making reproducible the graphical and num
     d.  random_final.R -\> Generates the random network, calculates Gnorm, and plots the histogram of Gnorm of the random network.
 
     e.  spider.R -\> Plots the spidercharts.
+
+    f.  tutorial.Rmd -\> Tutorial in notebook format, which can be used to check the steps in the calculation of Gnorm using example data. You can follow the example and edit the notebook to calculate Gnorm using your own data.
 
 2.  Input (folder)
 
@@ -96,7 +110,8 @@ The data and code provided here aim at making reproducible the graphical and num
 
 ## Instructions
 
-1.  Run the respective script to reproduce the chosen analysis, figure or table. You should run the scripts in the following order:
+1.  If you just want to try calculating Gnorm using the example data, or if you would prefer to edit the notebook and calculate Gnorm using your own data, run `tutorial.Rmd`.
+2.  If you want the check out the details in the calculation of Gnorm and reproduce all analyses, figures, and tables presented in our paper, run the other scripts in the following order:
 
 <!-- -->
 
@@ -104,15 +119,21 @@ i.  `test1.R:` the main code, which produces all information needed for running 
 
 ii. `spider.R:` produces the spidercharts, using data produced by `test1.R`;
 
-iii. `random_final.R:` the main code for producing the random network. It uses information about the number of links and number of layers, then it builds the random network and calculates Gnorm for it.
+iii. `random_final.R:` the main code for producing the randomized network. It uses information about the number of links and number of layers, then it builds the random network and calculates Gnorm for it.
 
 <!-- -->
 
-2.  Follow the instructions provided in each script.
+3.  Follow the instructions provided in each script.
 
-3.  Check the files in the `Figures` folder.
+4.  Check the files produced in the `Figures` folder.
 
+## Feedback
 
+If you have any questions, suggestions, or corrections, please feel free to open an [issue](https://github.com/Nastaranlotfi/Gnorm-new-centrality-index-multilayer-networks/issues) or make a [pull request](https://github.com/Nastaranlotfi/Gnorm-new-centrality-index-multilayer-networks/pulls).
+
+## Acknowledgments
+
+We are grateful to our laboratory mates and institutions, who helped us at different stages of this project. This study is derived from the B.Sc. monograph of H.S. Requejo. C. Emer participated in his defencedefense committee and contributed insightful suggestions. N. Lotfi is thankful to the São Paulo Research Foundation (FAPESP, grant 2020/08359-1) for the postdoc fellowship. MARM was funded by the Alexander von Humboldt Foundation (AvH, grant 1134644), National Council for Scientific and Technological Development (CNPq, fellowship 304498/2019-0), FAPESP (grants 2018/20695-7 and 2023/02881-6), and Dean of Research of the University of São Paulo (PRP-USP, grant 18.1.660.41.7). We also thank the [Stack Overflow](https://stackoverflow.com) community, where we solve most of our coding dilemmas.
 
 ## Source studies
 
@@ -123,6 +144,8 @@ iii. `random_final.R:` the main code for producing the random network. It uses i
 -   Mello, M., Rodrigues, F., Costa, L., Kissling, W., Şekercioğlu, Ç., Marquitti, F., & Kalko, E. (2014). Keystone species in seed dispersal networks are mainly determined by dietary specialization. Oikos, 124(8), 1031--1039. <https://doi.org/10.1111/oik.01613>
 
 -   Mello, M. A. R., Felix, G. M., Pinheiro, R. B. P., Muylaert, R. L., Geiselman, C., Santana, S. E., Tschapka, M., Lotfi, N., Rodrigues, F. A., & Stevens, R. D. (2019). Insights into the assembly rules of a continent-wide multilayer network. Nature Ecology & Evolution, 3(11), 1525--1532. <https://doi.org/10.1038/s41559-019-1002-3>
+
+-   Mello, M. A. R. (2019). Keystone Species. In D. Gibson (Ed.), Ecology (Vol. 1, p. online). Oxford University Press. <https://doi.org/10.1093/obo/9780199830060-0213>
 
 -   Mucha, P. J., Richardson, T., Macon, K., Porter, M. A., & Onnela, J.-P. (2010). Com- munity structure in time-dependent, multiscale, and multiplex networks. Science, 328(5980), 876--878. <https://doi.org/10.1126/science.1184819>
 
