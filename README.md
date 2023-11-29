@@ -10,6 +10,10 @@ Contact: [nas.naslot\@gmail.com](mailto:nas.naslot@gmail.com){.email} & [marmell
 
 First published on May 23rd, 2023 (English version).
 
+[![DOI:10.5281/zenodo.10219625](http://img.shields.io/badge/DOI-10.5281/zenodo.10219625.svg)]([https://doi.org/10.5281/zenodo.10219625](https://doi.org/10.5281/zenodo.10219625))
+
+
+
 ZENODO BADGE: 10.5281/zenodo.10219625
 
 Run in R version 4.3.2 (2023-10-31) -- "Eye Holes".
