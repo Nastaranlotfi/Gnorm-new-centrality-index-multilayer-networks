@@ -15,9 +15,6 @@ First published on May 23rd, 2023 (English version).
 
 
 
-
-ZENODO BADGE: 10.5281/zenodo.10219625
-
 Run in R version 4.3.2 (2023-10-31) -- "Eye Holes".
 
 Disclaimer: You may freely use the software and data provided here for any purposes at your own risk. We assume no responsibility or liability for the use of this material, convey no license or title under any patent, copyright, or mask work right to the product. We reserve the right to make changes in the material without notification. We also make no representation or warranty that such application will be suitable for the specified use without further testing or modification. If this material helps you produce any academic work (paper, book, chapter, monograph, dissertation, poster, report, talk, lecture, keynote, or similar), please acknowledge the authors and cite the original paper and this repository.
