@@ -10,7 +10,7 @@ Contact: [nas.naslot\@gmail.com](mailto:nas.naslot@gmail.com){.email} & [marmell
 
 First published on May 23rd, 2023 (English version).
 
-ZENODO BADGE <!--# Nastaran, please add here the code of the Zenodo badge -->
+ZENODO BADGE: 10.5281/zenodo.10219625
 
 Run in R version 4.3.2 (2023-10-31) -- "Eye Holes".
 
